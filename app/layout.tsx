@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Source_Sans_3, Montserrat, Outfit, Inter, Instrument_Serif } from "next/font/google";
+import { Geist_Mono, Source_Sans_3, Montserrat, Outfit, Inter, Instrument_Serif, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -22,6 +22,12 @@ const outfit = Outfit({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -50,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${dmSans.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
