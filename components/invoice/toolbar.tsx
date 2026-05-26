@@ -35,6 +35,13 @@ function formatMultiline(value: string) {
   return escapeHtml(value).replaceAll("\n", "<br />")
 }
 
+function renderStamp(data: InvoiceData) {
+  if (data.stampUrl) {
+    return `<img class="stamp-image" src="${escapeAttribute(data.stampUrl)}" alt="Stamp" />`
+  }
+  return `<div class="stamp-placeholder"></div>`
+}
+
 function renderLogo(data: InvoiceData) {
   if (data.logoUrl) {
     return `<img class="logo-image" src="${escapeAttribute(data.logoUrl)}" alt="" />`
@@ -276,6 +283,27 @@ function renderInvoiceDocument(data: InvoiceData) {
         min-height: 36px;
       }
 
+      .stamp-wrap {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+
+      .stamp-image {
+        width: 96px;
+        height: 96px;
+        object-fit: contain;
+      }
+
+      .stamp-placeholder {
+        width: 96px;
+        height: 96px;
+        border-radius: 8px;
+        border: 1.5px dashed #d1d5db;
+      }
+
       tr,
       .section,
       .footer {
@@ -360,13 +388,19 @@ function renderInvoiceDocument(data: InvoiceData) {
       </section>
 
       <footer class="footer">
-        <div>
-          <p class="label">Notes</p>
-          <div class="text">${formatMultiline(data.notes)}</div>
+        <div class="footer-left">
+          <div>
+            <p class="label">Notes</p>
+            <div class="text">${formatMultiline(data.notes)}</div>
+          </div>
+          <div style="margin-top: 16px;">
+            <p class="label">Payment Terms</p>
+            <div class="text">${formatMultiline(data.paymentTerms)}</div>
+          </div>
         </div>
-        <div>
-          <p class="label">Payment Terms</p>
-          <div class="text">${formatMultiline(data.paymentTerms)}</div>
+        <div class="stamp-wrap">
+          <p class="label">Stamp / Authorised Signatory</p>
+          ${renderStamp(data)}
         </div>
       </footer>
     </main>

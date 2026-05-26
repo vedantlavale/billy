@@ -24,6 +24,7 @@ export interface InvoiceData {
   currency: string
   notes: string
   paymentTerms: string
+  stampUrl: string | null
 }
 
 export interface InvoiceTotals {

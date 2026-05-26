@@ -93,9 +93,6 @@
   --invoice-panel-border: oklch(0.88 0.005 255);
   --invoice-stage: oklch(0.94 0.004 255);
   --invoice-stage-border: oklch(0.83 0.006 255);
-  --invoice-bg-start: oklch(0.94 0.004 255);
-  --invoice-bg-end: oklch(0.94 0.004 255);
-  --invoice-shadow: 0 22px 55px rgba(15, 23, 42, 0.1);
 }
 
 .dark {
@@ -142,9 +139,6 @@
   --invoice-panel-border: oklch(0.88 0.005 255);
   --invoice-stage: oklch(0.94 0.004 255);
   --invoice-stage-border: oklch(0.83 0.006 255);
-  --invoice-bg-start: oklch(0.94 0.004 255);
-  --invoice-bg-end: oklch(0.94 0.004 255);
-  --invoice-shadow: 0 22px 55px rgba(15, 23, 42, 0.1);
 }
 
 @layer base {
@@ -160,6 +154,7 @@
 }
 
 .invoice-editor {
+  background: oklch(0.955 0.003 60);
   color: var(--invoice-ink);
 }
 
@@ -181,25 +176,15 @@
 
 .invoice-canvas {
   background-color: var(--invoice-paper);
-  border-color: var(--invoice-border);
-  box-shadow: var(--invoice-shadow);
-}
-
-.bg-invoice-canvas {
-  background: var(--invoice-stage);
+  border: 1px solid var(--invoice-border);
 }
 
 @media print {
-  :root {
-    --invoice-shadow: none;
-  }
-
   body {
     background: white !important;
   }
 
   .invoice-editor {
-    padding: 0 !important;
     background: white !important;
   }
 
@@ -210,8 +195,6 @@
 
   .invoice-canvas {
     border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     padding: 0.75in !important;
@@ -219,12 +202,10 @@
 
   .invoice-field {
     background: transparent !important;
-    box-shadow: none !important;
     border-color: transparent !important;
   }
 
   .invoice-input {
     border: none !important;
-    box-shadow: none !important;
   }
 }

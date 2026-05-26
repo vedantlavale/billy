@@ -10,6 +10,7 @@ type InvoiceAction =
   | { type: "ADD_LINE_ITEM" }
   | { type: "REMOVE_LINE_ITEM"; id: string }
   | { type: "SET_LOGO"; value: string | null }
+  | { type: "SET_STAMP"; value: string | null }
   | { type: "RESET_INVOICE" }
   | { type: "LOAD_STATE"; payload: InvoiceData }
 
@@ -50,6 +51,7 @@ function createDefaultInvoice(): InvoiceData {
     taxRate: 8.25,
     discountRate: 0,
     currency: "INR",
+    stampUrl: null,
     notes: "Thank you for your business. Please reach out if you have any questions.",
     paymentTerms: "Payment due within 7 days via bank transfer or card.",
   }
@@ -105,6 +107,11 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
         ...state,
         logoUrl: action.value,
       }
+    case "SET_STAMP":
+      return {
+        ...state,
+        stampUrl: action.value,
+      }
     case "RESET_INVOICE":
       return {
         ...createDefaultInvoice(),
@@ -115,6 +122,7 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
         businessEmail: state.businessEmail,
         businessPhone: state.businessPhone,
         logoUrl: state.logoUrl,
+        stampUrl: state.stampUrl,
         taxRate: state.taxRate,
         currency: state.currency,
       }
