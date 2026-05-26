@@ -38,12 +38,6 @@ export function EditableNumber({
 
   React.useEffect(() => {
     if (!isEditing) {
-      setDraft(String(value))
-    }
-  }, [value, isEditing])
-
-  React.useEffect(() => {
-    if (!isEditing) {
       return
     }
 

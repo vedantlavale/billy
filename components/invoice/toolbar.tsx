@@ -9,6 +9,7 @@ import {
 } from "@hugeicons/core-free-icons"
 
 import { Button } from "@/components/ui/button"
+import { CurrencySelect } from "@/components/invoice/currency-select"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import { calculateLineItemAmount, calculateTotals, formatCurrency } from "@/lib/invoice"
 import type { InvoiceData } from "@/lib/types"
@@ -69,6 +70,9 @@ function renderInvoiceDocument(data: InvoiceData) {
   <head>
     <meta charset="utf-8" />
     <title>${escapeHtml(sanitizeFileName(data.invoiceNumber) || "invoice")}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
     <style>
       @page {
         size: A4;
@@ -84,7 +88,7 @@ function renderInvoiceDocument(data: InvoiceData) {
         margin: 0;
         background: #ffffff;
         color: #111827;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Source Sans 3', Arial, Helvetica, sans-serif;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -477,6 +481,7 @@ export function Toolbar() {
             <span>Saved locally</span>
           </div>
           <div className="flex items-center gap-2">
+            <CurrencySelect />
             <Button
               variant="outline"
               size="sm"
