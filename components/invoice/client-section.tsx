@@ -14,34 +14,40 @@ export function ClientSection() {
       <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
         Bill To
       </div>
-      <div className="space-y-3 text-sm text-slate-600">
-        <EditableText
-          value={state.clientName}
-          onCommit={(value) =>
-            dispatch({ type: "UPDATE_FIELD", field: "clientName", value })
-          }
-          placeholder="Client name"
-          className="text-base font-semibold text-slate-900"
-        />
-        <EditableText
-          value={state.clientAddress}
-          onCommit={(value) =>
-            dispatch({ type: "UPDATE_FIELD", field: "clientAddress", value })
-          }
-          placeholder="Client address"
-          multiline
-          rows={3}
-          className="text-sm text-slate-600"
-        />
-        <EditableText
-          value={state.clientEmail}
-          onCommit={(value) =>
-            dispatch({ type: "UPDATE_FIELD", field: "clientEmail", value })
-          }
-          placeholder="Client email"
-          inputType="email"
-          className="text-sm text-slate-600"
-        />
+      <div className="flex flex-col space-y-3 text-sm text-slate-600">
+        <div>
+          <EditableText
+            value={state.clientName}
+            onCommit={(value) =>
+              dispatch({ type: "UPDATE_FIELD", field: "clientName", value })
+            }
+            placeholder="Client name"
+            className="text-base font-semibold text-slate-900"
+          />
+        </div>
+        <div>
+          <EditableText
+            value={state.clientAddress}
+            onCommit={(value) =>
+              dispatch({ type: "UPDATE_FIELD", field: "clientAddress", value })
+            }
+            placeholder="Client address"
+            multiline
+            rows={3}
+            className="text-sm text-slate-600"
+          />
+        </div>
+        <div>
+          <EditableText
+            value={state.clientEmail}
+            onCommit={(value) =>
+              dispatch({ type: "UPDATE_FIELD", field: "clientEmail", value })
+            }
+            placeholder="Client email"
+            inputType="email"
+            className="text-sm text-slate-600"
+          />
+        </div>
       </div>
     </section>
   )

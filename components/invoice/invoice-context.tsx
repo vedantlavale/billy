@@ -11,6 +11,9 @@ type InvoiceAction =
   | { type: "REMOVE_LINE_ITEM"; id: string }
   | { type: "SET_LOGO"; value: string | null }
   | { type: "RESET_INVOICE" }
+  | { type: "LOAD_STATE"; payload: InvoiceData }
+
+const STORAGE_KEY = "billy_invoice_data"
 
 function createDefaultInvoice(): InvoiceData {
   const today = new Date()
@@ -103,7 +106,20 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
         logoUrl: action.value,
       }
     case "RESET_INVOICE":
-      return createDefaultInvoice()
+      return {
+        ...createDefaultInvoice(),
+        // Preserve business details and logo on reset
+        businessName: state.businessName,
+        businessTagline: state.businessTagline,
+        businessAddress: state.businessAddress,
+        businessEmail: state.businessEmail,
+        businessPhone: state.businessPhone,
+        logoUrl: state.logoUrl,
+        taxRate: state.taxRate,
+        currency: state.currency,
+      }
+    case "LOAD_STATE":
+      return action.payload
     default:
       return state
   }
@@ -115,6 +131,28 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
     undefined,
     createDefaultInvoice
   )
+
+  // Load state from localStorage on initial mount
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      if (saved) {
+        const parsed = JSON.parse(saved) as InvoiceData
+        dispatch({ type: "LOAD_STATE", payload: parsed })
+      }
+    } catch (error) {
+      console.error("Failed to load invoice from localStorage:", error)
+    }
+  }, [])
+
+  // Save state to localStorage whenever it changes
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    } catch (error) {
+      console.error("Failed to save invoice to localStorage:", error)
+    }
+  }, [state])
 
   return (
     <InvoiceStateContext.Provider value={state}>

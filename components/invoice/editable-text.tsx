@@ -11,7 +11,7 @@ export interface EditableTextProps {
   multiline?: boolean
   className?: string
   inputClassName?: string
-  displayAs?: keyof JSX.IntrinsicElements
+  displayAs?: keyof React.JSX.IntrinsicElements
   inputType?: React.HTMLInputTypeAttribute
   rows?: number
   ariaLabel?: string
@@ -33,7 +33,8 @@ export function EditableText({
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(value)
-  const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
   const skipBlurRef = React.useRef(false)
   const originalValue = React.useRef(value)
 
@@ -48,10 +49,13 @@ export function EditableText({
       return
     }
 
+    const el = multiline ? textareaRef.current : inputRef.current
+    if (!el) return
+
     const frame = requestAnimationFrame(() => {
-      inputRef.current?.focus()
-      if (inputRef.current && "select" in inputRef.current) {
-        inputRef.current.select()
+      el.focus()
+      if ("select" in el) {
+        el.select()
       }
     })
 
@@ -112,7 +116,7 @@ export function EditableText({
     }
   }
 
-  const DisplayTag = (displayAs ?? (multiline ? "p" : "span")) as keyof JSX.IntrinsicElements
+  const DisplayTag = (displayAs ?? (multiline ? "p" : "span")) as keyof React.JSX.IntrinsicElements
   const displayText = displayValue ?? value
   const isEmpty = value.trim().length === 0
 
@@ -143,7 +147,7 @@ export function EditableText({
   if (multiline) {
     return (
       <textarea
-        ref={inputRef}
+        ref={textareaRef}
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
         onBlur={handleBlur}

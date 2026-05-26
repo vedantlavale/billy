@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Billy — Invoice Editor",
-  description: "Direct-edit invoices and export polished PDFs in seconds.",
+  title: "Billy — Lightweight Invoice Editor",
+  description:
+    "Direct-edit invoices in your browser and export polished PDFs in seconds. No sign-up, no servers, no data leaves your machine.",
 };
 
 export default function RootLayout({
