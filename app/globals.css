@@ -876,15 +876,16 @@
 
 
 .invoice-editor .invoice-field {
-  border: 1px solid transparent;
+  border: 1px dashed oklch(0.85 0.01 260);
   background-color: transparent;
   cursor: text;
   border-radius: 4px;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
 .invoice-editor .invoice-field:hover {
   background-color: oklch(0.97 0.01 250);
-  border-color: oklch(0.84 0.02 255);
+  border-color: oklch(0.6 0.04 255);
 }
 
 .invoice-editor .invoice-input {
