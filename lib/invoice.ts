@@ -1,4 +1,5 @@
 import type { InvoiceData, InvoiceTotals, LineItem } from "@/lib/types"
+import { getCurrency, getCurrencyLocale, getCurrencySymbol } from "@/lib/currencies"
 
 const DEFAULT_DECIMALS = 2
 
@@ -19,12 +20,22 @@ export function formatCurrency(
   decimals = DEFAULT_DECIMALS
 ) {
   if (!Number.isFinite(value)) {
-    return `${currency}0`
+    return `${getCurrencySymbol(currency)}0`
   }
 
-  const sign = value < 0 ? "-" : ""
-  const formatted = formatNumber(Math.abs(value), decimals)
-  return `${sign}${currency}${formatted}`
+  try {
+    const locale = getCurrencyLocale(currency)
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(value)
+  } catch {
+    const sign = value < 0 ? "-" : ""
+    const formatted = formatNumber(Math.abs(value), decimals)
+    return `${sign}${getCurrencySymbol(currency)}${formatted}`
+  }
 }
 
 export function formatPercent(value: number, decimals = DEFAULT_DECIMALS) {
