@@ -10,11 +10,11 @@ export function ClientSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="grid gap-4 border-b border-slate-200 pb-6 md:grid-cols-[140px_1fr]">
-      <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+    <section className="client-section grid gap-4 border-b border-slate-200 pb-6 md:grid-cols-[140px_1fr]">
+      <div className="client-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
         Bill To
       </div>
-      <div className="flex flex-col space-y-3 text-sm text-slate-600">
+      <div className="client-details flex flex-col space-y-3 text-sm text-slate-600">
         <div>
           <EditableText
             value={state.clientName}
@@ -22,7 +22,7 @@ export function ClientSection() {
               dispatch({ type: "UPDATE_FIELD", field: "clientName", value })
             }
             placeholder="Client name"
-            className="text-base font-semibold text-slate-900"
+            className="client-name text-base font-semibold text-slate-900"
           />
         </div>
         <div>

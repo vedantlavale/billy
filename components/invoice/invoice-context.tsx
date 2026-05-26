@@ -51,6 +51,7 @@ function createDefaultInvoice(): InvoiceData {
     taxRate: 8.25,
     discountRate: 0,
     currency: "INR",
+    templateId: "clean",
     stampUrl: null,
     notes: "Thank you for your business. Please reach out if you have any questions.",
     paymentTerms: "Payment due within 7 days via bank transfer or card.",

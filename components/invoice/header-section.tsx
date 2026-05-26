@@ -11,13 +11,16 @@ export function HeaderSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="flex flex-col gap-6 border-b border-slate-200 pb-6 md:flex-row md:items-start md:justify-between">
-      <div className="flex items-center gap-5">
+    <section className="header-section flex flex-col gap-6 border-b border-slate-200 pb-6 md:flex-row md:items-start md:justify-between">
+      <div className="header-brand flex items-center gap-5">
+        <div className="header-title-container hidden">
+          <h1 className="header-title text-4xl font-bold tracking-widest text-[var(--invoice-ink)]">INVOICE</h1>
+        </div>
         <LogoUpload
           logoUrl={state.logoUrl}
           onChange={(value) => dispatch({ type: "SET_LOGO", value })}
         />
-        <div className="flex flex-col space-y-2">
+        <div className="header-company flex flex-col space-y-2">
           <div>
             <EditableText
               value={state.businessName}
@@ -25,7 +28,7 @@ export function HeaderSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "businessName", value })
               }
               placeholder="Your company"
-              className="text-2xl font-semibold text-slate-900"
+              className="company-name text-2xl font-semibold text-slate-900"
               displayAs="h1"
             />
           </div>
@@ -36,12 +39,12 @@ export function HeaderSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "businessTagline", value })
               }
               placeholder="Company tagline"
-              className="text-sm uppercase tracking-[0.2em] text-slate-500"
+              className="company-tagline text-sm uppercase tracking-[0.2em] text-slate-500"
             />
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-3 text-sm text-slate-600 md:text-right">
+      <div className="header-contact flex flex-col space-y-3 text-sm text-slate-600 md:text-right">
         <div>
           <EditableText
             value={state.businessAddress}

@@ -10,8 +10,10 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { CurrencySelect } from "@/components/invoice/currency-select"
+import { TemplateSelector } from "@/components/invoice/template-selector"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import { calculateLineItemAmount, calculateTotals, formatCurrency } from "@/lib/invoice"
+import { getTemplate, getPdfTemplateCss } from "@/lib/templates"
 import type { InvoiceData } from "@/lib/types"
 
 function sanitizeFileName(value: string) {
@@ -59,6 +61,8 @@ function renderLogo(data: InvoiceData) {
 
 function renderInvoiceDocument(data: InvoiceData) {
   const totals = calculateTotals(data)
+  const template = getTemplate(data.templateId)
+  const pdfCss = getPdfTemplateCss(data.templateId)
   const lineItems = data.lineItems
     .map((item) => {
       const amount = calculateLineItemAmount(item)
@@ -79,8 +83,10 @@ function renderInvoiceDocument(data: InvoiceData) {
     <title>${escapeHtml(sanitizeFileName(data.invoiceNumber) || "invoice")}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
     <style>
+      :root { ${pdfCss} }
+
       @page {
         size: A4;
         margin: 0;
@@ -93,9 +99,9 @@ function renderInvoiceDocument(data: InvoiceData) {
       html,
       body {
         margin: 0;
-        background: #ffffff;
-        color: #111827;
-        font-family: 'Source Sans 3', Arial, Helvetica, sans-serif;
+        background: var(--pdf-paper);
+        color: var(--pdf-ink);
+        font-family: ${template.fontFamily};
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -109,7 +115,7 @@ function renderInvoiceDocument(data: InvoiceData) {
         width: 210mm;
         min-height: 297mm;
         padding: 18mm;
-        background: #ffffff;
+        background: var(--pdf-paper);
       }
 
       .top {
@@ -117,7 +123,7 @@ function renderInvoiceDocument(data: InvoiceData) {
         grid-template-columns: 1fr auto;
         gap: 24px;
         padding-bottom: 24px;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--pdf-border);
       }
 
       .brand {
@@ -131,7 +137,7 @@ function renderInvoiceDocument(data: InvoiceData) {
         width: 72px;
         height: 72px;
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--pdf-border);
         object-fit: contain;
       }
 
@@ -139,8 +145,8 @@ function renderInvoiceDocument(data: InvoiceData) {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f8fafc;
-        color: #334155;
+        background: oklch(0.97 0.005 260);
+        color: var(--pdf-muted);
         font-size: 18px;
         font-weight: 700;
         letter-spacing: 0.06em;
@@ -148,7 +154,7 @@ function renderInvoiceDocument(data: InvoiceData) {
 
       h1 {
         margin: 0;
-        color: #111827;
+        color: var(--pdf-ink);
         font-size: 24px;
         line-height: 1.2;
         font-weight: 700;
@@ -156,7 +162,7 @@ function renderInvoiceDocument(data: InvoiceData) {
 
       .tagline {
         margin-top: 8px;
-        color: #64748b;
+        color: var(--pdf-muted);
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.18em;
@@ -165,19 +171,19 @@ function renderInvoiceDocument(data: InvoiceData) {
 
       .business {
         text-align: right;
-        color: #475569;
+        color: var(--pdf-muted);
         font-size: 12px;
         line-height: 1.55;
       }
 
       .section {
         padding: 24px 0;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--pdf-border);
       }
 
       .label {
         margin: 0 0 10px;
-        color: #94a3b8;
+        color: var(--pdf-muted);
         font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.18em;
@@ -192,13 +198,13 @@ function renderInvoiceDocument(data: InvoiceData) {
 
       .client-name {
         margin: 0 0 8px;
-        color: #111827;
+        color: var(--pdf-ink);
         font-size: 15px;
         font-weight: 700;
       }
 
       .text {
-        color: #475569;
+        color: var(--pdf-muted);
         font-size: 12px;
         line-height: 1.55;
       }
@@ -210,7 +216,7 @@ function renderInvoiceDocument(data: InvoiceData) {
       }
 
       .meta-value {
-        color: #111827;
+        color: var(--pdf-ink);
         font-size: 14px;
         font-weight: 600;
       }
@@ -222,20 +228,20 @@ function renderInvoiceDocument(data: InvoiceData) {
 
       th {
         padding: 0 0 10px;
-        color: #94a3b8;
+        color: var(--pdf-muted);
         font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.14em;
         text-align: left;
         text-transform: uppercase;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--pdf-border);
       }
 
       td {
         padding: 14px 0;
-        color: #1f2937;
+        color: var(--pdf-ink);
         font-size: 12px;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid var(--pdf-border);
       }
 
       .numeric {
@@ -259,15 +265,15 @@ function renderInvoiceDocument(data: InvoiceData) {
         justify-content: space-between;
         gap: 24px;
         padding: 5px 0;
-        color: #475569;
+        color: var(--pdf-muted);
         font-size: 12px;
       }
 
       .grand-total {
         margin-top: 8px;
         padding-top: 12px;
-        border-top: 1px solid #e5e7eb;
-        color: #111827;
+        border-top: 1px solid var(--pdf-border);
+        color: var(--pdf-ink);
         font-size: 15px;
         font-weight: 700;
       }
@@ -301,7 +307,7 @@ function renderInvoiceDocument(data: InvoiceData) {
         width: 96px;
         height: 96px;
         border-radius: 8px;
-        border: 1.5px dashed #d1d5db;
+        border: 1.5px dashed var(--pdf-border);
       }
 
       tr,
@@ -458,6 +464,10 @@ async function exportInvoicePdf(data: InvoiceData) {
 
   await waitForFrameAssets(frameDocument)
 
+  if (frameDocument.fonts) {
+    await frameDocument.fonts.ready
+  }
+
   frameWindow.focus()
   frameWindow.addEventListener("afterprint", () => frame.remove(), { once: true })
   frameWindow.print()
@@ -515,6 +525,7 @@ export function Toolbar() {
             <span>Saved locally</span>
           </div>
           <div className="flex items-center gap-2">
+            <TemplateSelector />
             <CurrencySelect />
             <Button
               variant="outline"

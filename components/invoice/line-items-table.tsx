@@ -15,21 +15,21 @@ export function LineItemsTable() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="space-y-4">
-      <div className="grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr] gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400">
+    <section className="line-items-section space-y-4">
+      <div className="line-items-header grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr] gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400">
         <span>Description</span>
         <span className="text-right">Qty</span>
         <span className="text-right">Rate</span>
         <span className="text-right">Amount</span>
       </div>
-      <div className="space-y-3">
+      <div className="line-items-body space-y-3">
         {state.lineItems.map((item) => {
           const amount = calculateLineItemAmount(item)
 
           return (
             <div
               key={item.id}
-              className="group grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto] items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white"
+              className="line-item-row group grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto] items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white"
             >
               <EditableText
                 value={item.description}

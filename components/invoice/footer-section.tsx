@@ -11,11 +11,11 @@ export function FooterSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="space-y-6 border-t border-slate-200 pt-6">
+    <section className="footer-section space-y-6 border-t border-slate-200 pt-6">
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <div className="footer-info space-y-4">
+          <div className="footer-item space-y-2">
+            <p className="footer-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
               Notes
             </p>
             <EditableText
@@ -26,11 +26,11 @@ export function FooterSection() {
               placeholder="Add a note or thank you message"
               multiline
               rows={4}
-              className="text-sm text-slate-600"
+              className="footer-value text-sm text-slate-600"
             />
           </div>
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+          <div className="footer-item space-y-2">
+            <p className="footer-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
               Payment Terms
             </p>
             <EditableText
@@ -39,11 +39,11 @@ export function FooterSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "paymentTerms", value })
               }
               placeholder="Payment terms"
-              className="text-sm text-slate-600"
+              className="footer-value text-sm text-slate-600"
             />
           </div>
         </div>
-        <div className="flex items-end justify-end">
+        <div className="footer-stamp flex items-end justify-end">
           <StampUpload
             stampUrl={state.stampUrl}
             onChange={(value) =>

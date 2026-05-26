@@ -12,15 +12,15 @@ export function TotalsSection() {
   const totals = React.useMemo(() => calculateTotals(state), [state])
 
   return (
-    <section className="flex flex-col gap-4 border-t border-slate-200 pt-6">
-      <div className="ml-auto w-full max-w-xs space-y-3 text-sm text-slate-600">
-        <div className="flex items-center justify-between">
+    <section className="totals-section flex flex-col gap-4 border-t border-slate-200 pt-6">
+      <div className="totals-box ml-auto w-full max-w-xs space-y-3 text-sm text-slate-600">
+        <div className="total-row flex items-center justify-between">
           <span>Subtotal</span>
           <span className="font-mono text-slate-800">
             {formatCurrency(totals.subtotal, state.currency)}
           </span>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3">
+        <div className="total-row grid grid-cols-[1fr_auto_auto] items-center gap-3">
           <span>Tax Rate</span>
           <div className="flex items-center gap-2">
             <EditableNumber
@@ -39,7 +39,7 @@ export function TotalsSection() {
             {formatCurrency(totals.taxAmount, state.currency)}
           </span>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3">
+        <div className="total-row grid grid-cols-[1fr_auto_auto] items-center gap-3">
           <span>Discount</span>
           <div className="flex items-center gap-2">
             <EditableNumber
@@ -62,7 +62,7 @@ export function TotalsSection() {
             {formatCurrency(totals.discountAmount, state.currency)}
           </span>
         </div>
-        <div className="flex items-center justify-between border-t border-slate-200 pt-3 text-base font-semibold text-slate-900">
+        <div className="grand-total flex items-center justify-between border-t border-slate-200 pt-3 text-base font-semibold text-slate-900">
           <span>Total</span>
           <span className="font-mono">
             {formatCurrency(totals.total, state.currency)}
