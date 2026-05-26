@@ -15,7 +15,7 @@ export function InvoiceCanvas() {
   return (
     <section
       id={invoiceCanvasId}
-      className="invoice-canvas w-full min-w-[720px] max-w-5xl rounded-3xl border border-slate-200 bg-white px-10 py-12 shadow-[0_25px_80px_rgba(15,23,42,0.12)]"
+      className="invoice-canvas w-full min-w-[720px] max-w-5xl rounded-lg border bg-white px-10 py-12"
     >
       <div className="space-y-8">
         <HeaderSection />

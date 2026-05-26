@@ -40,12 +40,6 @@ export function EditableText({
 
   React.useEffect(() => {
     if (!isEditing) {
-      setDraft(value)
-    }
-  }, [value, isEditing])
-
-  React.useEffect(() => {
-    if (!isEditing) {
       return
     }
 
@@ -60,7 +54,7 @@ export function EditableText({
     })
 
     return () => cancelAnimationFrame(frame)
-  }, [isEditing])
+  }, [isEditing, multiline])
 
   const startEditing = () => {
     originalValue.current = value

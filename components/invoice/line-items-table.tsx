@@ -16,7 +16,7 @@ export function LineItemsTable() {
 
   return (
     <section className="space-y-4">
-      <div className="grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr] gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+      <div className="grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr] gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400">
         <span>Description</span>
         <span className="text-right">Qty</span>
         <span className="text-right">Rate</span>
@@ -29,7 +29,7 @@ export function LineItemsTable() {
           return (
             <div
               key={item.id}
-              className="group grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto] items-center gap-3 rounded-lg border border-transparent px-2 py-3 transition hover:border-slate-200"
+              className="group grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto] items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white"
             >
               <EditableText
                 value={item.description}
@@ -84,7 +84,7 @@ export function LineItemsTable() {
                 onClick={() =>
                   dispatch({ type: "REMOVE_LINE_ITEM", id: item.id })
                 }
-                className="opacity-0 transition group-hover:opacity-100"
+                className="text-slate-400 opacity-0 transition hover:text-red-600 group-hover:opacity-100 focus-visible:opacity-100"
                 aria-label="Remove line item"
               >
                 <HugeiconsIcon icon={Delete02Icon} size={16} />
@@ -98,7 +98,7 @@ export function LineItemsTable() {
         variant="outline"
         size="sm"
         onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
-        className="gap-2 rounded-full border-slate-200 text-slate-600 hover:text-slate-900"
+        className="gap-2 border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
       >
         <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
         Add Item
