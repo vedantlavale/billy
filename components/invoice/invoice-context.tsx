@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import type { InvoiceData, LineItem } from "@/lib/types"
+import { applyProfessionPreset, professionPresets } from "@/lib/presets"
 
 type InvoiceAction =
   | { type: "UPDATE_FIELD"; field: keyof InvoiceData; value: InvoiceData[keyof InvoiceData] }
@@ -28,9 +29,11 @@ function createDefaultInvoice(): InvoiceData {
     businessAddress: "123 Market Street\nSan Francisco, CA 94103",
     businessEmail: "hello@yourcompany.com",
     businessPhone: "+1 (555) 555-5555",
+    gstin: "",
     clientName: "Acme Corp",
     clientAddress: "456 Mission Avenue\nSan Francisco, CA 94105",
     clientEmail: "finance@acme.com",
+    poNumber: "",
     invoiceNumber: "INV-1024",
     invoiceDate: today.toISOString().slice(0, 10),
     dueDate: inSevenDays.toISOString().slice(0, 10),
@@ -38,23 +41,41 @@ function createDefaultInvoice(): InvoiceData {
       {
         id: "item-1",
         description: "Website redesign",
+        hsnCode: "",
         quantity: 1,
         rate: 1200,
       },
       {
         id: "item-2",
         description: "Brand guidelines",
+        hsnCode: "",
         quantity: 1,
         rate: 650,
       },
     ],
     taxRate: 8.25,
+    taxLabel: "Tax",
     discountRate: 0,
     currency: "INR",
     templateId: "clean",
     stampUrl: null,
     notes: "Thank you for your business. Please reach out if you have any questions.",
     paymentTerms: "Payment due within 7 days via bank transfer or card.",
+    bankName: "",
+    bankAccount: "",
+    bankIfsc: "",
+    reverseChargeLabel: "Reverse charge applicable",
+    options: {
+      showGSTIN: false,
+      showHSNCode: false,
+      showCGST: false,
+      showSGST: false,
+      showIGST: false,
+      showReverseCharge: false,
+      showPONumber: false,
+      showBankDetails: false,
+      showDigitalStamp: false,
+    },
   }
 }
 
@@ -67,6 +88,7 @@ function createLineItem(id: string): LineItem {
   return {
     id,
     description: "New line item",
+    hsnCode: "",
     quantity: 1,
     rate: 0,
   }
@@ -126,6 +148,14 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
         stampUrl: state.stampUrl,
         taxRate: state.taxRate,
         currency: state.currency,
+        taxLabel: state.taxLabel,
+        options: state.options,
+        gstin: state.gstin,
+        poNumber: state.poNumber,
+        bankName: state.bankName,
+        bankAccount: state.bankAccount,
+        bankIfsc: state.bankIfsc,
+        reverseChargeLabel: state.reverseChargeLabel,
       }
     case "LOAD_STATE":
       return action.payload
@@ -148,9 +178,17 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
       if (saved) {
         const parsed = JSON.parse(saved) as InvoiceData
         dispatch({ type: "LOAD_STATE", payload: parsed })
+        return
       }
     } catch (error) {
       console.error("Failed to load invoice from localStorage:", error)
+    }
+
+    const presetId = localStorage.getItem("billy_profession_preset")
+    if (presetId && presetId in professionPresets) {
+      const updated = applyProfessionPreset(createDefaultInvoice(), presetId as keyof typeof professionPresets)
+      dispatch({ type: "LOAD_STATE", payload: updated })
+      localStorage.removeItem("billy_profession_preset")
     }
   }, [])
 

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-const professions = [
+export const professions = [
   {
     id: "freelancer",
     title: "Freelancer",

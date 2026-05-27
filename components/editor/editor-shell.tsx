@@ -3,6 +3,7 @@
 import * as React from "react"
 import { createClient } from "@/lib/supabase/client"
 import { OnboardingModal } from "@/components/onboarding/OnboardingModal"
+import { professionPresets } from "@/lib/presets"
 import { AuthProvider } from "@/lib/auth-context"
 
 interface EditorShellProps {
@@ -65,6 +66,10 @@ export function EditorShell({ children }: EditorShellProps) {
         onboarding_completed_at: new Date().toISOString(),
       })
       .eq("id", session?.user?.id)
+
+    if (profession in professionPresets) {
+      localStorage.setItem("billy_profession_preset", profession)
+    }
 
     setProfile((prev: any) => ({
       ...prev,
