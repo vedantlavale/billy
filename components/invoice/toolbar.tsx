@@ -1,12 +1,15 @@
 'use client'
 
 import * as React from "react"
+import Link from "next/link"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   PrinterIcon,
   Refresh01Icon,
   SecurityCheckIcon,
 } from "@hugeicons/core-free-icons"
+import { useAuth } from "@/lib/auth-context"
+import { signOut } from "@/app/auth/actions"
 
 import { Button } from "@/components/ui/button"
 import { CurrencySelect } from "@/components/invoice/currency-select"
@@ -477,6 +480,40 @@ async function exportInvoicePdf(data: InvoiceData) {
   }, 60000)
 }
 
+function AuthControls() {
+  const { isAuthenticated, user } = useAuth()
+  const [signingOut, setSigningOut] = React.useState(false)
+
+  if (isAuthenticated && user) {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="hidden text-sm text-[var(--invoice-muted)] sm:inline">
+          {user.email}
+        </span>
+        <button
+          onClick={async () => {
+            setSigningOut(true)
+            await signOut()
+          }}
+          disabled={signingOut}
+          className="rounded-md px-2 py-1 text-xs text-[var(--invoice-muted)] transition-colors hover:bg-[var(--invoice-panel-border)]"
+        >
+          {signingOut ? "..." : "Sign out"}
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <Link
+      href="/login"
+      className="flex items-center gap-1.5 rounded-md bg-[var(--invoice-ink)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+    >
+      Sign in
+    </Link>
+  )
+}
+
 export function Toolbar() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
@@ -524,6 +561,7 @@ export function Toolbar() {
             />
             <span>Saved locally</span>
           </div>
+          <AuthControls />
           <div className="flex items-center gap-2">
             <TemplateSelector />
             <CurrencySelect />
