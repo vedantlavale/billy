@@ -44,13 +44,13 @@ export async function POST(request: Request) {
         .eq("id", user.id)
     }
 
-    const { templateId, htmlString, invoiceData } = await request.json()
+    const { templateId, invoiceData } = await request.json()
 
     if (!isTemplateAccessible(templateId, effective.plan)) {
       return NextResponse.json(
         { error: "Upgrade required for this template", code: "upgrade_required" },
         { status: 403 },
-      )
+        )
     }
 
     const invoiceCheck = canCreateInvoice(profile, effective.plan)
@@ -61,11 +61,11 @@ export async function POST(request: Request) {
           code: "limit_reached",
         },
         { status: 403 },
-      )
+        )
     }
 
     const { generatePdf } = await import("@/lib/pdf/generate")
-    const pdf = await generatePdf(htmlString)
+    const pdf = await generatePdf(invoiceData)
 
     await supabase.from("invoices").insert({
       user_id: user.id,

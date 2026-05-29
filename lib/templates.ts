@@ -1,3 +1,5 @@
+import { THEME_TOKENS, ThemeColors } from "./theme"
+
 export interface Template {
   id: string
   name: string
@@ -5,20 +7,7 @@ export interface Template {
   pro: boolean
   fontFamily: string
   cssFontFamily: string
-  colors: {
-    ink: string
-    muted: string
-    subtle: string
-    paper: string
-    border: string
-    accent: string
-    desk: string
-    panel: string
-    panelBorder: string
-    toolbar: string
-    primary: string
-    secondary: string
-  }
+  colors: ThemeColors
 }
 
 export const TEMPLATES: Template[] = [
@@ -28,21 +17,8 @@ export const TEMPLATES: Template[] = [
     description: "Minimal, professional with a warm off-white desk",
     pro: false,
     fontFamily: "'Source Sans 3', Arial, Helvetica, sans-serif",
-    cssFontFamily: "var(--font-sans)",
-    colors: {
-      ink: "oklch(0.18 0.01 265)",
-      muted: "oklch(0.48 0.02 260)",
-      subtle: "oklch(0.52 0.02 260)",
-      paper: "oklch(0.99 0.01 85)",
-      border: "oklch(0.9 0.02 260)",
-      accent: "oklch(0.35 0.03 255)",
-      desk: "oklch(0.955 0.003 60)",
-      panel: "oklch(0.985 0.003 255)",
-      panelBorder: "oklch(0.88 0.005 255)",
-      toolbar: "oklch(0.995 0 0)",
-      primary: "transparent",
-      secondary: "transparent",
-    },
+    cssFontFamily: THEME_TOKENS.clean.cssFontFamily,
+    colors: THEME_TOKENS.clean.colors,
   },
   {
     id: "modern-green",
@@ -50,21 +26,8 @@ export const TEMPLATES: Template[] = [
     description: "Fresh olive green header with bordered sections",
     pro: false,
     fontFamily: "'Montserrat', Arial, sans-serif",
-    cssFontFamily: "var(--font-montserrat)",
-    colors: {
-      ink: "#111827",
-      muted: "#4b5563",
-      subtle: "#6b7280",
-      paper: "#ffffff",
-      border: "#111827",
-      accent: "#d4e09b",
-      desk: "#f3f4f6",
-      panel: "#ffffff",
-      panelBorder: "#e5e7eb",
-      toolbar: "#ffffff",
-      primary: "#d4e09b",
-      secondary: "#ffffff",
-    },
+    cssFontFamily: THEME_TOKENS["modern-green"].cssFontFamily,
+    colors: THEME_TOKENS["modern-green"].colors,
   },
   {
     id: "minimal-teal",
@@ -72,21 +35,8 @@ export const TEMPLATES: Template[] = [
     description: "Premium elegant layout with refined teal accents and delicate typography",
     pro: true,
     fontFamily: "'Outfit', Arial, sans-serif",
-    cssFontFamily: "var(--font-outfit)",
-    colors: {
-      ink: "#0f172a",
-      muted: "#64748b",
-      subtle: "#94a3b8",
-      paper: "#ffffff",
-      border: "#e2e8f0",
-      accent: "#0d9488",
-      desk: "#f8fafc",
-      panel: "#ffffff",
-      panelBorder: "#f1f5f9",
-      toolbar: "#ffffff",
-      primary: "#0f766e",
-      secondary: "#f0fdfa",
-    },
+    cssFontFamily: THEME_TOKENS["minimal-teal"].cssFontFamily,
+    colors: THEME_TOKENS["minimal-teal"].colors,
   },
   {
     id: "corporate-blue",
@@ -94,21 +44,8 @@ export const TEMPLATES: Template[] = [
     description: "Professional medical/corporate style with blue headers",
     pro: false,
     fontFamily: "'Inter', Arial, sans-serif",
-    cssFontFamily: "var(--font-inter)",
-    colors: {
-      ink: "#1f2937",
-      muted: "#4b5563",
-      subtle: "#6b7280",
-      paper: "#ffffff",
-      border: "#e5e7eb",
-      accent: "#8eb2c5",
-      desk: "#f3f4f6",
-      panel: "#ffffff",
-      panelBorder: "#e5e7eb",
-      toolbar: "#ffffff",
-      primary: "#8eb2c5",
-      secondary: "#f9fafb",
-    },
+    cssFontFamily: THEME_TOKENS["corporate-blue"].cssFontFamily,
+    colors: THEME_TOKENS["corporate-blue"].colors,
   },
 ]
 
@@ -135,6 +72,7 @@ export function getTemplateStyles(id: string): string {
     --invoice-font: ${t.cssFontFamily};
   `
 }
+
 
 export function getPdfTemplateCss(id: string): string {
   const t = getTemplate(id)

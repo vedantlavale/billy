@@ -131,15 +131,12 @@ export function Toolbar() {
     await new Promise((resolve) => requestAnimationFrame(resolve))
 
     if (isAuthenticated) {
-      const htmlString = renderInvoiceDocument(state)
-
       try {
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             templateId: state.templateId,
-            htmlString,
             invoiceData: state,
           }),
         })
