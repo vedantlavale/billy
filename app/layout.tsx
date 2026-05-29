@@ -48,6 +48,8 @@ export const metadata: Metadata = {
     "Direct-edit invoices in your browser and export polished PDFs in seconds. No sign-up, no servers, no data leaves your machine.",
 };
 
+import { ToastProvider } from "@/components/ui/toast";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,7 +60,11 @@ export default function RootLayout({
       lang="en"
       className={`${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${dmSans.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ToastProvider>
+          {children}
+        </ToastProvider>
+      </body>
     </html>
   );
 }

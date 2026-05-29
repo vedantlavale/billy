@@ -89,7 +89,13 @@ function AuthControls() {
 
   if (isAuthenticated && user) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard"
+          className="rounded-md border border-[var(--invoice-panel-border)] bg-white px-2.5 py-1.5 text-xs font-medium text-[var(--invoice-ink)] transition-colors hover:bg-[var(--invoice-panel-soft)]"
+        >
+          Dashboard
+        </Link>
         <span className="hidden text-sm text-[var(--invoice-muted)] sm:inline">
           {user.email}
         </span>
@@ -199,14 +205,6 @@ export function Toolbar() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:justify-end">
-          <div className="flex items-center gap-2 text-sm text-[var(--invoice-muted)]">
-            <HugeiconsIcon
-              icon={SecurityCheckIcon}
-              size={16}
-              className="text-emerald-600"
-            />
-            <span>Saved locally</span>
-          </div>
           <AuthControls />
           <div className="flex items-center gap-2">
             <TemplateSelector />

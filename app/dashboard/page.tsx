@@ -150,7 +150,7 @@ export default function DashboardPage() {
         invoiceNumber: `${invoice.data.invoiceNumber || "INV"}-COPY`,
         invoiceDate: new Date().toISOString().slice(0, 10),
       }
-      delete duplicatedData.id
+      delete (duplicatedData as any).id
 
       const response = await fetch("/api/invoices", {
         method: "POST",
@@ -181,10 +181,11 @@ export default function DashboardPage() {
   const handleDownloadPdf = async (invoice: DatabaseInvoice) => {
     setActionInProgress(invoice.id)
     try {
-      const response = await fetch("/api/pdf/download", {
+      const response = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          templateId: invoice.template_id || "clean",
           invoiceData: invoice.data,
         }),
       })
