@@ -13,11 +13,19 @@ import { Button } from "@/components/ui/button"
 export function LineItemsTable() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
+  const showHSN = state.options.showHSNCode
 
   return (
     <section className="line-items-section space-y-4">
-      <div className="line-items-header grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr] gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400">
+      <div
+        className={`line-items-header grid gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400 ${
+          showHSN
+            ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr]"
+            : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr]"
+        }`}
+      >
         <span>Description</span>
+        {showHSN && <span>HSN/SAC</span>}
         <span className="text-right">Qty</span>
         <span className="text-right">Rate</span>
         <span className="text-right">Amount</span>
@@ -29,7 +37,11 @@ export function LineItemsTable() {
           return (
             <div
               key={item.id}
-              className="line-item-row group grid grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto] items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white"
+              className={`line-item-row group grid items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white ${
+                showHSN
+                  ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr_auto]"
+                  : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto]"
+              }`}
             >
               <EditableText
                 value={item.description}
@@ -44,6 +56,21 @@ export function LineItemsTable() {
                 placeholder="Service or item description"
                 className="text-sm text-slate-800"
               />
+              {showHSN && (
+                <EditableText
+                  value={item.hsnCode}
+                  onCommit={(value) =>
+                    dispatch({
+                      type: "UPDATE_LINE_ITEM",
+                      id: item.id,
+                      field: "hsnCode",
+                      value,
+                    })
+                  }
+                  placeholder="HSN/SAC"
+                  className="text-sm text-slate-700"
+                />
+              )}
               <EditableNumber
                 value={item.quantity}
                 onCommit={(value) =>

@@ -79,6 +79,18 @@ export function HeaderSection() {
             className="text-sm text-slate-600"
           />
         </div>
+        {state.options.showGSTIN && (
+          <div>
+            <EditableText
+              value={state.gstin}
+              onCommit={(value) =>
+                dispatch({ type: "UPDATE_FIELD", field: "gstin", value })
+              }
+              placeholder="GSTIN"
+              className="text-sm text-slate-600"
+            />
+          </div>
+        )}
       </div>
     </section>
   )

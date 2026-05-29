@@ -9,8 +9,13 @@ export function MetaSection() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
 
+  const columns = state.options.showPONumber ? 4 : 3
+
   return (
-    <section className="meta-section grid gap-4 border-b border-slate-200 pb-6 md:grid-cols-3">
+    <section
+      className="meta-section grid gap-4 border-b border-slate-200 pb-6"
+      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+    >
       <div className="meta-item space-y-2">
         <p className="meta-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
           Invoice No.
@@ -52,6 +57,21 @@ export function MetaSection() {
           displayValue={state.dueDate}
         />
       </div>
+      {state.options.showPONumber && (
+        <div className="meta-item space-y-2">
+          <p className="meta-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+            PO Number
+          </p>
+          <EditableText
+            value={state.poNumber}
+            onCommit={(value) =>
+              dispatch({ type: "UPDATE_FIELD", field: "poNumber", value })
+            }
+            placeholder="PO-001"
+            className="meta-value text-base text-slate-900"
+          />
+        </div>
+      )}
     </section>
   )
 }

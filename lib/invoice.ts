@@ -55,13 +55,37 @@ export function calculateTotals(data: InvoiceData): InvoiceTotals {
     return sum + calculateLineItemAmount(item)
   }, 0)
 
-  const taxAmount = (subtotal * data.taxRate) / 100
+  const gstEnabled =
+    data.options.showCGST ||
+    data.options.showSGST ||
+    data.options.showIGST
+
+  let cgstAmount = 0
+  let sgstAmount = 0
+  let igstAmount = 0
+  let taxAmount = 0
+
+  if (gstEnabled) {
+    if (data.options.showIGST) {
+      igstAmount = (subtotal * data.taxRate) / 100
+    } else {
+      cgstAmount = (subtotal * data.taxRate) / 200
+      sgstAmount = (subtotal * data.taxRate) / 200
+    }
+    taxAmount = cgstAmount + sgstAmount + igstAmount
+  } else {
+    taxAmount = (subtotal * data.taxRate) / 100
+  }
+
   const discountAmount = (subtotal * data.discountRate) / 100
   const total = subtotal + taxAmount - discountAmount
 
   return {
     subtotal,
     taxAmount,
+    cgstAmount,
+    sgstAmount,
+    igstAmount,
     discountAmount,
     total,
   }

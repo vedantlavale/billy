@@ -42,14 +42,54 @@ export function FooterSection() {
               className="footer-value text-sm text-slate-600"
             />
           </div>
+          {state.options.showBankDetails && (
+            <div className="footer-item space-y-2">
+              <p className="footer-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                Bank Details
+              </p>
+              <div className="space-y-1.5 text-sm text-slate-600">
+                <EditableText
+                  value={state.bankName}
+                  onCommit={(value) =>
+                    dispatch({ type: "UPDATE_FIELD", field: "bankName", value })
+                  }
+                  placeholder="Bank name"
+                  className="text-sm"
+                />
+                <EditableText
+                  value={state.bankAccount}
+                  onCommit={(value) =>
+                    dispatch({ type: "UPDATE_FIELD", field: "bankAccount", value })
+                  }
+                  placeholder="Account number"
+                  className="text-sm"
+                />
+                <EditableText
+                  value={state.bankIfsc}
+                  onCommit={(value) =>
+                    dispatch({ type: "UPDATE_FIELD", field: "bankIfsc", value })
+                  }
+                  placeholder="IFSC code"
+                  className="text-sm"
+                />
+              </div>
+            </div>
+          )}
         </div>
-        <div className="footer-stamp flex items-end justify-end">
-          <StampUpload
-            stampUrl={state.stampUrl}
-            onChange={(value) =>
-              dispatch({ type: "SET_STAMP", value })
-            }
-          />
+        <div className="flex flex-col items-end justify-end gap-4">
+          {state.options.showDigitalStamp && (
+            <StampUpload
+              stampUrl={state.stampUrl}
+              onChange={(value) =>
+                dispatch({ type: "SET_STAMP", value })
+              }
+            />
+          )}
+          {state.options.showReverseCharge && (
+            <p className="text-xs font-medium text-slate-500">
+              {state.reverseChargeLabel}
+            </p>
+          )}
         </div>
       </div>
     </section>

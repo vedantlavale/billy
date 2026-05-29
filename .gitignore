@@ -44,3 +44,10 @@ next-env.d.ts
 .agents/
 .skills/
 skills-lock.json
+.agent/
+.claude/
+.codex/
+.grok/
+.pi/
+.opencode/
+.cursor/

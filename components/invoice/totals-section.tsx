@@ -10,6 +10,11 @@ export function TotalsSection() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
   const totals = React.useMemo(() => calculateTotals(state), [state])
+  const gstEnabled =
+    state.options.showCGST ||
+    state.options.showSGST ||
+    state.options.showIGST
+  const taxLabel = state.taxLabel || "Tax"
 
   return (
     <section className="totals-section flex flex-col gap-4 border-t border-slate-200 pt-6">
@@ -20,25 +25,55 @@ export function TotalsSection() {
             {formatCurrency(totals.subtotal, state.currency)}
           </span>
         </div>
-        <div className="total-row grid grid-cols-[1fr_auto_auto] items-center gap-3">
-          <span>Tax Rate</span>
-          <div className="flex items-center gap-2">
-            <EditableNumber
-              value={state.taxRate}
-              onCommit={(value) =>
-                dispatch({ type: "UPDATE_FIELD", field: "taxRate", value })
-              }
-              min={0}
-              step={0.1}
-              decimals={2}
-              className="text-sm"
-            />
-            <span className="font-mono text-slate-500">%</span>
+        {!gstEnabled && (
+          <div className="total-row grid grid-cols-[1fr_auto_auto] items-center gap-3">
+            <span>{taxLabel} Rate</span>
+            <div className="flex items-center gap-2">
+              <EditableNumber
+                value={state.taxRate}
+                onCommit={(value) =>
+                  dispatch({ type: "UPDATE_FIELD", field: "taxRate", value })
+                }
+                min={0}
+                step={0.1}
+                decimals={2}
+                className="text-sm"
+              />
+              <span className="font-mono text-slate-500">%</span>
+            </div>
+            <span className="text-right font-mono text-slate-800">
+              {formatCurrency(totals.taxAmount, state.currency)}
+            </span>
           </div>
-          <span className="text-right font-mono text-slate-800">
-            {formatCurrency(totals.taxAmount, state.currency)}
-          </span>
-        </div>
+        )}
+        {gstEnabled && (
+          <>
+            {!state.options.showIGST && (
+              <div className="total-row flex items-center justify-between">
+                <span>CGST ({(state.taxRate / 2).toFixed(2)}%)</span>
+                <span className="text-right font-mono text-slate-800">
+                  {formatCurrency(totals.cgstAmount, state.currency)}
+                </span>
+              </div>
+            )}
+            {!state.options.showIGST && (
+              <div className="total-row flex items-center justify-between">
+                <span>SGST ({(state.taxRate / 2).toFixed(2)}%)</span>
+                <span className="text-right font-mono text-slate-800">
+                  {formatCurrency(totals.sgstAmount, state.currency)}
+                </span>
+              </div>
+            )}
+            {state.options.showIGST && (
+              <div className="total-row flex items-center justify-between">
+                <span>IGST ({state.taxRate.toFixed(2)}%)</span>
+                <span className="text-right font-mono text-slate-800">
+                  {formatCurrency(totals.igstAmount, state.currency)}
+                </span>
+              </div>
+            )}
+          </>
+        )}
         <div className="total-row grid grid-cols-[1fr_auto_auto] items-center gap-3">
           <span>Discount</span>
           <div className="flex items-center gap-2">
