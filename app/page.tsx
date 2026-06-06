@@ -1,6 +1,8 @@
 import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
+import { DotFlowCta } from "@/components/landing/dot-flow-cta"
 import { LandingCta } from "@/components/landing/landing-cta"
 import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
+import { FaqAccordion } from "@/components/ui/faq-accordion"
 
 const features = [
   {
@@ -45,8 +47,9 @@ const steps = [
   {
     step: "01",
     title: "Create your free account",
-    description: "Free to start — 5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.",
+    description: "Free to start",
   },
+  //5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.
   {
     step: "02",
     title: "Fill in your details",
@@ -142,10 +145,7 @@ export default function Home() {
         </p>
 
         <div className="landing-hero-actions">
-          <LandingCta variant="hero-primary" label="Join the waitlist" />
-          <a href="#features" className="landing-cta-ghost">
-            See what&apos;s coming ↓
-          </a>
+          <DotFlowCta />
         </div>
       </div>
 
@@ -202,27 +202,33 @@ export default function Home() {
       {/* ── FAQ ── */}
       <section className="landing-section">
         <div className="landing-section-inner">
-          <div className="landing-section-label">Common questions</div>
-          <h2 className="landing-section-title">
-            Things people ask
-            <br />
-            before signing up.
-          </h2>
-          <p className="landing-section-sub">
-            Quick answers to the most-asked questions. Still curious? Join the
-            waitlist and we&apos;ll be in touch.
-          </p>
+          <div className="grid grid-cols-[1fr_1.4fr] gap-16 items-start max-lg:grid-cols-1 max-lg:gap-8">
+            <div className="max-lg:static">
+              <div className="landing-section-label">Common questions</div>
+              <h2 className="landing-section-title mt-5">
+                Things people ask
+                <br />
+                before signing up.
+              </h2>
+              <p className="landing-section-sub mt-4">
+                Quick answers to the most-asked questions. Still curious? Join the
+                waitlist and we&apos;ll be in touch.
+              </p>
+            </div>
 
-          <div className="landing-faq-list">
-            {faqs.map((f) => (
-              <details key={f.q} className="landing-faq-item">
-                <summary>
-                  <span>{f.q}</span>
-                  <span className="landing-faq-icon" aria-hidden="true" />
-                </summary>
-                <div className="landing-faq-answer">{f.a}</div>
-              </details>
-            ))}
+            <div className="landing-faq-list">
+              <FaqAccordion>
+                {faqs.map((f) => (
+                  <>
+                    <summary>
+                      <span>{f.q}</span>
+                      <span className="landing-faq-icon" aria-hidden="true" />
+                    </summary>
+                    <div className="landing-faq-answer">{f.a}</div>
+                  </>
+                ))}
+              </FaqAccordion>
+            </div>
           </div>
         </div>
       </section>
@@ -255,9 +261,9 @@ export default function Home() {
       <footer className="landing-footer">
         <span className="landing-footer-brand">billy</span>
         <span className="landing-footer-copy">
-          © 2026 · The invoice editor for freelancers and small businesses.
+          © 2026 · The invoice editor for everyone.
         </span>
-        <LandingCta variant="footer-link" label="Join the waitlist →" />
+
       </footer>
     </main>
     </WaitlistProvider>
