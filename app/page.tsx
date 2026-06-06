@@ -90,13 +90,22 @@ export default function Home() {
     <WaitlistProvider>
     <main className="landing-page flex min-h-dvh flex-col">
       {/* ── Nav ── */}
-      <nav className="landing-nav mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-        <span className="landing-wordmark">billy</span>
-        <div className="flex items-center gap-3">
-          {/* <LandingCta variant="nav-link" label="Open Editor" /> */}
-          <LandingCta variant="nav-pill" label="Join the waitlist →" />
-        </div>
-      </nav>
+      <header className="sticky top-0 z-50 w-full pt-6 pb-4 px-4 sm:px-6 flex justify-center pointer-events-none">
+        <nav className="pointer-events-auto flex items-center justify-between px-3 py-3 pr-4 rounded-full bg-[rgba(250,250,247,0.7)] backdrop-blur-xl border border-[var(--lp-border)] shadow-[0_8px_32px_rgba(14,17,23,0.04)] w-full max-w-5xl transition-all">
+          <div className="flex items-center gap-10 pl-4">
+            <span className="font-serif italic text-[1.4rem] text-[var(--lp-ink)] leading-none mt-0.5">billy</span>
+            <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-[var(--lp-ink-2)] font-sans">
+              <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Features</a>
+              <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Templates</a>
+              <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Pricing</a>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="#" className="hidden sm:block text-[13px] font-medium text-[var(--lp-ink-2)] font-sans hover:text-[var(--lp-ink)] transition-colors pr-2">Sign in</a>
+            <LandingCta variant="nav-pill" label="Join the waitlist" className="!px-5 !py-2.5 !text-[13px] shadow-sm" />
+          </div>
+        </nav>
+      </header>
 
       {/* ── Ticker ── */}
       <div className="landing-ticker">
@@ -234,36 +243,70 @@ export default function Home() {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="landing-cta-section">
-        <div className="landing-cta-inner">
-          <div className="landing-section-label" style={{ color: "rgba(255,255,255,0.5)" }}>
-            Get started
+      <div className="px-4 sm:px-6 lg:px-8 pb-8">
+        <section className="landing-cta-section relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 !p-12 sm:!p-20 lg:!p-32">
+          {/* Subtle Grid Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none"></div>
+          
+          <div className="landing-cta-inner relative z-10">
+            <div className="landing-section-label border border-white/20 inline-flex px-3 py-1 rounded-full mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>
+              Get started
+            </div>
+            <h2 className="landing-cta-title" style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", marginBottom: "1.5rem" }}>
+              Your next invoice,
+              <br />
+              <em>ready in minutes.</em>
+            </h2>
+            <p className="landing-cta-sub max-w-lg mx-auto" style={{ fontSize: "1.125rem", color: "rgba(255,255,255,0.8)", marginBottom: "2.5rem" }}>
+              We&apos;re putting the finishing touches on billy. Drop your email
+              and we&apos;ll let you know the moment we open the doors.
+              <br />
+              No spam, no credit card, no wait — just first in line.
+            </p>
+            <LandingCta
+              variant="final-primary"
+              label="Join the waitlist — it's free"
+            />
           </div>
-          <h2 className="landing-cta-title">
-            Your next invoice,
-            <br />
-            <em>ready in minutes.</em>
-          </h2>
-          <p className="landing-cta-sub">
-            We&apos;re putting the finishing touches on billy. Drop your email
-            and we&apos;ll let you know the moment we open the doors.
-            <br />
-            No spam, no credit card, no wait — just first in line.
-          </p>
-          <LandingCta
-            variant="final-primary"
-            label="Join the waitlist — it's free"
-          />
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── Footer ── */}
-      <footer className="landing-footer">
-        <span className="landing-footer-brand">billy</span>
-        <span className="landing-footer-copy">
-          © 2026 · The invoice editor for everyone.
-        </span>
-
+      <footer className="bg-transparent border-t border-[var(--lp-border)] pt-16 pb-8 px-6 sm:px-12">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-12 md:gap-8 mb-16">
+            <div className="flex flex-col gap-6 max-w-sm">
+              <span className="font-serif italic text-4xl text-[var(--lp-ink)] tracking-tight">billy</span>
+              <p className="text-[var(--lp-ink-2)] text-sm leading-relaxed">
+                The direct-manipulation invoice editor for freelancers and small businesses. Beautiful, print-ready, and simple.
+              </p>
+            </div>
+            
+            <div className="flex gap-12 sm:gap-24 text-sm text-[var(--lp-ink-2)]">
+              <div className="flex flex-col gap-4">
+                <span className="font-sans font-bold text-[var(--lp-ink)] uppercase tracking-[0.15em] text-[0.6875rem]">Product</span>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Features</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Templates</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Pricing</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Waitlist</a>
+              </div>
+              <div className="flex flex-col gap-4">
+                <span className="font-sans font-bold text-[var(--lp-ink)] uppercase tracking-[0.15em] text-[0.6875rem]">Company</span>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Twitter</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Contact</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Privacy</a>
+                <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Terms</a>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-[var(--lp-border)] text-xs text-[var(--lp-ink-3)] font-sans">
+            <span>© {new Date().getFullYear()} · The invoice editor for everyone.</span>
+            <div className="flex gap-4">
+              <span>All rights reserved.</span>
+            </div>
+          </div>
+        </div>
       </footer>
     </main>
     </WaitlistProvider>
