@@ -1,6 +1,6 @@
-import Link from "next/link"
-
 import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
+import { LandingCta } from "@/components/landing/landing-cta"
+import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
 
 const features = [
   {
@@ -79,17 +79,14 @@ const testimonials = [
 
 export default function Home() {
   return (
+    <WaitlistProvider>
     <main className="landing-page flex min-h-dvh flex-col">
       {/* ── Nav ── */}
       <nav className="landing-nav mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
         <span className="landing-wordmark">billy</span>
         <div className="flex items-center gap-3">
-          <Link href="/editor" className="landing-nav-link">
-            Open Editor
-          </Link>
-          <Link href="/editor" className="landing-cta-pill-sm">
-            Try free →
-          </Link>
+          {/* <LandingCta variant="nav-link" label="Open Editor" /> */}
+          <LandingCta variant="nav-pill" label="Join the waitlist →" />
         </div>
       </nav>
 
@@ -118,7 +115,7 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="landing-hero relative isolate overflow-hidden">
         <FlickeringGrid
-          className="absolute inset-0 -z-10 pointer-events-none mask-[radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+          className="absolute inset-0 -z-10 pointer-events-none mask-[radial-gradient(ellipse_50%_60%_at_center,black_25%,transparent_85%)]"
           color="rgb(13, 115, 119)"
           squareSize={3}
           gridGap={4}
@@ -126,6 +123,7 @@ export default function Home() {
           flickerChance={0.25}
         />
 
+        <div className="landing-hero-content">
         <h1 className="landing-hero-title">
           Invoicing that feels
           <br />
@@ -139,14 +137,12 @@ export default function Home() {
         </p>
 
         <div className="landing-hero-actions">
-          <Link href="/editor" className="landing-cta-primary">
-            Start editing free
-          </Link>
-          <Link href="/editor" className="landing-cta-ghost">
-            View a demo invoice →
-          </Link>
+          <LandingCta variant="hero-primary" label="Join the waitlist" />
+          <a href="#features" className="landing-cta-ghost">
+            See what&apos;s coming ↓
+          </a>
         </div>
-
+      </div>
 
       </section>
 
@@ -233,13 +229,15 @@ export default function Home() {
             <em>ready in minutes.</em>
           </h2>
           <p className="landing-cta-sub">
-            No account. No credit card. No data ever leaves your browser.
+            We&apos;re putting the finishing touches on billy. Drop your email
+            and we&apos;ll let you know the moment we open the doors.
             <br />
-            Just open Billy and start.
+            No spam, no credit card, no wait — just first in line.
           </p>
-          <Link href="/editor" className="landing-cta-button">
-            Open the editor — it&apos;s free
-          </Link>
+          <LandingCta
+            variant="final-primary"
+            label="Join the waitlist — it's free"
+          />
         </div>
       </section>
 
@@ -249,10 +247,9 @@ export default function Home() {
         <span className="landing-footer-copy">
           © 2026 · A lightweight invoice editor · All data stays in your browser.
         </span>
-        <Link href="/editor" className="landing-footer-link">
-          Open editor →
-        </Link>
+        <LandingCta variant="footer-link" label="Join the waitlist →" />
       </footer>
     </main>
+    </WaitlistProvider>
   )
 }
