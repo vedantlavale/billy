@@ -1,5 +1,7 @@
 import Link from "next/link"
 
+import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
+
 const features = [
   {
     icon: "✦",
@@ -114,7 +116,15 @@ export default function Home() {
       </div>
 
       {/* ── Hero ── */}
-      <section className="landing-hero">
+      <section className="landing-hero relative isolate overflow-hidden">
+        <FlickeringGrid
+          className="absolute inset-0 -z-10 pointer-events-none mask-[radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+          color="rgb(13, 115, 119)"
+          squareSize={3}
+          gridGap={4}
+          maxOpacity={0.4}
+          flickerChance={0.25}
+        />
 
         <h1 className="landing-hero-title">
           Invoicing that feels
