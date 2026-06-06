@@ -1,5 +1,7 @@
+import { Fragment } from "react"
 import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
+import { DrawLineText } from "@/components/ui/draw-line-text"
 import { DotFlowCta } from "@/components/landing/dot-flow-cta"
 import { LandingCta } from "@/components/landing/landing-cta"
 import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
@@ -99,7 +101,9 @@ export default function Home() {
         <header className="sticky top-0 z-50 w-full pt-6 pb-4 px-4 sm:px-6 flex justify-center pointer-events-none">
           <nav className="pointer-events-auto flex items-center justify-between px-3 py-3 pr-4 rounded-full bg-[rgba(250,250,247,0.7)] backdrop-blur-xl border border-[var(--lp-border)] shadow-[0_8px_32px_rgba(14,17,23,0.04)] w-full max-w-5xl transition-all">
             <div className="flex items-center gap-10 pl-4">
-              <span className="font-serif italic text-[1.4rem] text-[var(--lp-ink)] leading-none mt-0.5">billy</span>
+              <div className="font-serif italic leading-none mt-0.5">
+                <DrawLineText text="billy" fontSize={24} color="var(--lp-ink)" strokeWidth={0.8} letterSpacing={1} />
+              </div>
               <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-[var(--lp-ink-2)] font-sans">
                 <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Features</a>
                 <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Templates</a>
@@ -147,19 +151,19 @@ export default function Home() {
           />
 
           <div className="landing-hero-content">
-            <h1 className="landing-hero-title">
+            <h1 className="landing-hero-title animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out fill-mode-both">
               Invoicing that feels
               <br />
               <em>exactly</em> like editing
               <br />a document.
             </h1>
 
-            <p className="landing-hero-sub">
+            <p className="landing-hero-sub animate-in fade-in slide-in-from-bottom-6 duration-1000 ease-out delay-300 fill-mode-both">
               The direct-manipulation invoice editor for freelancers and small businesses.
               Click a field, type your details, export a beautiful PDF — in under two minutes.
             </p>
 
-            <div className="landing-hero-actions">
+            <div className="landing-hero-actions animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out delay-500 fill-mode-both">
               <DotFlowCta />
             </div>
           </div>
@@ -245,9 +249,6 @@ export default function Home() {
                   <em className="text-white/80 italic">One beautiful invoice.</em>
                 </h2>
               </div>
-              <p className="font-sans text-[1.0625rem] text-white/60 max-w-sm leading-relaxed pb-2">
-                No complex onboarding or endless setup screens. Just straight to the point, so you can get paid faster.
-              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -295,13 +296,13 @@ export default function Home() {
               <div className="landing-faq-list">
                 <FaqAccordion>
                   {faqs.map((f) => (
-                    <>
+                    <Fragment key={f.q}>
                       <summary>
                         <span>{f.q}</span>
                         <span className="landing-faq-icon" aria-hidden="true" />
                       </summary>
                       <div className="landing-faq-answer">{f.a}</div>
-                    </>
+                    </Fragment>
                   ))}
                 </FaqAccordion>
               </div>
@@ -347,7 +348,7 @@ export default function Home() {
           <div className="mx-auto w-full max-w-6xl">
             <div className="flex flex-col md:flex-row justify-between items-start gap-12 md:gap-8 mb-16">
               <div className="flex flex-col gap-6 max-w-sm">
-                <span className="font-serif italic text-4xl text-[var(--lp-ink)] tracking-tight">billy</span>
+                <DrawLineText text='billy' className="font-serif italic text-4xl text-[var(--lp-ink)] tracking-tight">billy</DrawLineText>
                 <p className="text-[var(--lp-ink-2)] text-sm leading-relaxed">
                   The direct-manipulation invoice editor for freelancers and small businesses. Beautiful, print-ready, and simple.
                 </p>

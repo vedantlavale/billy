@@ -104,7 +104,7 @@ export function WaitlistDialog({ isOpen, onClose }: WaitlistDialogProps) {
               className="mt-1.5 text-2xl font-normal tracking-tight text-[#0E1117]"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
-              Join the billy <em className="italic">waitlist</em>.
+              Join the  <em className="italic">billy</em> waitlist.
             </h2>
           </div>
           <button
