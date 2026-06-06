@@ -13,7 +13,7 @@ const features = [
     title: "Direct Inline Editing",
     description:
       "Click any field on the invoice and type. No forms, no dialogs — just edit the document itself, exactly like a live canvas.",
-    className: "col-span-2 md:col-span-2 lg:col-span-2",
+    className: "col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2",
   },
   {
     icon: "⬡",
@@ -48,7 +48,7 @@ const features = [
     title: "Save & Sync",
     description:
       "Every invoice you create is saved to your account. Pick up where you left off, on any device, anytime.",
-    className: "col-span-2 md:col-span-3 lg:col-span-2",
+    className: "col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2",
   },
 ]
 
@@ -202,7 +202,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {features.map((f, i) => (
                 <div
                   key={f.title}
@@ -253,7 +253,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {steps.map((s) => (
-                <div key={s.step} className="group relative bg-white/[0.02] border border-white/10 rounded-3xl p-10 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden">
+                <div key={s.step} className="group relative bg-white/[0.02] border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden">
                   {/* Large watermark number */}
                   <div className="absolute -right-4 -bottom-10 font-serif text-[12rem] text-white/[0.03] leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500 pointer-events-none">
                     {s.step}
@@ -312,7 +312,7 @@ export default function Home() {
 
         {/* ── Final CTA ── */}
         <div className="px-4 sm:px-6 lg:px-8 pb-8">
-          <section className="landing-cta-section relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 !p-12 sm:!p-20 lg:!p-32">
+          <section className="landing-cta-section relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 !p-8 sm:!p-12 lg:!p-20">
             {/* Interactive Grid Background */}
             <InteractiveGridPattern
               className="absolute inset-0 z-0 pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"

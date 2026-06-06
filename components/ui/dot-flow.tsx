@@ -65,7 +65,7 @@ export const DotFlow = ({ items }: DotFlowProps) => {
     });
 
     return (
-        <div className="flex items-center gap-4 rounded bg-black px-4 py-3">
+        <div className="flex items-center gap-3 sm:gap-4 rounded bg-black px-3 sm:px-4 py-2.5 sm:py-3">
             <DotLoader
                 frames={items[index].frames}
                 onComplete={next}
@@ -75,7 +75,7 @@ export const DotFlow = ({ items }: DotFlowProps) => {
                 dotClassName="bg-white/15 [&.active]:bg-white size-1"
             />
             <div ref={containerRef} className="relative">
-                <div ref={textRef} className="inline-block text-lg font-medium whitespace-nowrap text-white">
+                <div ref={textRef} className="inline-block text-[15px] sm:text-lg font-medium whitespace-nowrap text-white">
                     {items[textIndex].title}
                 </div>
             </div>

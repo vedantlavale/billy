@@ -305,7 +305,7 @@
 
 .landing-hero-sub {
   font-family: var(--lp-sans);
-  font-size: 1.125rem;
+  font-size: clamp(1.15rem, 5vw, 1.25rem);
   font-weight: 400;
   line-height: 1.7;
   color: var(--lp-ink-2);
