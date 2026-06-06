@@ -9,6 +9,7 @@ import { signOut } from "@/app/auth/actions"
 import type { InvoiceData } from "@/lib/types"
 import { useToast } from "@/components/ui/toast"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import posthog from "posthog-js"
 
 interface DatabaseInvoice {
   id: string
@@ -112,6 +113,7 @@ export default function DashboardPage() {
       })
 
       if (response.ok) {
+        posthog.capture("invoice_deleted", { invoice_id: id, invoice_number: number })
         setInvoices((prev) => prev.filter((inv) => inv.id !== id))
         toast(`Invoice ${number} deleted.`, "info")
 
@@ -160,6 +162,10 @@ export default function DashboardPage() {
 
       if (response.ok) {
         const { invoice: newInvoice } = await response.json()
+        posthog.capture("invoice_duplicated", {
+          source_invoice_id: invoice.id,
+          source_invoice_number: invoice.data.invoiceNumber,
+        })
         setInvoices((prev) => [newInvoice, ...prev])
         toast("Invoice duplicated successfully!", "success")
         // Refresh profile to update invoice count
@@ -222,6 +228,12 @@ export default function DashboardPage() {
     }
     const nextStatus = statusCycle[invoice.status] || "draft"
 
+    posthog.capture("invoice_status_updated", {
+      invoice_id: invoice.id,
+      invoice_number: invoice.data.invoiceNumber,
+      previous_status: invoice.status,
+      new_status: nextStatus,
+    })
     setInvoices((prev) =>
       prev.map((inv) => (inv.id === invoice.id ? { ...inv, status: nextStatus } : inv))
     )

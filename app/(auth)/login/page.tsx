@@ -3,6 +3,7 @@
 import { useActionState } from "react"
 import Link from "next/link"
 import { login, signInWithGoogle } from "@/app/auth/actions"
+import posthog from "posthog-js"
 
 export default function LoginPage() {
   const [state, action, pending] = useActionState(login, undefined)
@@ -88,7 +89,10 @@ export default function LoginPage() {
           </div>
 
           <button
-            onClick={signInWithGoogle}
+            onClick={() => {
+              posthog.capture("google_sign_in_initiated", { page: "login" })
+              signInWithGoogle()
+            }}
             type="button"
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-[oklch(0.9_0.02_260)] bg-white px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[oklch(0.985_0.003_255)]"
           >

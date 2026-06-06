@@ -41,13 +41,14 @@ yarn-error.log*
 next-env.d.ts
 
 # skills
-.agents/
-.skills/
-skills-lock.json
-.agent/
-.claude/
-.codex/
+# .agents/
+# .skills/
+# skills-lock.json
+# .agent/
+# .claude/
+# .codex/
 .grok/
 .pi/
-.opencode/
-.cursor/
+# .opencode/
+# .cursor/
+.env.local

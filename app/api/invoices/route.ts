@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { resolveEffectivePlan, canCreateInvoice } from "@/lib/plans"
+import { getPostHogClient } from "@/lib/posthog-server"
 
 export async function GET() {
   try {
@@ -108,6 +109,17 @@ export async function POST(request: Request) {
         .from("profiles")
         .update({ invoice_count: newCount })
         .eq("id", user.id)
+
+      const posthog = getPostHogClient()
+      posthog.capture({
+        distinctId: user.id,
+        event: "invoice_saved",
+        properties: {
+          template_id: invoiceData.templateId || "clean",
+          plan: effective.plan,
+          invoice_number: invoiceData?.invoiceNumber,
+        },
+      })
 
       return NextResponse.json({ success: true, invoice: data })
     }

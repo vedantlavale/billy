@@ -17,6 +17,7 @@ import { TemplateSelector } from "@/components/invoice/template-selector"
 import { renderInvoiceDocument } from "@/lib/render-invoice-document"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import type { InvoiceData } from "@/lib/types"
+import posthog from "posthog-js"
 
 function sanitizeFileName(value: string) {
   return value.trim().replace(/[^a-z0-9-_]+/gi, "-").replace(/^-+|-+$/g, "")
@@ -157,6 +158,11 @@ export function Toolbar() {
           a.click()
           document.body.removeChild(a)
           URL.revokeObjectURL(url)
+          posthog.capture("invoice_pdf_exported", {
+            template_id: state.templateId,
+            invoice_number: state.invoiceNumber,
+            method: "server",
+          })
           return
         }
 
@@ -171,12 +177,18 @@ export function Toolbar() {
       }
     }
 
+    posthog.capture("invoice_pdf_exported", {
+      template_id: state.templateId,
+      invoice_number: state.invoiceNumber,
+      method: "client_print",
+    })
     void clientSidePrint(state)
   }
 
   const handleReset = () => {
     const shouldReset = window.confirm("Start a fresh invoice? This clears edits.")
     if (shouldReset) {
+      posthog.capture("invoice_reset", { template_id: state.templateId })
       dispatch({ type: "RESET_INVOICE" })
     }
   }

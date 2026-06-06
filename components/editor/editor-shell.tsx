@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { OnboardingModal } from "@/components/onboarding/OnboardingModal"
 import { professionPresets } from "@/lib/presets"
 import { AuthProvider } from "@/lib/auth-context"
+import posthog from "posthog-js"
 
 interface EditorShellProps {
   children: React.ReactNode
@@ -28,6 +29,7 @@ export function EditorShell({ children }: EditorShellProps) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
+        posthog.identify(session.user.id, { email: session.user.email })
         supabase
           .from("profiles")
           .select("*")
@@ -66,6 +68,8 @@ export function EditorShell({ children }: EditorShellProps) {
         onboarding_completed_at: new Date().toISOString(),
       })
       .eq("id", session?.user?.id)
+
+    posthog.capture("onboarding_completed", { profession })
 
     if (profession in professionPresets) {
       localStorage.setItem("billy_profession_preset", profession)

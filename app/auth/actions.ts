@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 import { createClient } from "@/lib/supabase/server"
+import { getPostHogClient } from "@/lib/posthog-server"
 
 export async function signup(
   prevState: { error?: string } | undefined,
@@ -14,7 +15,7 @@ export async function signup(
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -24,6 +25,12 @@ export async function signup(
 
   if (error) {
     return { error: error.message }
+  }
+
+  if (data.user) {
+    const posthog = getPostHogClient()
+    posthog.identify({ distinctId: data.user.id, properties: { email: data.user.email } })
+    posthog.capture({ distinctId: data.user.id, event: "user_signed_up", properties: { email: data.user.email, provider: "email" } })
   }
 
   revalidatePath("/", "layout")
@@ -39,13 +46,18 @@ export async function login(
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
 
   if (error) {
     return { error: error.message }
+  }
+
+  if (data.user) {
+    const posthog = getPostHogClient()
+    posthog.capture({ distinctId: data.user.id, event: "user_logged_in", properties: { email: data.user.email, provider: "email" } })
   }
 
   revalidatePath("/", "layout")

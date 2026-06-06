@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { Button as StatefulButton } from "@/components/ui/stateful-button"
+import posthog from "posthog-js"
 
 type Status = "idle" | "submitting" | "success" | "error"
 
@@ -72,6 +73,7 @@ export function WaitlistDialog({ isOpen, onClose }: WaitlistDialogProps) {
         setStatus("error")
         return
       }
+      posthog.capture("waitlist_joined", { email })
       setSavedEmail(email)
       setStatus("success")
     } catch {

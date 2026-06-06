@@ -12,6 +12,7 @@ import {
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import { TEMPLATES, getTemplate } from "@/lib/templates"
 import { useAuth } from "@/lib/auth-context"
+import posthog from "posthog-js"
 
 export function TemplateSelector() {
   const state = useInvoiceState()
@@ -24,6 +25,7 @@ export function TemplateSelector() {
     if (template?.pro && !isAuthenticated) {
       return
     }
+    posthog.capture("template_selected", { template_id: value, is_pro: template?.pro ?? false })
     dispatch({ type: "UPDATE_FIELD", field: "templateId", value })
   }
 

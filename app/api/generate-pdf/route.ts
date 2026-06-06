@@ -6,6 +6,7 @@ import {
   canCreateInvoice,
   FREE_MONTHLY_LIMIT,
 } from "@/lib/plans"
+import { getPostHogClient } from "@/lib/posthog-server"
 
 export async function POST(request: Request) {
   try {
@@ -79,6 +80,17 @@ export async function POST(request: Request) {
       .from("profiles")
       .update({ invoice_count: newCount })
       .eq("id", user.id)
+
+    const posthog = getPostHogClient()
+    posthog.capture({
+      distinctId: user.id,
+      event: "pdf_generated",
+      properties: {
+        template_id: templateId,
+        plan: effective.plan,
+        invoice_number: invoiceData?.invoiceNumber,
+      },
+    })
 
     return new NextResponse(new Blob([pdf as BlobPart], { type: "application/pdf" }), {
       headers: {
