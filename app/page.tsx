@@ -1,4 +1,5 @@
 import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
+import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
 import { DotFlowCta } from "@/components/landing/dot-flow-cta"
 import { LandingCta } from "@/components/landing/landing-cta"
 import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
@@ -245,8 +246,15 @@ export default function Home() {
       {/* ── Final CTA ── */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8">
         <section className="landing-cta-section relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 !p-12 sm:!p-20 lg:!p-32">
-          {/* Subtle Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none"></div>
+          {/* Interactive Grid Background */}
+          <InteractiveGridPattern
+            className="absolute inset-0 z-0 pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"
+            color="rgba(255, 255, 255, 1)"
+            squareSize={32}
+            gridGap={2}
+            maxOpacity={0.15}
+            hoverRadius={180}
+          />
           
           <div className="landing-cta-inner relative z-10">
             <div className="landing-section-label border border-white/20 inline-flex px-3 py-1 rounded-full mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>
