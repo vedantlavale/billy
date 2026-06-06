@@ -11,9 +11,9 @@ const features = [
   },
   {
     icon: "⬡",
-    title: "Native PDF Export",
+    title: "Pixel-Perfect PDF Export",
     description:
-      "Export polished, print-ready PDFs using your browser's built-in print engine. Zero extra dependencies, zero waiting.",
+      "Generate polished, print-ready PDFs on our servers. They look exactly like your editor preview — no print dialog, no surprises, no extra tools to install.",
   },
   {
     icon: "◈",
@@ -45,9 +45,8 @@ const steps = [
   {
     step: "01",
     title: "Create your free account",
-    description: "Free to start ",
+    description: "Free to start — 5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.",
   },
-  //5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.
   {
     step: "02",
     title: "Fill in your details",
@@ -60,21 +59,26 @@ const steps = [
   },
 ]
 
-const testimonials = [
+const faqs = [
   {
-    quote: "The cleanest invoice tool I've ever used. No cruft, just the thing I need.",
-    author: "Maya T.",
-    role: "Independent Consultant",
+    q: "Is there a free tier?",
+    a: "Yes. The free tier includes 3 invoice templates and 5 invoices every month — no credit card required. Upgrade to Pro whenever you need more.",
   },
   {
-    quote: "I send invoices every week. Billy cut my time in half and my PDFs look incredible.",
-    author: "James R.",
-    role: "Freelance Designer",
+    q: "Where is my invoice data stored?",
+    a: "Every invoice you create is saved to your billy account, encrypted in transit and at rest. Sign in from any device to pick up right where you left off.",
   },
   {
-    quote: "Switched from a bigger invoicing tool last month. Billy is faster, simpler, and the free tier actually covers my needs.",
-    author: "Priya K.",
-    role: "Startup Founder",
+    q: "What happens if I hit the free limit?",
+    a: "You can still view, edit, and export every invoice you've already created. To start a new one, either upgrade to Pro for unlimited invoicing, or wait until your monthly reset.",
+  },
+  {
+    q: "What's included in Pro?",
+    a: "Pro removes the monthly invoice cap, unlocks the full template library, and adds premium features like GST handling and custom branding.",
+  },
+  {
+    q: "Can I cancel my Pro plan anytime?",
+    a: "Yes. Cancel from your account settings in a couple of clicks — you'll keep Pro access until the end of your current billing period, then drop back to the free tier with all your invoices intact.",
   },
 ]
 
@@ -195,24 +199,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
+      {/* ── FAQ ── */}
       <section className="landing-section">
         <div className="landing-section-inner">
-          <div className="landing-section-label">What people say</div>
+          <div className="landing-section-label">Common questions</div>
           <h2 className="landing-section-title">
-            Loved by freelancers
-            <br />& independent founders.
+            Things people ask
+            <br />
+            before signing up.
           </h2>
-          <div className="landing-testimonials">
-            {testimonials.map((t) => (
-              <div key={t.author} className="landing-testimonial">
-                <div className="landing-testimonial-stars">✦ ✦ ✦ ✦ ✦</div>
-                <p className="landing-testimonial-quote">"{t.quote}"</p>
-                <div className="landing-testimonial-author">
-                  <span className="landing-testimonial-name">{t.author}</span>
-                  <span className="landing-testimonial-role">{t.role}</span>
-                </div>
-              </div>
+          <p className="landing-section-sub">
+            Quick answers to the most-asked questions. Still curious? Join the
+            waitlist and we&apos;ll be in touch.
+          </p>
+
+          <div className="landing-faq-list">
+            {faqs.map((f) => (
+              <details key={f.q} className="landing-faq-item">
+                <summary>
+                  <span>{f.q}</span>
+                  <span className="landing-faq-icon" aria-hidden="true" />
+                </summary>
+                <div className="landing-faq-answer">{f.a}</div>
+              </details>
             ))}
           </div>
         </div>
