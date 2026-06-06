@@ -48,18 +48,17 @@ const steps = [
   {
     step: "01",
     title: "Create your free account",
-    description: "Free to start",
+    description: "5 invoices every month, no credit card. Sign up in seconds and you're instantly inside the editor.",
   },
-  //5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.
   {
     step: "02",
     title: "Fill in your details",
-    description: "Click any field to edit it inline. Add your logo, line items, tax rates, and client details.",
+    description: "Click any field to edit it inline. Add your logo, line items, tax rates, and client details effortlessly.",
   },
   {
     step: "03",
     title: "Export as PDF",
-    description: "Hit Export PDF and your polished, print-ready invoice is saved — rendered pixel-perfect.",
+    description: "Hit Export PDF and your polished, print-ready invoice is generated and saved — rendered pixel-perfect.",
   },
 ]
 
@@ -164,24 +163,58 @@ export default function Home() {
 
 
       {/* ── Features ── */}
-      <section className="landing-section">
-        <div className="landing-section-inner">
-          <div className="landing-section-label">Everything you need</div>
-          <h2 className="landing-section-title">
-            Built for the way
-            <br />
-            freelancers actually work.
-          </h2>
-          <p className="landing-section-sub">
-            Every feature was chosen because it matters. Nothing more.
-          </p>
+      <section className="relative py-32 px-6 lg:px-8 border-t border-[var(--lp-border)] overflow-hidden bg-[#Fdfdfa]">
+        {/* Sandpaper Texture */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-multiply" 
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+        ></div>
+        
+        {/* Subtle radial glow to give depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.7),transparent_80%)] pointer-events-none"></div>
 
-          <div className="landing-features-grid">
-            {features.map((f) => (
-              <div key={f.title} className="landing-feature-card">
-                <span className="landing-feature-icon">{f.icon}</span>
-                <h3 className="landing-feature-title">{f.title}</h3>
-                <p className="landing-feature-desc">{f.description}</p>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-24 flex flex-col items-center">
+            <div className="inline-flex items-center gap-4 mb-6">
+              <div className="h-[1px] w-12 bg-[var(--lp-teal)] opacity-30"></div>
+              <span className="font-sans font-bold text-[var(--lp-teal)] uppercase tracking-[0.2em] text-[0.6875rem]">
+                Everything you need
+              </span>
+              <div className="h-[1px] w-12 bg-[var(--lp-teal)] opacity-30"></div>
+            </div>
+            <h2 className="font-serif text-5xl md:text-[4rem] tracking-tight leading-[1.05] text-[var(--lp-ink)] mb-8 max-w-2xl">
+              Built for the way
+              <br />
+              <em className="italic opacity-90 text-[var(--lp-teal)]">freelancers actually work.</em>
+            </h2>
+            <p className="font-sans text-[1.125rem] text-[var(--lp-ink-2)] max-w-xl mx-auto leading-relaxed">
+              Every feature was thoughtfully crafted to serve a single purpose. No bloated menus, no clutter — just an elegant instrument for your business.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((f, i) => (
+              <div 
+                key={f.title} 
+                className="group relative bg-[#FAFAF7]/80 backdrop-blur-md p-10 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(14,17,23,0.05)] transition-all duration-500 flex flex-col"
+              >
+                {/* Outer classic border */}
+                <div className="absolute inset-0 border border-[var(--lp-border)] pointer-events-none transition-colors group-hover:border-[var(--lp-teal)]/20"></div>
+                
+                {/* Inner decorative border */}
+                <div className="absolute inset-2 border border-[var(--lp-border)] opacity-40 pointer-events-none"></div>
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="w-14 h-14 mb-8 flex items-center justify-center rounded-full bg-white text-[var(--lp-teal)] text-xl border border-[var(--lp-border)] shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:border-[var(--lp-teal)]/30">
+                    {f.icon}
+                  </div>
+                  <h3 className="font-serif text-2xl text-[var(--lp-ink)] mb-4 group-hover:text-[var(--lp-teal)] transition-colors">
+                    {f.title}
+                  </h3>
+                  <p className="font-sans text-[0.9375rem] text-[var(--lp-ink-2)] leading-[1.75] mt-auto">
+                    {f.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -189,20 +222,47 @@ export default function Home() {
       </section>
 
       {/* ── How it works ── */}
-      <section className="landing-section landing-section--alt">
-        <div className="landing-section-inner">
-          <div className="landing-section-label">How it works</div>
-          <h2 className="landing-section-title">
-            Three steps.
-            <br />
-            One beautiful invoice.
-          </h2>
-          <div className="landing-steps">
+      <section className="bg-[var(--lp-ink)] text-white py-32 px-6 lg:px-8 relative overflow-hidden">
+        {/* Subtle background gradients */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(13,115,119,0.15),transparent_50%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.03),transparent_50%)] pointer-events-none"></div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+            <div>
+              <div className="font-sans font-bold text-[var(--lp-teal)] uppercase tracking-[0.15em] text-[0.6875rem] mb-6">
+                How it works
+              </div>
+              <h2 className="font-serif text-5xl md:text-6xl tracking-tight leading-[1.05] max-w-lg">
+                Three steps.
+                <br />
+                <em className="text-white/80 italic">One beautiful invoice.</em>
+              </h2>
+            </div>
+            <p className="font-sans text-[1.0625rem] text-white/60 max-w-sm leading-relaxed pb-2">
+              No complex onboarding or endless setup screens. Just straight to the point, so you can get paid faster.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {steps.map((s) => (
-              <div key={s.step} className="landing-step">
-                <div className="landing-step-number">{s.step}</div>
-                <h3 className="landing-step-title">{s.title}</h3>
-                <p className="landing-step-desc">{s.description}</p>
+              <div key={s.step} className="group relative bg-white/[0.02] border border-white/10 rounded-3xl p-10 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden">
+                {/* Large watermark number */}
+                <div className="absolute -right-4 -bottom-10 font-serif text-[12rem] text-white/[0.03] leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500 pointer-events-none">
+                  {s.step}
+                </div>
+                
+                <div className="relative z-10">
+                  <div className="font-serif text-2xl text-[var(--lp-teal)] mb-6 opacity-80">
+                    {s.step}
+                  </div>
+                  <h3 className="font-serif text-[1.65rem] leading-[1.2] mb-4 text-white">
+                    {s.title}
+                  </h3>
+                  <p className="font-sans text-white/60 leading-relaxed text-[0.95rem]">
+                    {s.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
