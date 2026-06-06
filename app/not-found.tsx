@@ -23,7 +23,7 @@ export default function NotFound() {
 
           <p className="landing-hero-sub">
             The link you followed might be broken, or the page may have been moved.
-            Either way, your invoice data is safe — it never leaves your browser.
+            Either way, you can head back home and start fresh.
           </p>
 
           <div className="landing-hero-actions" style={{ marginBottom: 0 }}>

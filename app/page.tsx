@@ -19,7 +19,7 @@ const features = [
     icon: "◈",
     title: "Logo & Branding",
     description:
-      "Upload your logo and customize your business details. Your brand, your invoice. Everything stays on your machine.",
+      "Upload your logo and customize your business details. Your brand, your invoice — saved to your account and ready whenever you need it.",
   },
   {
     icon: "◇",
@@ -31,22 +31,23 @@ const features = [
     icon: "◎",
     title: "Premium Templates",
     description:
-      "Choose from beautiful invoice templates — from clean minimalist to rich editorial. Each one designed for print.",
+      "Start with beautiful free templates. Upgrade to Pro to unlock the full collection — each one designed for print.",
   },
   {
     icon: "⬚",
-    title: "100% Private",
+    title: "Save & Sync",
     description:
-      "No account. No cloud sync. No analytics. Your invoice data never leaves your browser — ever. It's yours alone.",
+      "Every invoice you create is saved to your account. Pick up where you left off, on any device, anytime.",
   },
 ]
 
 const steps = [
   {
     step: "01",
-    title: "Open the editor",
-    description: "No installation, no sign-up. Just click and you're inside a fully working invoice editor.",
+    title: "Create your free account",
+    description: "Free to start ",
   },
+  //5 invoices every month, no credit card. Sign up in seconds and you're inside the editor.
   {
     step: "02",
     title: "Fill in your details",
@@ -71,7 +72,7 @@ const testimonials = [
     role: "Freelance Designer",
   },
   {
-    quote: "Finally something that doesn't require an account just to send an invoice.",
+    quote: "Switched from a bigger invoicing tool last month. Billy is faster, simpler, and the free tier actually covers my needs.",
     author: "Priya K.",
     role: "Startup Founder",
   },
@@ -95,13 +96,13 @@ export default function Home() {
         <div className="landing-ticker-track">
           {Array.from({ length: 3 }).map((_, i) => (
             <span key={i} className="landing-ticker-segment">
-              <span>No sign-up</span>
+              <span>Free to start</span>
               <span className="landing-ticker-dot">✦</span>
-              <span>Works offline</span>
+              <span>Cloud sync</span>
               <span className="landing-ticker-dot">✦</span>
-              <span>100% private</span>
+              <span>Multi-currency</span>
               <span className="landing-ticker-dot">✦</span>
-              <span>Free forever</span>
+              <span>Pro templates</span>
               <span className="landing-ticker-dot">✦</span>
               <span>Export to PDF</span>
               <span className="landing-ticker-dot">✦</span>
@@ -132,7 +133,7 @@ export default function Home() {
         </h1>
 
         <p className="landing-hero-sub">
-          Billy is a direct-manipulation invoice editor that lives entirely in your browser.
+          The direct-manipulation invoice editor for freelancers and small businesses.
           Click a field, type your details, export a beautiful PDF — in under two minutes.
         </p>
 
@@ -245,7 +246,7 @@ export default function Home() {
       <footer className="landing-footer">
         <span className="landing-footer-brand">billy</span>
         <span className="landing-footer-copy">
-          © 2026 · A lightweight invoice editor · All data stays in your browser.
+          © 2026 · The invoice editor for freelancers and small businesses.
         </span>
         <LandingCta variant="footer-link" label="Join the waitlist →" />
       </footer>
