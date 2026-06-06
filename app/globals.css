@@ -127,6 +127,9 @@
   html {
     @apply font-sans;
   }
+  ::selection {
+    background-color: rgba(13, 115, 119, 0.25);
+  }
 }
 
 @layer components {
