@@ -178,7 +178,7 @@ export function WaitlistDialog({ isOpen, onClose }: WaitlistDialogProps) {
               </p>
             ) : (
               <p className="text-[11px] text-[#7C8090]">
-                No spam, ever. One email when we launch.
+                {/* No spam, ever. One email when we launch. */}
               </p>
             )}
           </div>

@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { useWaitlist } from "@/components/waitlist/waitlist-provider"
 
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
+
 export type LandingCtaVariant =
   | "nav-link"
   | "nav-pill"
@@ -32,6 +34,18 @@ const variantClass: Record<LandingCtaVariant, string> = {
 
 export function LandingCta({ variant, label, className }: LandingCtaProps) {
   const { open } = useWaitlist()
+
+  if (variant === "nav-pill") {
+    return (
+      <InteractiveHoverButton
+        type="button"
+        onClick={open}
+        className={className}
+      >
+        {label}
+      </InteractiveHoverButton>
+    )
+  }
 
   return (
     <button
