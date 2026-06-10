@@ -1,3 +1,5 @@
+import { isPaywallEnabled } from "./config"
+
 export const PAID_TEMPLATES = ["minimal-teal"]
 
 export const FREE_TEMPLATES = ["clean", "modern-green", "corporate-blue"]
@@ -34,6 +36,9 @@ export function isTemplateAccessible(
   templateId: string,
   effectivePlan: string,
 ): boolean {
+  if (!isPaywallEnabled()) {
+    return true
+  }
   if (PAID_TEMPLATES.includes(templateId)) {
     return effectivePlan === "pro"
   }
@@ -44,6 +49,9 @@ export function canCreateInvoice(
   profile: PlanInfo,
   effectivePlan: string,
 ): { allowed: boolean; reason?: string } {
+  if (!isPaywallEnabled()) {
+    return { allowed: true }
+  }
   if (effectivePlan === "pro") {
     return { allowed: true }
   }
@@ -67,5 +75,8 @@ export function canCreateInvoice(
 }
 
 export function hasGstAccess(effectivePlan: string): boolean {
+  if (!isPaywallEnabled()) {
+    return true
+  }
   return effectivePlan === "pro"
 }

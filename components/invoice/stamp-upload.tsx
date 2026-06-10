@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from "react"
+import posthog from "posthog-js"
 
 export interface StampUploadProps {
   stampUrl: string | null
@@ -21,6 +22,7 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
       const result = reader.result
       if (typeof result === "string") {
         onChange(result)
+        posthog.capture("stamp_uploaded")
       }
     }
     reader.readAsDataURL(file)

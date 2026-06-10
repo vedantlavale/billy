@@ -3,6 +3,14 @@ import { updateSession } from "@/lib/supabase/proxy"
 
 const publicPaths = ["/login", "/signup", "/auth/callback"]
 
+function addSecurityHeaders(response: Response): Response {
+  response.headers.set("X-Frame-Options", "DENY")
+  response.headers.set("X-Content-Type-Options", "nosniff")
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
+  response.headers.set("X-XSS-Protection", "1; mode=block")
+  return response
+}
+
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
@@ -18,14 +26,14 @@ export async function proxy(request: NextRequest) {
   if (isDashboard && !user) {
     const loginUrl = new URL("/login", request.url)
     loginUrl.searchParams.set("redirect", pathname)
-    return Response.redirect(loginUrl)
+    return addSecurityHeaders(Response.redirect(loginUrl))
   }
 
   if (isPublic && user) {
-    return Response.redirect(new URL("/editor", request.url))
+    return addSecurityHeaders(Response.redirect(new URL("/editor", request.url)))
   }
 
-  return supabaseResponse
+  return addSecurityHeaders(supabaseResponse)
 }
 
 export const config = {

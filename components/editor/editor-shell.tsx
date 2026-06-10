@@ -30,6 +30,7 @@ export function EditorShell({ children }: EditorShellProps) {
       setSession(session)
       if (session?.user) {
         posthog.identify(session.user.id, { email: session.user.email })
+        posthog.capture("editor_opened")
         supabase
           .from("profiles")
           .select("*")

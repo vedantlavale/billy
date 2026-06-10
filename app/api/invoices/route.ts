@@ -15,9 +15,10 @@ export async function GET() {
       return NextResponse.json({ error: "Auth required" }, { status: 401 })
     }
 
+    // Explicit select columns to optimize queries
     const { data: invoices, error } = await supabase
       .from("invoices")
-      .select("*")
+      .select("id, user_id, template_id, data, status, created_at")
       .order("created_at", { ascending: false })
 
     if (error) throw error
@@ -79,6 +80,17 @@ export async function POST(request: Request) {
         )
       }
 
+      const posthog = getPostHogClient()
+      posthog.capture({
+        distinctId: user.id,
+        event: "invoice_updated",
+        properties: {
+          template_id: invoiceData.templateId || "clean",
+          plan: effective.plan,
+          invoice_number: invoiceData?.invoiceNumber,
+        },
+      })
+
       return NextResponse.json({ success: true, invoice: data[0] })
     } else {
       // Create new invoice: Check limits first
@@ -103,14 +115,21 @@ export async function POST(request: Request) {
 
       if (error) throw error
 
-      // Increment count
-      const newCount = (profile.invoice_count || 0) + 1
-      await supabase
-        .from("profiles")
-        .update({ invoice_count: newCount })
-        .eq("id", user.id)
+      // Increment count atomically
+      await supabase.rpc("increment_invoice_count", {
+        target_user_id: user.id,
+      })
 
       const posthog = getPostHogClient()
+      posthog.capture({
+        distinctId: user.id,
+        event: "invoice_created",
+        properties: {
+          template_id: invoiceData.templateId || "clean",
+          plan: effective.plan,
+          invoice_number: invoiceData?.invoiceNumber,
+        },
+      })
       posthog.capture({
         distinctId: user.id,
         event: "invoice_saved",

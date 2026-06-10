@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { ImageUpload01Icon } from "@hugeicons/core-free-icons"
 
 import { cn } from "@/lib/utils"
+import posthog from "posthog-js"
 
 export interface LogoUploadProps {
   logoUrl: string | null
@@ -26,6 +27,7 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
       const result = reader.result
       if (typeof result === "string") {
         onChange(result)
+        posthog.capture("logo_uploaded")
       }
     }
     reader.readAsDataURL(file)
