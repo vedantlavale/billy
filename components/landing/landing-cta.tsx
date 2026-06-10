@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-
-import { useWaitlist } from "@/components/waitlist/waitlist-provider"
+import { useRouter } from "next/navigation"
 
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 
@@ -33,13 +32,16 @@ const variantClass: Record<LandingCtaVariant, string> = {
 }
 
 export function LandingCta({ variant, label, className }: LandingCtaProps) {
-  const { open } = useWaitlist()
+  const router = useRouter()
+  const handleClick = () => {
+    router.push("/signup")
+  }
 
   if (variant === "nav-pill") {
     return (
       <InteractiveHoverButton
         type="button"
-        onClick={open}
+        onClick={handleClick}
         className={className}
       >
         {label}
@@ -50,7 +52,7 @@ export function LandingCta({ variant, label, className }: LandingCtaProps) {
   return (
     <button
       type="button"
-      onClick={open}
+      onClick={handleClick}
       className={`${baseReset} ${variantClass[variant]} ${className ?? ""}`}
     >
       {label}

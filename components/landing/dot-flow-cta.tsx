@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 
 import { DotFlow, type DotFlowProps } from "@/components/ui/dot-flow"
-import { useWaitlist } from "@/components/waitlist/waitlist-provider"
 
 const items: DotFlowProps["items"] = [
   {
-    title: "Join the waitlist",
+    title: "Create free account",
     frames: [
       [0, 2, 4, 6, 20, 34, 48, 46, 44, 42, 28, 14, 8, 22, 36, 38, 40, 26, 12, 10, 16, 30, 24, 18, 32],
       [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47],
@@ -26,7 +26,7 @@ const items: DotFlowProps["items"] = [
     duration: 200,
   },
   {
-    title: "Get early access",
+    title: "Get instant access",
     frames: [
       [45, 38, 31, 24, 17, 23, 25],
       [38, 31, 24, 17, 10, 16, 18],
@@ -45,7 +45,7 @@ const items: DotFlowProps["items"] = [
     duration: 100,
   },
   {
-    title: "Be first in line",
+    title: "Start invoicing now",
     frames: [
       [9, 16, 17, 15, 23],
       [10, 17, 18, 16, 24],
@@ -65,13 +65,16 @@ const items: DotFlowProps["items"] = [
 ]
 
 export function DotFlowCta() {
-  const { open } = useWaitlist()
+  const router = useRouter()
+  const handleClick = () => {
+    router.push("/signup")
+  }
 
   return (
     <button
       type="button"
-      onClick={open}
-      aria-label="Join the billy waitlist"
+      onClick={handleClick}
+      aria-label="Create a free account on billy"
       className="group/dotflow inline-block cursor-pointer appearance-none border-0 bg-transparent p-0 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D7377]"
     >
       <span className="block transition-shadow duration-200 group-hover/dotflow:shadow-[0_12px_40px_rgba(0,0,0,0.35)]">

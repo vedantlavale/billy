@@ -1,3 +1,3 @@
-export const WAITLIST_MODE = true
+export const PAYWALL_ENABLED = process.env.NEXT_PUBLIC_PAYWALL_ENABLED === "true"
 
-export const isWaitlistMode = () => WAITLIST_MODE
+export const isPaywallEnabled = () => PAYWALL_ENABLED

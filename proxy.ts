@@ -1,24 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { updateSession } from "@/lib/supabase/proxy"
-import { isWaitlistMode } from "@/lib/config"
 
 const publicPaths = ["/login", "/signup", "/auth/callback"]
-
-function isPathAllowedDuringWaitlist(pathname: string): boolean {
-  if (pathname === "/") return true
-  if (pathname.startsWith("/api/waitlist")) return true
-  return false
-}
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   if (pathname.startsWith("/api/metrics")) {
     return NextResponse.next()
-  }
-
-  if (isWaitlistMode() && !isPathAllowedDuringWaitlist(pathname)) {
-    return Response.redirect(new URL("/", request.url))
   }
 
   const { supabaseResponse, user } = await updateSession(request)
@@ -33,8 +22,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isPublic && user) {
-    const target = isWaitlistMode() ? "/" : "/editor"
-    return Response.redirect(new URL(target, request.url))
+    return Response.redirect(new URL("/editor", request.url))
   }
 
   return supabaseResponse

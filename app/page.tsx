@@ -4,7 +4,6 @@ import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern
 import { DrawLineText } from "@/components/ui/draw-line-text"
 import { DotFlowCta } from "@/components/landing/dot-flow-cta"
 import { LandingCta } from "@/components/landing/landing-cta"
-import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
 import { FaqAccordion } from "@/components/ui/faq-accordion"
 
 const features = [
@@ -95,8 +94,7 @@ const faqs = [
 
 export default function Home() {
   return (
-    <WaitlistProvider>
-      <main className="landing-page flex min-h-dvh flex-col">
+    <main className="landing-page flex min-h-dvh flex-col">
         {/* ── Nav ── */}
         <header className="sticky top-0 z-50 w-full pt-6 pb-4 px-4 sm:px-6 flex justify-center pointer-events-none">
           <nav className="pointer-events-auto flex items-center justify-between px-3 py-3 pr-4 rounded-full bg-[rgba(250,250,247,0.7)] backdrop-blur-xl border border-[var(--lp-border)] shadow-[0_8px_32px_rgba(14,17,23,0.04)] w-full max-w-5xl transition-all">
@@ -111,8 +109,8 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <a href="#" className="hidden sm:block text-[13px] font-medium text-[var(--lp-ink-2)] font-sans hover:text-[var(--lp-ink)] transition-colors pr-2">Sign in</a>
-              <LandingCta variant="nav-pill" label="Join the waitlist" className="!px-5 !py-2.5 !text-[13px] shadow-sm" />
+              <a href="/login" className="hidden sm:block text-[13px] font-medium text-[var(--lp-ink-2)] font-sans hover:text-[var(--lp-ink)] transition-colors pr-2">Sign in</a>
+              <LandingCta variant="nav-pill" label="Start free" className="!px-5 !py-2.5 !text-[13px] shadow-sm" />
             </div>
           </nav>
         </header>
@@ -288,8 +286,8 @@ export default function Home() {
                   before signing up.
                 </h2>
                 <p className="landing-section-sub mt-4">
-                  Quick answers to the most-asked questions. Still curious? Join the
-                  waitlist and we&apos;ll be in touch.
+                  Quick answers to the most-asked questions. Still curious? Create a free
+                  account and try it today.
                 </p>
               </div>
 
@@ -333,10 +331,9 @@ export default function Home() {
                 <em>ready in minutes.</em>
               </h2>
               <p className="landing-cta-sub max-w-lg mx-auto" style={{ fontSize: "1.125rem", color: "rgba(255,255,255,0.8)", marginBottom: "2.5rem" }}>
-                We&apos;re putting the finishing touches on billy. Drop your email
-                and we&apos;ll let you know the moment we open the doors.
+                Sign up in seconds to start creating, saving, and exporting pixel-perfect invoices.
                 <br />
-                No spam, no credit card, no wait — just first in line.
+                No credit card, no hassle — completely free during alpha.
               </p>
               <DotFlowCta />
             </div>
@@ -360,7 +357,7 @@ export default function Home() {
                   <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Features</a>
                   <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Templates</a>
                   <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Pricing</a>
-                  <a href="#" className="hover:text-[var(--lp-teal)] transition-colors">Waitlist</a>
+                  <a href="/signup" className="hover:text-[var(--lp-teal)] transition-colors">Sign up</a>
                 </div>
                 <div className="flex flex-col gap-4">
                   <span className="font-sans font-bold text-[var(--lp-ink)] uppercase tracking-[0.15em] text-[0.6875rem]">Company</span>
@@ -381,6 +378,5 @@ export default function Home() {
           </div>
         </footer>
       </main>
-    </WaitlistProvider>
   )
 }
