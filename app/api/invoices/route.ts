@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { resolveEffectivePlan, canCreateInvoice } from "@/lib/plans"
 import { getPostHogClient } from "@/lib/posthog-server"
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createClient()
 
@@ -15,10 +15,30 @@ export async function GET() {
       return NextResponse.json({ error: "Auth required" }, { status: 401 })
     }
 
+    const id = new URL(request.url).searchParams.get("id")
+
+    // Single-invoice fetch (used by the editor to load /editor?id=<id>)
+    if (id) {
+      const { data: invoice, error } = await supabase
+        .from("invoices")
+        .select("id, user_id, template_id, data, status, created_at")
+        .eq("id", id)
+        .eq("user_id", user.id)
+        .maybeSingle()
+
+      if (error) throw error
+      if (!invoice) {
+        return NextResponse.json({ error: "Invoice not found" }, { status: 404 })
+      }
+
+      return NextResponse.json({ invoice })
+    }
+
     // Explicit select columns to optimize queries
     const { data: invoices, error } = await supabase
       .from("invoices")
       .select("id, user_id, template_id, data, status, created_at")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
 
     if (error) throw error
