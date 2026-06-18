@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { ImageUpload01Icon } from "@hugeicons/core-free-icons"
 
 import { cn } from "@/lib/utils"
+import { MorphingSquare } from "@/components/ui/morphing-square"
 import { useReadOnly } from "@/components/invoice/render-mode"
 import { uploadInvoiceAsset } from "@/lib/supabase/storage"
 import posthog from "posthog-js"
@@ -81,11 +82,8 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
           <HugeiconsIcon icon={ImageUpload01Icon} size={26} />
         )}
         {uploading ? (
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-white">
-            <svg className="animate-spin" width="20" height="20" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.25" />
-              <path d="M14 8a6 6 0 0 1-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">
+            <MorphingSquare className="w-5 h-5 [&>div:last-child]:text-white" />
           </span>
         ) : (
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">

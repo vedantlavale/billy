@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { OnboardingModal } from "@/components/onboarding/OnboardingModal"
 import { professionPresets } from "@/lib/presets"
 import { AuthProvider } from "@/lib/auth-context"
+import { MorphingSquare } from "@/components/ui/morphing-square"
 import posthog from "posthog-js"
 
 interface EditorShellProps {
@@ -87,7 +88,11 @@ export function EditorShell({ children }: EditorShellProps) {
   const showOnboarding =
     isAuthenticated && profile && !profile.onboarding_completed
 
-  if (loading) return <>{children}</>
+  if (loading) return (
+    <div className="flex min-h-dvh items-center justify-center">
+      <MorphingSquare />
+    </div>
+  )
 
   return (
     <AuthProvider value={{ isAuthenticated, user: session?.user, profile }}>

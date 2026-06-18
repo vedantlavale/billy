@@ -2,12 +2,15 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { DropdownMenu } from "radix-ui"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { PrinterIcon, Refresh01Icon } from "@hugeicons/core-free-icons"
 import { useAuth } from "@/lib/auth-context"
 import { signOut } from "@/app/auth/actions"
 
+import {
+  UserDropdown,
+  type UserDropdownAction,
+} from "@/components/ui/user-dropdown"
 import { CurrencySelect } from "@/components/invoice/currency-select"
 import { TemplateSelector } from "@/components/invoice/template-selector"
 import { renderInvoiceDocument } from "@/lib/render-invoice-document"
@@ -80,62 +83,91 @@ async function clientSidePrint(data: InvoiceData) {
   }, 60000)
 }
 
-function getUserInitial(user: { email?: string; user_metadata?: { full_name?: string } }) {
-  const source = user?.user_metadata?.full_name || user?.email || ""
-  const initial = source.trim().charAt(0).toUpperCase()
-  return initial || "?"
+function getUserDisplayName(user: {
+  email?: string
+  user_metadata?: {
+    full_name?: string
+    name?: string
+    user_name?: string
+    preferred_username?: string
+  }
+}) {
+  return (
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email?.split("@")[0] ||
+    "Billy user"
+  )
+}
+
+function getUserInitials(name: string, email?: string) {
+  const source = name || email || ""
+  const parts = source.trim().split(/\s+/).filter(Boolean)
+
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  }
+
+  return source.trim().charAt(0).toUpperCase() || "?"
+}
+
+function getUserAvatar(user: {
+  user_metadata?: {
+    avatar_url?: string
+    picture?: string
+  }
+}) {
+  return user.user_metadata?.avatar_url || user.user_metadata?.picture || null
 }
 
 function AuthControls() {
   const { isAuthenticated, user } = useAuth()
   const [signingOut, setSigningOut] = React.useState(false)
 
+  const handleAction = async (action: UserDropdownAction) => {
+    if (action === "dashboard") {
+      return
+    }
+
+    if (action === "upgrade") {
+      try {
+        const response = await fetch("/api/billing/checkout", {
+          method: "POST",
+        })
+        const data = await response.json()
+
+        if (!response.ok || !data.url) {
+          alert(data.error || "Unable to start checkout.")
+          return
+        }
+
+        window.location.assign(data.url)
+      } catch {
+        alert("Unable to start checkout.")
+      }
+      return
+    }
+
+    if (action === "logout") {
+      setSigningOut(true)
+      await signOut()
+    }
+  }
+
   if (isAuthenticated && user) {
+    const displayName = getUserDisplayName(user)
+
     return (
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger asChild>
-          <button
-            type="button"
-            aria-label="Account menu"
-            className="nav-avatar"
-          >
-            {getUserInitial(user)}
-          </button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Portal>
-          <DropdownMenu.Content
-            align="end"
-            sideOffset={10}
-            className="nav-menu z-50 min-w-[210px] p-1.5 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2"
-          >
-            <div className="px-2.5 pb-1.5 pt-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--invoice-subtle)]">
-                Signed in as
-              </p>
-              <p className="truncate text-xs font-medium text-[var(--invoice-ink)]">
-                {user.email}
-              </p>
-            </div>
-            <div className="my-1 h-px bg-[var(--invoice-panel-border)] opacity-60" />
-            <DropdownMenu.Item asChild>
-              <Link href="/dashboard" className="nav-menu-item">
-                Dashboard
-              </Link>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              className="nav-menu-item text-[var(--invoice-muted)]"
-              disabled={signingOut}
-              onSelect={async (event) => {
-                event.preventDefault()
-                setSigningOut(true)
-                await signOut()
-              }}
-            >
-              {signingOut ? "Signing out…" : "Sign out"}
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Portal>
-      </DropdownMenu.Root>
+      <UserDropdown
+        user={{
+          name: displayName,
+          email: user.email || "",
+          avatar: getUserAvatar(user),
+          initials: getUserInitials(displayName, user.email),
+        }}
+        signingOut={signingOut}
+        onAction={handleAction}
+      />
     )
   }
 

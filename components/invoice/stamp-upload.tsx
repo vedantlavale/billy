@@ -4,6 +4,7 @@ import * as React from "react"
 import posthog from "posthog-js"
 
 import { useReadOnly } from "@/components/invoice/render-mode"
+import { MorphingSquare } from "@/components/ui/morphing-square"
 import { uploadInvoiceAsset } from "@/lib/supabase/storage"
 
 export interface StampUploadProps {
@@ -89,11 +90,8 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
             </svg>
           )}
           {uploading ? (
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-white">
-              <svg className="animate-spin" width="22" height="22" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.25" />
-                <path d="M14 8a6 6 0 0 1-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">
+              <MorphingSquare className="w-5 h-5 [&>div:last-child]:text-white" />
             </span>
           ) : (
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">

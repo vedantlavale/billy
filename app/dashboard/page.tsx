@@ -3,12 +3,18 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import type { Session, User } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client"
 import { calculateTotals, formatCurrency } from "@/lib/invoice"
 import { signOut } from "@/app/auth/actions"
 import type { InvoiceData } from "@/lib/types"
 import { useToast } from "@/components/ui/toast"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import { MorphingSquare } from "@/components/ui/morphing-square"
+import {
+  UserDropdown,
+  type UserDropdownAction,
+} from "@/components/ui/user-dropdown"
 import posthog from "posthog-js"
 
 interface DatabaseInvoice {
@@ -20,11 +26,48 @@ interface DatabaseInvoice {
   created_at: string
 }
 
+interface Profile {
+  plan?: string | null
+  invoice_count?: number | null
+}
+
+function getUserDisplayName(user: User) {
+  return (
+    (typeof user.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name
+      : null) ||
+    (typeof user.user_metadata?.name === "string" ? user.user_metadata.name : null) ||
+    user.email?.split("@")[0] ||
+    "Billy user"
+  )
+}
+
+function getUserInitials(name: string, email?: string) {
+  const source = name || email || ""
+  const parts = source.trim().split(/\s+/).filter(Boolean)
+
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  }
+
+  return source.trim().charAt(0).toUpperCase() || "?"
+}
+
+function getUserAvatar(user: User) {
+  const avatarUrl = user.user_metadata?.avatar_url
+  const picture = user.user_metadata?.picture
+
+  return (
+    (typeof avatarUrl === "string" ? avatarUrl : null) ||
+    (typeof picture === "string" ? picture : null)
+  )
+}
+
 export default function DashboardPage() {
   const router = useRouter()
   const { toast } = useToast()
-  const [session, setSession] = React.useState<any>(null)
-  const [profile, setProfile] = React.useState<any>(null)
+  const [session, setSession] = React.useState<Session | null>(null)
+  const [profile, setProfile] = React.useState<Profile | null>(null)
   const [invoices, setInvoices] = React.useState<DatabaseInvoice[]>([])
   const [loading, setLoading] = React.useState(true)
   const [signingOut, setSigningOut] = React.useState(false)
@@ -40,6 +83,34 @@ export default function DashboardPage() {
   const [actionInProgress, setActionInProgress] = React.useState<string | null>(null) // Tracks row ID currently performing an async action (e.g. PDF generation, duplicate, delete)
 
   const supabase = React.useMemo(() => createClient(), [])
+
+  const fetchUserData = React.useCallback(
+    async (userId: string) => {
+      try {
+        // Fetch Profile
+        const { data: profileData, error: profileErr } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .single()
+
+        if (profileErr) throw profileErr
+        setProfile(profileData)
+
+        // Fetch invoices via the API, which strips the heavy base64 logo/stamp
+        // images the list view never renders (keeps the payload small/fast).
+        const invoiceRes = await fetch("/api/invoices")
+        if (!invoiceRes.ok) throw new Error("Failed to load invoices")
+        const { invoices: invoiceData } = await invoiceRes.json()
+        setInvoices(invoiceData || [])
+      } catch (err) {
+        console.error("Error loading dashboard data:", err)
+      } finally {
+        setLoading(false)
+      }
+    },
+    [supabase]
+  )
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,36 +133,36 @@ export default function DashboardPage() {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase, router])
+  }, [supabase, router, fetchUserData])
 
-  const fetchUserData = async (userId: string) => {
-    try {
-      // Fetch Profile
-      const { data: profileData, error: profileErr } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single()
-
-      if (profileErr) throw profileErr
-      setProfile(profileData)
-
-      // Fetch invoices via the API, which strips the heavy base64 logo/stamp
-      // images the list view never renders (keeps the payload small/fast).
-      const invoiceRes = await fetch("/api/invoices")
-      if (!invoiceRes.ok) throw new Error("Failed to load invoices")
-      const { invoices: invoiceData } = await invoiceRes.json()
-      setInvoices(invoiceData || [])
-    } catch (err) {
-      console.error("Error loading dashboard data:", err)
-    } finally {
-      setLoading(false)
+  const handleUserDropdownAction = async (action: UserDropdownAction) => {
+    if (action === "dashboard") {
+      return
     }
-  };
 
-  const handleSignOut = async () => {
-    setSigningOut(true)
-    await signOut()
+    if (action === "upgrade") {
+      try {
+        const response = await fetch("/api/billing/checkout", {
+          method: "POST",
+        })
+        const data = await response.json()
+
+        if (!response.ok || !data.url) {
+          toast(data.error || "Unable to start checkout.", "error")
+          return
+        }
+
+        window.location.assign(data.url)
+      } catch {
+        toast("Unable to start checkout.", "error")
+      }
+      return
+    }
+
+    if (action === "logout") {
+      setSigningOut(true)
+      await signOut()
+    }
   }
 
   const handleDelete = (invoiceId: string, invoiceNumber: string) => {
@@ -155,7 +226,7 @@ export default function DashboardPage() {
         invoiceNumber: `${fullInvoice.data.invoiceNumber || "INV"}-COPY`,
         invoiceDate: new Date().toISOString().slice(0, 10),
       }
-      delete (duplicatedData as any).id
+      delete duplicatedData.id
 
       const response = await fetch("/api/invoices", {
         method: "POST",
@@ -321,11 +392,7 @@ export default function DashboardPage() {
         className="flex min-h-dvh flex-col items-center justify-center bg-[#FAFAF7]"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}
       >
-        <svg className="animate-spin text-[#0D7377]" width="32" height="32" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.25" />
-          <path d="M14 8a6 6 0 0 1-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-        <span className="mt-4 text-sm font-medium text-[#3A3F4B]">Loading your dashboard...</span>
+        <MorphingSquare message="Loading your dashboard..." className="w-8 h-8" />
       </div>
     )
   }
@@ -333,6 +400,7 @@ export default function DashboardPage() {
   const freeInvoicesUsed = profile?.invoice_count || 0
   const freeLimit = 5
   const limitPercent = Math.min((freeInvoicesUsed / freeLimit) * 100, 100)
+  const displayName = session?.user ? getUserDisplayName(session.user) : ""
 
   return (
     <main
@@ -362,16 +430,18 @@ export default function DashboardPage() {
               Open Editor
             </Link>
             <span className="h-4 w-px bg-[#E4E4DC]" />
-            <div className="flex items-center gap-3">
-              <span className="hidden text-xs text-[#3A3F4B] md:inline">{session?.user?.email}</span>
-              <button
-                onClick={handleSignOut}
-                disabled={signingOut}
-                className="rounded-md bg-[#0E1117] px-3.5 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-              >
-                {signingOut ? "Signing out..." : "Sign out"}
-              </button>
-            </div>
+            {session?.user && (
+              <UserDropdown
+                user={{
+                  name: displayName,
+                  email: session.user.email || "",
+                  avatar: getUserAvatar(session.user),
+                  initials: getUserInitials(displayName, session.user.email),
+                }}
+                signingOut={signingOut}
+                onAction={handleUserDropdownAction}
+              />
+            )}
           </div>
         </div>
       </nav>
@@ -631,10 +701,7 @@ export default function DashboardPage() {
                             title="Download PDF"
                           >
                             {isBusy ? (
-                              <svg className="animate-spin size-4" viewBox="0 0 16 16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.25" />
-                                <path d="M14 8a6 6 0 0 1-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                              </svg>
+                              <MorphingSquare className="size-4" />
                             ) : (
                               <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
