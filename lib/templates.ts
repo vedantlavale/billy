@@ -47,6 +47,24 @@ export const TEMPLATES: Template[] = [
     cssFontFamily: THEME_TOKENS["corporate-blue"].cssFontFamily,
     colors: THEME_TOKENS["corporate-blue"].colors,
   },
+  {
+    id: "mono-classic",
+    name: "Mono Classic",
+    description: "Simple, black and white professional structure.",
+    pro: false,
+    fontFamily: "'Inter', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS["mono-classic"].cssFontFamily,
+    colors: THEME_TOKENS["mono-classic"].colors,
+  },
+  {
+    id: "mono-elegant",
+    name: "Mono Elegant",
+    description: "Elegant black and white design with serif typography.",
+    pro: false,
+    fontFamily: "'Instrument Serif', serif",
+    cssFontFamily: THEME_TOKENS["mono-elegant"].cssFontFamily,
+    colors: THEME_TOKENS["mono-elegant"].colors,
+  },
 ]
 
 export function getTemplate(id: string): Template {
@@ -334,6 +352,235 @@ export function getPdfTemplateCss(id: string): string {
       }
       .footer .label, .footer .text {
         color: white;
+      }
+    `
+  } else if (id === "mono-classic") {
+    templateSpecificCss = `
+      .top {
+        border-bottom: 1px solid #000;
+        padding-bottom: 24px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .business {
+        margin-top: 24px;
+        color: #000;
+        text-align: left;
+      }
+      .top::after {
+        content: "INVOICE";
+        font-size: 36px;
+        font-weight: 500;
+        color: #000;
+        letter-spacing: -1px;
+        display: block;
+        margin-top: 12px;
+        line-height: 1;
+        text-align: left;
+      }
+      .page { display: block; }
+      .client-grid {
+        width: 45%;
+        border-bottom: none;
+        padding-top: 8px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+        float: none;
+        text-align: left;
+      }
+      .client-grid > div {
+        border: none;
+      }
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, auto) !important;
+        gap: 32px;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000 !important;
+        margin-top: 24px;
+        padding: 16px 0;
+        clear: both;
+        width: fit-content;
+      }
+      .meta-grid > div {
+        padding: 0 12px;
+        border: none !important;
+      }
+      .label {
+        color: #000;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      th {
+        background: transparent;
+        color: #000;
+        padding: 12px;
+        border-bottom: 1px solid #000;
+        text-align: left;
+      }
+      th.numeric {
+        text-align: right;
+      }
+      td {
+        border-bottom: 1px solid #000;
+        padding: 16px 12px;
+      }
+      table {
+        margin-top: 24px;
+        border-bottom: none !important;
+      }
+      .totals {
+        margin-top: 24px;
+        display: flex;
+        justify-content: flex-start;
+      }
+      .totals-box {
+        padding: 16px;
+        width: 280px;
+        border-top: none;
+      }
+      .grand-total {
+        background: transparent;
+        color: #000;
+        padding: 12px 0;
+        margin-top: 12px;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+      .grand-total * { color: #000 !important; }
+      .footer {
+        border-top: 1px solid #000;
+        padding-top: 16px;
+        margin-top: 48px;
+        color: #000;
+        text-align: left;
+      }
+    `
+  } else if (id === "mono-elegant") {
+    templateSpecificCss = `
+      .top {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        padding: 24px 0;
+        margin-bottom: 32px;
+      }
+      .top::before {
+        content: "INVOICE";
+        font-family: 'Instrument Serif', serif;
+        font-size: 40px;
+        letter-spacing: 2px;
+        grid-column: 1;
+        color: #000;
+      }
+      .brand {
+        grid-column: 2;
+        justify-self: center;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .brand h1 {
+        font-family: 'Instrument Serif', serif;
+        font-size: 18px;
+        font-weight: 400;
+        margin-top: 8px;
+      }
+      .brand .tagline {
+        font-family: 'Instrument Serif', serif;
+        font-style: italic;
+      }
+      .business {
+        grid-column: 3;
+        text-align: right;
+        font-family: 'Inter', sans-serif;
+      }
+      .client-grid {
+        border-bottom: none;
+        padding: 0;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+      .client-grid .label {
+        font-family: 'Inter', sans-serif;
+        font-size: 9px;
+        letter-spacing: 2px;
+      }
+      .client-grid .value {
+        font-family: 'Instrument Serif', serif;
+        font-size: 18px;
+        color: #000;
+      }
+      .meta-grid {
+        display: flex;
+        justify-content: space-around;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000 !important;
+        padding: 16px 0;
+        margin-bottom: 32px;
+      }
+      .meta-grid > div {
+        text-align: center;
+        border: none !important;
+      }
+      .meta-grid .label {
+        font-family: 'Inter', sans-serif;
+        font-size: 9px;
+        letter-spacing: 2px;
+      }
+      .meta-grid .value {
+        font-family: 'Instrument Serif', serif;
+        font-size: 12px;
+        color: #000;
+      }
+      table {
+        border-top: 1px solid #000;
+      }
+      th {
+        background: transparent;
+        color: #000;
+        border-bottom: 1px solid #000;
+        font-size: 10px;
+        padding: 16px 8px;
+      }
+      td {
+        border-bottom: 1px solid #e5e5e5;
+        padding: 16px 8px;
+      }
+      .totals {
+        margin-top: 32px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .totals-box {
+        border-top: 1px solid #000;
+        padding-top: 16px;
+        width: 300px;
+      }
+      .grand-total {
+        background: transparent;
+        color: #000;
+        border-top: 1px solid #000;
+        padding: 16px 0;
+        font-family: 'Instrument Serif', serif;
+        font-size: 20px;
+        font-weight: 400;
+      }
+      .grand-total * { color: #000; }
+      .footer {
+        text-align: center;
+        border-top: 1px solid #000;
+        margin-top: 64px;
+        padding-top: 24px;
       }
     `
   }

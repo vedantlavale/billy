@@ -17,7 +17,7 @@ export function TotalsSection() {
   const taxLabel = state.taxLabel || "Tax"
 
   return (
-    <section className="totals-section flex flex-col gap-4 border-t border-slate-200 pt-6">
+    <section data-break-block className="totals-section flex flex-col gap-4 border-t border-slate-200 pt-6">
       <div className="totals-box ml-auto w-full max-w-xs space-y-3 text-sm text-slate-600">
         <div className="total-row flex items-center justify-between">
           <span>Subtotal</span>

@@ -40,10 +40,20 @@ export async function GET(request: Request) {
       .select("id, user_id, template_id, data, status, created_at")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
+      .limit(20)
 
     if (error) throw error
 
-    return NextResponse.json({ invoices })
+    // Strip the heavy base64 logo/stamp images from the list payload — the
+    // dashboard never renders them, and including them bloats the response to
+    // multiple MB (slow download for users with many invoices). The full data
+    // (with images) is still available via the single-invoice fetch above.
+    const slimInvoices = (invoices || []).map((invoice) => {
+      const { logoUrl, stampUrl, ...slimData } = invoice.data || {}
+      return { ...invoice, data: slimData }
+    })
+
+    return NextResponse.json({ invoices: slimInvoices })
   } catch (err: any) {
     console.error("GET invoices error:", err)
     return NextResponse.json({ error: err.message || "Failed to load invoices" }, { status: 500 })

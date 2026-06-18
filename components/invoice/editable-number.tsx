@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { formatCurrency, formatNumber } from "@/lib/invoice"
 import { cn } from "@/lib/utils"
+import { useReadOnly } from "@/components/invoice/render-mode"
 
 export interface EditableNumberProps {
   value: number
@@ -30,6 +31,7 @@ export function EditableNumber({
   inputClassName,
   ariaLabel,
 }: EditableNumberProps) {
+  const readOnly = useReadOnly()
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(String(value))
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -105,10 +107,24 @@ export function EditableNumber({
     }
   }
 
-  if (!isEditing) {
+  if (readOnly || !isEditing) {
     const displayValue = currency
       ? formatCurrency(value, currency, decimals)
       : formatNumber(value, decimals)
+
+    if (readOnly) {
+      return (
+        <span
+          className={cn(
+            "inline-flex min-w-[3ch] items-baseline justify-end text-right font-mono",
+            className
+          )}
+          aria-label={ariaLabel}
+        >
+          {displayValue}
+        </span>
+      )
+    }
 
     return (
       <span

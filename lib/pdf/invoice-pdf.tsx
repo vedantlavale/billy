@@ -6,6 +6,8 @@ import { CleanPage } from "./templates/clean"
 import { MinimalTealPage } from "./templates/minimal-teal"
 import { ModernGreenPage } from "./templates/modern-green"
 import { CorporateBluePage } from "./templates/corporate-blue"
+import { MonoClassicPage } from "./templates/mono-classic"
+import { MonoElegantPage } from "./templates/mono-elegant"
 
 // ─── Font registration ────────────────────────────────────────────────────────
 const fp = (f: string) => path.join(process.cwd(), "public", "fonts", f)
@@ -65,6 +67,12 @@ export function InvoicePDF({ data }: { data: InvoiceData }) {
       break
     case "corporate-blue":
       page = <CorporateBluePage data={data} />
+      break
+    case "mono-classic":
+      page = <MonoClassicPage data={data} />
+      break
+    case "mono-elegant":
+      page = <MonoElegantPage data={data} />
       break
     default:
       page = <CleanPage data={data} />

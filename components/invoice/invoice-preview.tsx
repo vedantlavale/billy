@@ -1,19 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { useInvoiceState } from "@/components/invoice/invoice-context"
-import { renderInvoiceDocument } from "@/lib/render-invoice-document"
+import { InvoicePage } from "@/components/invoice/invoice-page"
+import { RenderModeProvider } from "@/components/invoice/render-mode"
 
-const A4_RATIO = 297 / 210
 const A4_WIDTH = 794
 
 export function InvoicePreview() {
-  const state = useInvoiceState()
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const pageRef = React.useRef<HTMLElement>(null)
   const [scale, setScale] = React.useState(1)
+  const [pageHeight, setPageHeight] = React.useState(1123)
 
-  const html = React.useMemo(() => renderInvoiceDocument(state), [state])
-
+  // Scale the A4 page to fit the available preview width.
   React.useEffect(() => {
     const container = containerRef.current
     if (!container) return
@@ -26,6 +25,22 @@ export function InvoicePreview() {
     })
 
     observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  // Track the real rendered page height so the scaled wrapper reserves the
+  // correct space (content can exceed one A4 page).
+  React.useEffect(() => {
+    const page = pageRef.current
+    if (!page) return
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setPageHeight(entry.contentRect.height)
+      }
+    })
+
+    observer.observe(page)
     return () => observer.disconnect()
   }, [])
 
@@ -55,31 +70,22 @@ export function InvoicePreview() {
           <div
             style={{
               width: A4_WIDTH * scale,
-              height: A4_WIDTH * A4_RATIO * scale,
-              boxShadow: "0 4px 24px rgba(0,0,0,0.1)",
-              borderRadius: 4,
-              overflow: "hidden",
+              height: pageHeight * scale,
+              position: "relative",
             }}
           >
-            <div
-              style={{
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                width: A4_WIDTH,
-                height: A4_WIDTH * A4_RATIO,
-              }}
-            >
-              <iframe
-                srcDoc={html}
-                title="Invoice Preview"
+            <RenderModeProvider readOnly>
+              <InvoicePage
+                ref={pageRef}
                 style={{
-                  width: A4_WIDTH,
-                  height: A4_WIDTH * A4_RATIO,
-                  border: "none",
-                  display: "block",
+                  transform: `scale(${scale})`,
+                  transformOrigin: "top left",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
                 }}
               />
-            </div>
+            </RenderModeProvider>
           </div>
         </div>
       </div>

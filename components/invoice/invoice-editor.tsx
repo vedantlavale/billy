@@ -1,10 +1,16 @@
 'use client'
 
 import * as React from "react"
+import { useSearchParams } from "next/navigation"
 
 import { InvoiceCanvas } from "@/components/invoice/invoice-canvas"
 import { InvoicePreview } from "@/components/invoice/invoice-preview"
-import { InvoiceProvider, useInvoiceState } from "@/components/invoice/invoice-context"
+import {
+  InvoiceProvider,
+  useInvoiceDispatch,
+  useInvoiceState,
+} from "@/components/invoice/invoice-context"
+import type { InvoiceData } from "@/lib/types"
 import { ResizableSplit } from "@/components/ui/resizable-split"
 import { Toolbar } from "@/components/invoice/toolbar"
 import { getTemplate } from "@/lib/templates"
@@ -60,9 +66,52 @@ function EditorWorkspace() {
   )
 }
 
+/**
+ * When the editor is opened as /editor?id=<id>, load that saved invoice from the
+ * server so editing updates the existing row (instead of creating a duplicate)
+ * and the dashboard "Edit" action works. Renders nothing.
+ */
+function InvoiceLoader() {
+  const dispatch = useInvoiceDispatch()
+  const searchParams = useSearchParams()
+  const id = searchParams.get("id")
+
+  React.useEffect(() => {
+    if (!id) return
+    let cancelled = false
+
+    ;(async () => {
+      try {
+        const response = await fetch(`/api/invoices?id=${encodeURIComponent(id)}`)
+        if (!response.ok) return
+        const { invoice } = await response.json()
+        if (cancelled || !invoice?.data) return
+
+        const loaded: InvoiceData = {
+          ...invoice.data,
+          id: invoice.id,
+          templateId: invoice.template_id || invoice.data.templateId,
+        }
+        dispatch({ type: "LOAD_STATE", payload: loaded })
+      } catch (error) {
+        console.error("Failed to load invoice:", error)
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [id, dispatch])
+
+  return null
+}
+
 export default function InvoiceEditor() {
   return (
     <InvoiceProvider>
+      <React.Suspense fallback={null}>
+        <InvoiceLoader />
+      </React.Suspense>
       <EditorWorkspace />
     </InvoiceProvider>
   )

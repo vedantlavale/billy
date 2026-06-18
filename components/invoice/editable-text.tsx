@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { useReadOnly } from "@/components/invoice/render-mode"
 
 export interface EditableTextProps {
   value: string
@@ -31,6 +32,7 @@ export function EditableText({
   ariaLabel,
   displayValue,
 }: EditableTextProps) {
+  const readOnly = useReadOnly()
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(value)
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -113,6 +115,25 @@ export function EditableText({
   const DisplayTag = (displayAs ?? (multiline ? "p" : "span")) as keyof React.JSX.IntrinsicElements
   const displayText = displayValue ?? value
   const isEmpty = value.trim().length === 0
+
+  // Static preview: render the same markup/typography as the resting canvas
+  // state (so per-template CSS applies identically) but without any editing
+  // affordance — no click-to-edit, no focus ring, no field padding.
+  if (readOnly) {
+    return (
+      <DisplayTag
+        className={cn(
+          "inline-block",
+          multiline && "whitespace-pre-line",
+          isEmpty && "text-slate-400",
+          className
+        )}
+        aria-label={ariaLabel}
+      >
+        {isEmpty ? placeholder ?? "" : displayText}
+      </DisplayTag>
+    )
+  }
 
   if (!isEditing) {
     return (

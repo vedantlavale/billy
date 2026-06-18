@@ -34,7 +34,7 @@ export function TemplateSelector() {
       value={state.templateId}
       onValueChange={handleChange}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="nav-control h-9 w-[170px]">
         <SelectValue>
           <span className="flex items-center gap-2">
             <span

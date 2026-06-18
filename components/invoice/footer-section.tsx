@@ -11,7 +11,7 @@ export function FooterSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="footer-section space-y-6 border-t border-slate-200 pt-6">
+    <section data-break-block className="footer-section space-y-6 border-t border-slate-200 pt-6">
       <div className="grid gap-6 md:grid-cols-2">
         <div className="footer-info space-y-4">
           <div className="footer-item space-y-2">

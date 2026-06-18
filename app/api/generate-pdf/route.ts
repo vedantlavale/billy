@@ -2,12 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 
 export const maxDuration = 30
-import {
-  resolveEffectivePlan,
-  isTemplateAccessible,
-  canCreateInvoice,
-  FREE_MONTHLY_LIMIT,
-} from "@/lib/plans"
+import { resolveEffectivePlan, isTemplateAccessible } from "@/lib/plans"
 import { getPostHogClient } from "@/lib/posthog-server"
 import { checkRateLimit } from "@/lib/rate-limit"
 
@@ -182,31 +177,12 @@ export async function POST(request: Request) {
       )
     }
 
-    const invoiceCheck = canCreateInvoice(profile, effective.plan)
-    if (!invoiceCheck.allowed) {
-      return NextResponse.json(
-        {
-          error: `Free plan limit of ${FREE_MONTHLY_LIMIT} invoices reached`,
-          code: "limit_reached",
-        },
-        { status: 403 },
-      )
-    }
-
+    // Rendering is a pure, unlimited operation. Persistence and the free-plan
+    // invoice limit are enforced separately at the save step (POST /api/invoices)
+    // so that re-downloading an existing invoice never creates duplicate rows
+    // or consumes quota.
     const { generatePdf } = await import("@/lib/pdf/generate")
     const pdf = await generatePdf(invoiceData)
-
-    await supabase.from("invoices").insert({
-      user_id: user.id,
-      template_id: templateId,
-      data: invoiceData,
-      status: "draft",
-    })
-
-    // 4. Atomic invoice count increment
-    await supabase.rpc("increment_invoice_count", {
-      target_user_id: user.id,
-    })
 
     const posthog = getPostHogClient()
     posthog.capture({

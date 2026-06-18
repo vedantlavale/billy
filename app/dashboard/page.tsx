@@ -76,14 +76,11 @@ export default function DashboardPage() {
       if (profileErr) throw profileErr
       setProfile(profileData)
 
-      // Fetch Invoices
-      const { data: invoiceData, error: invoiceErr } = await supabase
-        .from("invoices")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-
-      if (invoiceErr) throw invoiceErr
+      // Fetch invoices via the API, which strips the heavy base64 logo/stamp
+      // images the list view never renders (keeps the payload small/fast).
+      const invoiceRes = await fetch("/api/invoices")
+      if (!invoiceRes.ok) throw new Error("Failed to load invoices")
+      const { invoices: invoiceData } = await invoiceRes.json()
       setInvoices(invoiceData || [])
     } catch (err) {
       console.error("Error loading dashboard data:", err)
@@ -146,10 +143,16 @@ export default function DashboardPage() {
   const handleDuplicate = async (invoice: DatabaseInvoice) => {
     setActionInProgress(invoice.id)
     try {
+      // The list payload omits logo/stamp images, so fetch the full invoice to
+      // carry them into the copy.
+      const fullRes = await fetch(`/api/invoices?id=${invoice.id}`)
+      if (!fullRes.ok) throw new Error("Failed to load invoice")
+      const { invoice: fullInvoice } = await fullRes.json()
+
       // Create a copy of the invoice data without the ID, and modify the number
       const duplicatedData: InvoiceData = {
-        ...invoice.data,
-        invoiceNumber: `${invoice.data.invoiceNumber || "INV"}-COPY`,
+        ...fullInvoice.data,
+        invoiceNumber: `${fullInvoice.data.invoiceNumber || "INV"}-COPY`,
         invoiceDate: new Date().toISOString().slice(0, 10),
       }
       delete (duplicatedData as any).id
@@ -187,12 +190,18 @@ export default function DashboardPage() {
   const handleDownloadPdf = async (invoice: DatabaseInvoice) => {
     setActionInProgress(invoice.id)
     try {
+      // The list payload omits logo/stamp images, so fetch the full invoice so
+      // the rendered PDF includes them.
+      const fullRes = await fetch(`/api/invoices?id=${invoice.id}`)
+      if (!fullRes.ok) throw new Error("Failed to load invoice")
+      const { invoice: fullInvoice } = await fullRes.json()
+
       const response = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          templateId: invoice.template_id || "clean",
-          invoiceData: invoice.data,
+          templateId: fullInvoice.template_id || "clean",
+          invoiceData: fullInvoice.data,
         }),
       })
 
@@ -253,8 +262,8 @@ export default function DashboardPage() {
   }
 
   const handleEdit = (invoice: DatabaseInvoice) => {
-    // Write current data to localStorage to avoid mismatch, then redirect
-    localStorage.setItem("billy_invoice_data", JSON.stringify(invoice.data))
+    // The editor refetches the full invoice (incl. logo/stamp) by id, so we
+    // don't seed localStorage here — the list data omits those heavy images.
     router.push(`/editor?id=${invoice.id}`)
   }
 

@@ -7,17 +7,20 @@ import { AddInvoiceIcon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { EditableNumber } from "@/components/invoice/editable-number"
 import { EditableText } from "@/components/invoice/editable-text"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
+import { useReadOnly } from "@/components/invoice/render-mode"
 import { calculateLineItemAmount, formatCurrency } from "@/lib/invoice"
 import { Button } from "@/components/ui/button"
 
 export function LineItemsTable() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
+  const readOnly = useReadOnly()
   const showHSN = state.options.showHSNCode
 
   return (
     <section className="line-items-section space-y-4">
       <div
+        data-break-block
         className={`line-items-header grid gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400 ${
           showHSN
             ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr]"
@@ -37,10 +40,17 @@ export function LineItemsTable() {
           return (
             <div
               key={item.id}
-              className={`line-item-row group grid items-center gap-3 rounded-md border border-transparent px-2 py-3 transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white ${
-                showHSN
-                  ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr_auto]"
-                  : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto]"
+              data-break-block
+              className={`line-item-row group grid items-center gap-3 rounded-md border border-transparent px-2 py-3 ${
+                readOnly
+                  ? showHSN
+                    ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr]"
+                    : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr]"
+                  : `transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white ${
+                      showHSN
+                        ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr_auto]"
+                        : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto]"
+                    }`
               }`}
             >
               <EditableText
@@ -104,32 +114,37 @@ export function LineItemsTable() {
               <span className="text-right font-mono text-sm text-slate-700">
                 {formatCurrency(amount, state.currency)}
               </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                onClick={() =>
-                  dispatch({ type: "REMOVE_LINE_ITEM", id: item.id })
-                }
-                className="text-slate-400 opacity-0 transition hover:text-red-600 group-hover:opacity-100 focus-visible:opacity-100"
-                aria-label="Remove line item"
-              >
-                <HugeiconsIcon icon={Delete02Icon} size={16} />
-              </Button>
+              {!readOnly && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={() =>
+                    dispatch({ type: "REMOVE_LINE_ITEM", id: item.id })
+                  }
+                  className="text-slate-400 opacity-0 transition hover:text-red-600 group-hover:opacity-100 focus-visible:opacity-100"
+                  aria-label="Remove line item"
+                >
+                  <HugeiconsIcon icon={Delete02Icon} size={16} />
+                </Button>
+              )}
             </div>
           )
         })}
       </div>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
-        className="gap-2 border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-      >
-        <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
-        Add Item
-      </Button>
+      {!readOnly && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
+          data-break-block
+          className="gap-2 border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+        >
+          <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
+          Add Item
+        </Button>
+      )}
     </section>
   )
 }

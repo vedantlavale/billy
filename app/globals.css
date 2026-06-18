@@ -917,6 +917,29 @@
 .invoice-canvas {
   background-color: var(--invoice-paper);
   border: 1px solid var(--invoice-border);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 1px rgba(15, 23, 42, 0.04),
+    0 12px 40px -12px rgba(15, 23, 42, 0.16);
+}
+
+/* When the invoice spans multiple A4 sheets, the real paper (background, border
+   and shadow) is painted by the stacked .invoice-sheet-bg layers behind, so the
+   content layer itself becomes transparent and just flows across them. */
+.invoice-canvas[data-multipage="true"] {
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.invoice-sheet-bg {
+  background-color: var(--invoice-paper);
+  border: 1px solid var(--invoice-border);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 1px rgba(15, 23, 42, 0.04),
+    0 12px 40px -12px rgba(15, 23, 42, 0.16);
 }
 
 /* Template: Modern Green */
@@ -1260,6 +1283,27 @@
     padding: 0.75in !important;
   }
 
+  /* Drop the on-screen multi-sheet scaffolding and let the browser repaginate
+     the content naturally for direct printing. */
+  .invoice-paper-stack {
+    height: auto !important;
+    transform: none !important;
+  }
+
+  .invoice-sheet-bg {
+    display: none !important;
+  }
+
+  .invoice-canvas[data-multipage="true"] {
+    background: var(--invoice-paper) !important;
+    min-height: 0 !important;
+  }
+
+  .invoice-canvas [data-break-block] {
+    margin-top: 0 !important;
+    break-inside: avoid;
+  }
+
   .invoice-field {
     background: transparent !important;
     border-color: transparent !important;
@@ -1267,5 +1311,144 @@
 
   .invoice-input {
     border: none !important;
+  }
+}
+
+/* Plain premium editor navbar. */
+.premium-nav {
+  background-color: color-mix(in srgb, var(--invoice-toolbar, #ffffff) 96%, #f8fafc);
+  border-bottom: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 82%, #ffffff);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
+}
+
+.nav-control,
+.nav-chip {
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 82%, #ffffff);
+  background-color: #ffffff;
+  box-shadow: none;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.nav-control:hover {
+  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 70%, #ffffff);
+  border-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 18%, var(--invoice-panel-border, #e2e8f0));
+}
+
+.nav-control:active {
+  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 92%, #ffffff);
+}
+
+.nav-control:focus-visible,
+.nav-primary:focus-visible,
+.nav-avatar:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--invoice-ink, #1e293b) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.nav-primary {
+  border-radius: 8px;
+  color: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--invoice-ink, #1e293b) 88%, #ffffff);
+  background-color: var(--invoice-ink, #1e293b);
+  box-shadow: 0 8px 18px -14px rgba(15, 23, 42, 0.65);
+  transition:
+    background-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.12s ease;
+}
+
+.nav-primary:hover {
+  background-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 92%, #ffffff);
+  box-shadow: 0 10px 20px -15px rgba(15, 23, 42, 0.75);
+}
+
+.nav-primary:active {
+  transform: translateY(1px);
+}
+
+.nav-avatar {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 84%, #ffffff);
+  background-color: #ffffff;
+  color: var(--invoice-ink, #1e293b);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1;
+  outline: none;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.nav-avatar:hover {
+  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 70%, #ffffff);
+  border-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 18%, var(--invoice-panel-border, #e2e8f0));
+}
+
+.nav-menu {
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 86%, #ffffff);
+  background-color: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 18px 40px -24px rgba(15, 23, 42, 0.35);
+}
+
+.nav-menu-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 7px;
+  padding: 0.5rem 0.625rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--invoice-ink, #1e293b);
+  outline: none;
+  transition: background-color 0.15s ease;
+}
+
+.nav-menu-item:hover,
+.nav-menu-item[data-highlighted] {
+  background-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 8%, transparent);
+}
+
+/* Smooth height animation for the collapsible invoice-setup panel. */
+.collapsible-content {
+  overflow: hidden;
+}
+
+.collapsible-content[data-state="open"] {
+  animation: collapsible-down 0.24s ease-out;
+}
+
+.collapsible-content[data-state="closed"] {
+  animation: collapsible-up 0.2s ease-out;
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
   }
 }

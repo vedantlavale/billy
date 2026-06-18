@@ -13,6 +13,7 @@ type InvoiceAction =
   | { type: "SET_LOGO"; value: string | null }
   | { type: "SET_STAMP"; value: string | null }
   | { type: "RESET_INVOICE" }
+  | { type: "SET_ID"; id: string }
   | { type: "LOAD_STATE"; payload: InvoiceData }
 
 const STORAGE_KEY = "billy_invoice_data"
@@ -156,6 +157,11 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
         bankAccount: state.bankAccount,
         bankIfsc: state.bankIfsc,
         reverseChargeLabel: state.reverseChargeLabel,
+      }
+    case "SET_ID":
+      return {
+        ...state,
+        id: action.id,
       }
     case "LOAD_STATE":
       return action.payload

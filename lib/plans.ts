@@ -2,7 +2,7 @@ import { isPaywallEnabled } from "./config"
 
 export const PAID_TEMPLATES = ["minimal-teal"]
 
-export const FREE_TEMPLATES = ["clean", "modern-green", "corporate-blue"]
+export const FREE_TEMPLATES = ["clean", "modern-green", "corporate-blue", "mono-classic", "mono-elegant"]
 
 export const FREE_MONTHLY_LIMIT = 5
 

@@ -13,6 +13,7 @@ export function MetaSection() {
 
   return (
     <section
+      data-break-block
       className="meta-section grid gap-4 border-b border-slate-200 pb-6"
       style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
     >

@@ -19,6 +19,8 @@ export interface InvoiceOptions {
 }
 
 export interface InvoiceData {
+  /** Set once the invoice has been persisted; absent for a brand-new draft. */
+  id?: string
   businessName: string
   businessTagline: string
   logoUrl: string | null

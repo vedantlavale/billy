@@ -10,7 +10,7 @@ export function ClientSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section className="client-section grid gap-4 border-b border-slate-200 pb-6 md:grid-cols-[140px_1fr]">
+    <section data-break-block className="client-section grid gap-4 border-b border-slate-200 pb-6 md:grid-cols-[140px_1fr]">
       <div className="client-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
         Bill To
       </div>

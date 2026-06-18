@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
-import { CURRENCIES, getCurrency } from "@/lib/currencies"
+import { CURRENCIES } from "@/lib/currencies"
 
 export function CurrencySelect() {
   const state = useInvoiceState()
@@ -23,7 +23,7 @@ export function CurrencySelect() {
         dispatch({ type: "UPDATE_FIELD", field: "currency", value })
       }
     >
-      <SelectTrigger className="w-[160px]">
+      <SelectTrigger className="nav-control h-9 w-[150px]">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
