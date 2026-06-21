@@ -140,16 +140,18 @@
 ═══════════════════════════════════════════════════ */
 
 .landing-page {
-  --lp-bg: #FAFAF7;
+  --lp-bg: #FFFFFF;
   --lp-ink: #0E1117;
   --lp-ink-2: #3A3F4B;
   --lp-ink-3: #7C8090;
   --lp-teal: #0D7377;
+  --lp-teal-mid: #0A5C60;
   --lp-teal-light: #E4F2F2;
-  --lp-border: #E4E4DC;
+  --lp-border: #E8E8E8;
   --lp-surface: #FFFFFF;
   --lp-serif: var(--font-serif), 'Georgia', serif;
   --lp-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --lp-display: var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif;
 
   background-color: var(--lp-bg);
   color: var(--lp-ink);
@@ -161,20 +163,20 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(250, 250, 247, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s;
 }
 
 .landing-wordmark {
-  font-family: var(--lp-serif);
-  font-size: 1.35rem;
-  font-weight: 400;
+  font-family: var(--lp-display);
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--lp-ink);
-  letter-spacing: -0.01em;
-  font-style: italic;
+  letter-spacing: -0.04em;
+  font-style: normal;
 }
 
 .landing-nav-link {
@@ -268,14 +270,14 @@
   font-family: var(--lp-sans);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--lp-teal);
   background: var(--lp-teal-light);
-  border: 1px solid rgba(13, 115, 119, 0.2);
+  border: 1px solid rgba(13, 115, 119, 0.18);
   border-radius: 100px;
-  padding: 0.4rem 1rem;
-  margin-bottom: 2.5rem;
+  padding: 0.45rem 1.1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 6px rgba(13, 115, 119, 0.08);
 }
 
 .landing-hero-badge-dot {
@@ -292,27 +294,27 @@
 }
 
 .landing-hero-title {
-  font-family: var(--lp-serif);
-  font-size: clamp(2.75rem, 6vw, 5.25rem);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-family: var(--lp-display);
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
   color: var(--lp-ink);
   margin-bottom: 1.75rem;
 }
 
 .landing-hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--lp-teal);
 }
 
 .landing-hero-sub {
   font-family: var(--lp-sans);
-  font-size: clamp(1.15rem, 5vw, 1.25rem);
+  font-size: clamp(1.0625rem, 3vw, 1.1875rem);
   font-weight: 400;
-  line-height: 1.7;
-  color: var(--lp-ink-2);
-  max-width: 560px;
+  line-height: 1.65;
+  color: var(--lp-ink-3);
+  max-width: 520px;
   margin-bottom: 2.5rem;
 }
 
@@ -586,11 +588,11 @@
 }
 
 .landing-section-title {
-  font-family: var(--lp-serif);
+  font-family: var(--lp-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   color: var(--lp-ink);
   margin-bottom: 1rem;
 }
@@ -645,12 +647,12 @@
 }
 
 .landing-feature-title {
-  font-family: var(--lp-serif);
-  font-size: 1.1875rem;
-  font-weight: 400;
+  font-family: var(--lp-display);
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--lp-ink);
   margin-bottom: 0.625rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .landing-feature-desc {
@@ -680,22 +682,22 @@
 }
 
 .landing-step-number {
-  font-family: var(--lp-serif);
+  font-family: var(--lp-display);
   font-size: 3.5rem;
-  font-weight: 400;
-  color: rgba(255,255,255,0.12);
+  font-weight: 800;
+  color: rgba(255,255,255,0.1);
   line-height: 1;
   margin-bottom: 1rem;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.06em;
 }
 
 .landing-step-title {
-  font-family: var(--lp-serif);
+  font-family: var(--lp-display);
   font-size: 1.375rem;
-  font-weight: 400;
+  font-weight: 700;
   color: #fff;
   margin-bottom: 0.75rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
 
 .landing-step-desc {
@@ -808,17 +810,17 @@
 }
 
 .landing-cta-title {
-  font-family: var(--lp-serif);
-  font-size: clamp(2.25rem, 5vw, 4rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-family: var(--lp-display);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   color: #fff;
   margin-bottom: 1.25rem;
 }
 
 .landing-cta-title em {
-  font-style: italic;
+  font-style: normal;
   opacity: 0.85;
 }
 

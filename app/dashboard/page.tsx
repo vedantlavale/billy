@@ -389,7 +389,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div
-        className="flex min-h-dvh flex-col items-center justify-center bg-[#FAFAF7]"
+        className="flex min-h-dvh flex-col items-center justify-center bg-white"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}
       >
         <MorphingSquare message="Loading your dashboard..." className="w-8 h-8" />
@@ -404,16 +404,16 @@ export default function DashboardPage() {
 
   return (
     <main
-      className="flex min-h-dvh flex-col bg-[#FAFAF7] text-[#0E1117] selection:bg-[#E4F2F2] selection:text-[#0D7377]"
+      className="flex min-h-dvh flex-col bg-white text-[#0E1117] selection:bg-[#E4F2F2] selection:text-[#0D7377]"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Navbar */}
-      <nav className="sticky top-0 z-40 border-b border-[#E4E4DC] bg-[#FAFAF7]/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <nav className="sticky top-0 z-40 border-b border-[#E8E8E8] bg-white/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
           <div className="flex items-center gap-3">
             <span
-              className="text-xl font-normal italic text-[#0E1117]"
-              style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
+              className="text-[1.1rem] font-extrabold tracking-[-0.05em] text-[#0E1117]"
+              style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
             >
               billy
             </span>
@@ -425,11 +425,11 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/editor"
-              className="rounded-md border border-[#E4E4DC] bg-white px-3.5 py-1.5 text-xs font-medium text-[#3A3F4B] transition-colors hover:border-[#0E1117] hover:text-[#0E1117]"
+              className="rounded-full border border-[#E8E8E8] bg-white px-4 py-1.5 text-xs font-semibold text-[#3A3F4B] transition-all hover:border-[#0E1117] hover:text-[#0E1117] hover:shadow-sm"
             >
               Open Editor
             </Link>
-            <span className="h-4 w-px bg-[#E4E4DC]" />
+            <span className="h-4 w-px bg-[#E8E8E8]" />
             {session?.user && (
               <UserDropdown
                 user={{
@@ -451,12 +451,17 @@ export default function DashboardPage() {
         {/* Welcome and Summary Cards */}
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#0E1117]">Invoices</h1>
-            <p className="text-sm text-[#7C8090]">Manage your generated documents and track invoices.</p>
+            <h1
+              className="text-2xl font-extrabold tracking-[-0.04em] text-[#0E1117]"
+              style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+            >
+              Invoices
+            </h1>
+            <p className="text-sm text-[#7C8090] mt-0.5">Manage your documents and track invoices.</p>
           </div>
           <Link
             href="/editor"
-            className="inline-flex items-center justify-center gap-1 rounded-full bg-[#0D7377] px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-transform hover:-translate-y-0.5 hover:bg-[#0D7377]/95"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0D7377] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(13,115,119,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(13,115,119,0.4)] hover:bg-[#0A5C60]"
           >
             Create new invoice →
           </Link>
@@ -465,7 +470,7 @@ export default function DashboardPage() {
         {/* Overview Stats Bento */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* Card 1: Total Invoiced */}
-          <div className="rounded-xl border border-[#E4E4DC] bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
             <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Total Invoiced</span>
             <div className="mt-2 space-y-1">
               {Object.keys(currencyTotals).length > 0 ? (
@@ -481,14 +486,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 2: Count */}
-          <div className="rounded-xl border border-[#E4E4DC] bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
             <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Invoices Created</span>
             <div className="mt-2 text-3xl font-bold tracking-tight text-[#0E1117]">{invoices.length}</div>
             <p className="mt-1 text-xs text-[#7C8090]">Total drafts and sent invoices saved.</p>
           </div>
 
           {/* Card 3: Free Plan limits */}
-          <div className="rounded-xl border border-[#E4E4DC] bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-1">
+          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] sm:col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Monthly Usage</span>
               <span className="text-xs font-semibold text-[#0D7377]">
@@ -497,7 +502,7 @@ export default function DashboardPage() {
             </div>
             {profile?.plan !== "pro" ? (
               <div className="mt-4">
-                <div className="h-2 w-full rounded-full bg-[#E4E4DC] overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-[#F0F0F0] overflow-hidden">
                   <div
                     className="h-full rounded-full bg-[#0D7377] transition-all duration-500"
                     style={{ width: `${limitPercent}%` }}
@@ -519,7 +524,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Toolbar: Search, Filters, Sort */}
-        <div className="mb-6 flex flex-col gap-4 rounded-xl border border-[#E4E4DC] bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-[#E8E8E8] bg-white p-4 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] md:flex-row md:items-center md:justify-between">
           {/* Search bar */}
           <div className="relative flex-1">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-[#7C8090]">
@@ -532,7 +537,7 @@ export default function DashboardPage() {
               placeholder="Search by client or invoice #..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-lg border border-[#E4E4DC] bg-[#FAFAF7]/50 py-2 pl-9 pr-4 text-sm outline-none transition-colors focus:border-[#0E1117] focus:bg-white"
+              className="w-full rounded-xl border border-[#E8E8E8] bg-[#F8F8F8] py-2 pl-9 pr-4 text-sm outline-none transition-colors focus:border-[#0D7377] focus:bg-white"
             />
           </div>
 
@@ -543,7 +548,7 @@ export default function DashboardPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="rounded-lg border border-[#E4E4DC] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
+                className="rounded-lg border border-[#E8E8E8] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
               >
                 <option value="all">All Invoices</option>
                 <option value="draft">Draft</option>
@@ -558,7 +563,7 @@ export default function DashboardPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="rounded-lg border border-[#E4E4DC] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
+                className="rounded-lg border border-[#E8E8E8] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -571,13 +576,13 @@ export default function DashboardPage() {
 
         {/* Invoice List Content */}
         {filteredAndSortedInvoices.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#E4E4DC] bg-white px-6 py-16 text-center shadow-sm">
-            <div className="flex size-14 items-center justify-center rounded-full bg-[#E4F2F2] text-[#0D7377]">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#E8E8E8] bg-white px-6 py-16 text-center shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+            <div className="flex size-14 items-center justify-center rounded-2xl bg-[#E4F2F2] text-[#0D7377]">
               <svg className="size-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
               </svg>
             </div>
-            <h3 className="mt-4 text-base font-semibold text-[#0E1117]">No invoices found</h3>
+            <h3 className="mt-4 text-base font-bold tracking-tight text-[#0E1117]">No invoices found</h3>
             <p className="mt-1 max-w-sm text-sm text-[#7C8090]">
               {search.trim() || statusFilter !== "all"
                 ? "No invoices match your active filters. Try resetting search or select dropdowns."
@@ -591,14 +596,14 @@ export default function DashboardPage() {
                     setStatusFilter("all")
                     setSortBy("newest")
                   }}
-                  className="rounded-full border border-[#E4E4DC] bg-[#FAFAF7] px-4 py-2 text-xs font-semibold text-[#3A3F4B] transition-colors hover:border-[#0E1117] hover:text-[#0E1117]"
+                  className="rounded-full border border-[#E8E8E8] bg-white px-4 py-2 text-xs font-semibold text-[#3A3F4B] transition-all hover:border-[#0E1117] hover:text-[#0E1117] hover:shadow-sm"
                 >
                   Clear all filters
                 </button>
               ) : (
                 <Link
                   href="/editor"
-                  className="inline-flex rounded-full bg-[#0E1117] px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:opacity-95"
+                  className="inline-flex rounded-full bg-[#0D7377] px-5 py-2.5 text-xs font-semibold text-white shadow-[0_4px_14px_rgba(13,115,119,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(13,115,119,0.35)]"
                 >
                   Create Invoice
                 </Link>
@@ -606,26 +611,26 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-[#E4E4DC] bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-2xl border border-[#E8E8E8] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
             <table className="w-full min-w-[700px] border-collapse text-left text-sm">
-              <thead className="border-b border-[#E4E4DC] bg-[#FAFAF7]">
+              <thead className="border-b border-[#F0F0F0] bg-[#FAFAFA]">
                 <tr>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090]">Invoice #</th>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090]">Client</th>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090]">Date</th>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090]">Amount</th>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090]">Status</th>
-                  <th scope="col" className="px-6 py-4 font-semibold text-[#7C8090] text-right">Actions</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider">Invoice #</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider">Client</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider">Date</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider">Amount</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider">Status</th>
+                  <th scope="col" className="px-6 py-3.5 text-xs font-semibold text-[#7C8090] uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E4E4DC]">
+              <tbody className="divide-y divide-[#F0F0F0]">
                 {filteredAndSortedInvoices.map((invoice) => {
                   const totals = calculateTotals(invoice.data)
                   const currency = invoice.data.currency || "INR"
                   const isBusy = actionInProgress === invoice.id
 
                   return (
-                    <tr key={invoice.id} className="transition-colors hover:bg-[#FAFAF7]/40">
+                    <tr key={invoice.id} className="transition-colors hover:bg-[#FAFAFA]">
                       {/* Invoice Number */}
                       <td className="px-6 py-4 font-semibold text-[#0E1117]">
                         <button
@@ -664,12 +669,12 @@ export default function DashboardPage() {
                         <button
                           onClick={() => toggleStatus(invoice)}
                           disabled={isBusy}
-                          className={`inline-flex cursor-pointer items-center rounded-full px-2.5 py-0.5 text-xs font-semibold select-none transition-colors duration-150 outline-none hover:opacity-85 ${
+                          className={`inline-flex cursor-pointer items-center rounded-full px-2.5 py-1 text-xs font-semibold select-none transition-colors duration-150 outline-none hover:opacity-85 ${
                             invoice.status === "paid"
-                              ? "bg-emerald-100 text-emerald-800"
+                              ? "bg-emerald-50 text-emerald-700"
                               : invoice.status === "sent"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-gray-100 text-gray-800"
+                              ? "bg-blue-50 text-blue-700"
+                              : "bg-gray-100 text-gray-600"
                           }`}
                           title="Click to toggle status"
                         >
@@ -680,12 +685,12 @@ export default function DashboardPage() {
 
                       {/* Actions Buttons */}
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-1">
                           {/* Edit */}
                           <button
                             onClick={() => handleEdit(invoice)}
                             disabled={isBusy}
-                            className="rounded p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#FAFAF7] hover:text-[#0E1117] disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#F0F0F0] hover:text-[#0E1117] disabled:opacity-50"
                             title="Edit Invoice"
                           >
                             <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -697,7 +702,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDownloadPdf(invoice)}
                             disabled={isBusy}
-                            className="rounded p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#FAFAF7] hover:text-[#0D7377] disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#E4F2F2] hover:text-[#0D7377] disabled:opacity-50"
                             title="Download PDF"
                           >
                             {isBusy ? (
@@ -713,7 +718,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDuplicate(invoice)}
                             disabled={isBusy}
-                            className="rounded p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#FAFAF7] hover:text-[#0D7377] disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#E4F2F2] hover:text-[#0D7377] disabled:opacity-50"
                             title="Duplicate Invoice"
                           >
                             <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -725,7 +730,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDelete(invoice.id, invoice.data.invoiceNumber || "INV-Untitled")}
                             disabled={isBusy}
-                            className="rounded p-1.5 text-[#7C8090] transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#7C8090] transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
                             title="Delete Invoice"
                           >
                             <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -744,10 +749,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[#E4E4DC] bg-white py-8 text-center">
+      <footer className="border-t border-[#F0F0F0] bg-white py-8 text-center">
         <span
-          className="text-md italic text-[#0E1117]"
-          style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
+          className="text-sm font-extrabold tracking-[-0.05em] text-[#0E1117]"
+          style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
         >
           billy
         </span>

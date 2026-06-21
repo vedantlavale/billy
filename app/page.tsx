@@ -1,7 +1,6 @@
 import { Fragment } from "react"
 import { FlickeringGrid } from "@/components/ui/flickering-grid-hero"
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
-import { DrawLineText } from "@/components/ui/draw-line-text"
 import { DotFlowCta } from "@/components/landing/dot-flow-cta"
 import { LandingCta } from "@/components/landing/landing-cta"
 import { FaqAccordion } from "@/components/ui/faq-accordion"
@@ -96,13 +95,16 @@ export default function Home() {
   return (
     <main className="landing-page flex min-h-dvh flex-col">
         {/* ── Nav ── */}
-        <header className="sticky top-0 z-50 w-full pt-6 pb-4 px-4 sm:px-6 flex justify-center pointer-events-none">
-          <nav className="pointer-events-auto flex items-center justify-between px-3 py-3 pr-4 rounded-full bg-[rgba(250,250,247,0.7)] backdrop-blur-xl border border-[var(--lp-border)] shadow-[0_8px_32px_rgba(14,17,23,0.04)] w-full max-w-5xl transition-all">
+        <header className="sticky top-0 z-50 w-full pt-5 pb-4 px-4 sm:px-6 flex justify-center pointer-events-none">
+          <nav className="pointer-events-auto flex items-center justify-between px-3 py-2.5 pr-4 rounded-full bg-[rgba(255,255,255,0.82)] backdrop-blur-xl border border-[var(--lp-border)] shadow-[0_4px_24px_rgba(14,17,23,0.06)] w-full max-w-5xl transition-all">
             <div className="flex items-center gap-10 pl-4">
-              <div className="font-serif italic leading-none mt-0.5">
-                <DrawLineText text="billy" fontSize={24} color="var(--lp-ink)" strokeWidth={0.8} letterSpacing={1} />
-              </div>
-              <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-[var(--lp-ink-2)] font-sans">
+              <span
+                className="text-[1.15rem] font-extrabold tracking-[-0.05em] leading-none text-[var(--lp-ink)]"
+                style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+              >
+                billy
+              </span>
+              <div className="hidden md:flex items-center gap-7 text-[13px] font-medium text-[var(--lp-ink-2)] font-sans">
                 <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Features</a>
                 <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Templates</a>
                 <a href="#" className="hover:text-[var(--lp-ink)] transition-colors">Pricing</a>
@@ -149,16 +151,21 @@ export default function Home() {
           />
 
           <div className="landing-hero-content">
-            <h1 className="landing-hero-title animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out fill-mode-both">
+            <div className="landing-hero-badge animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
+              <span className="landing-hero-badge-dot"></span>
+              Free during alpha · No credit card needed
+            </div>
+
+            <h1 className="landing-hero-title animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out delay-100 fill-mode-both">
               Invoicing that feels
               <br />
-              <em>exactly</em> like editing
+              <em>like editing</em>
               <br />a document.
             </h1>
 
             <p className="landing-hero-sub animate-in fade-in slide-in-from-bottom-6 duration-1000 ease-out delay-300 fill-mode-both">
               The direct-manipulation invoice editor for freelancers and small businesses.
-              Click a field, type your details, export a beautiful PDF — in under two minutes.
+              Click any field, type your details, export a beautiful PDF in under two minutes.
             </p>
 
             <div className="landing-hero-actions animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out delay-500 fill-mode-both">
@@ -171,58 +178,46 @@ export default function Home() {
 
 
         {/* ── Features ── */}
-        <section className="relative py-32 px-6 lg:px-8 border-t border-[var(--lp-border)] overflow-hidden bg-[#Fdfdfa]">
-          {/* Sandpaper Texture */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-multiply"
-            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
-          ></div>
-
-          {/* Subtle radial glow to give depth */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.7),transparent_80%)] pointer-events-none"></div>
+        <section className="relative py-28 px-6 lg:px-8 border-t border-[var(--lp-border)] overflow-hidden bg-white">
+          {/* Subtle radial teal glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(13,115,119,0.06),transparent_70%)] pointer-events-none"></div>
 
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="text-center mb-24 flex flex-col items-center">
-              <div className="inline-flex items-center gap-4 mb-6">
-                <div className="h-[1px] w-12 bg-[var(--lp-teal)] opacity-30"></div>
-                <span className="font-sans font-bold text-[var(--lp-teal)] uppercase tracking-[0.2em] text-[0.6875rem]">
-                  Everything you need
-                </span>
-                <div className="h-[1px] w-12 bg-[var(--lp-teal)] opacity-30"></div>
+            <div className="text-center mb-20 flex flex-col items-center">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--lp-teal-light)] border border-[rgba(13,115,119,0.15)] text-[var(--lp-teal)] text-[0.6875rem] font-bold tracking-[0.15em] uppercase mb-6">
+                Everything you need
               </div>
-              <h2 className="font-serif text-5xl md:text-[4rem] tracking-tight leading-[1.05] text-[var(--lp-ink)] mb-8 max-w-2xl">
+              <h2
+                className="text-5xl md:text-[4rem] tracking-[-0.04em] leading-[1.05] text-[var(--lp-ink)] mb-6 max-w-2xl font-extrabold"
+                style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+              >
                 Built for the way
                 <br />
-                <em className="italic opacity-90 text-[var(--lp-teal)]">freelancers actually work.</em>
+                <span className="text-[var(--lp-teal)]">freelancers actually work.</span>
               </h2>
-              <p className="font-sans text-[1.125rem] text-[var(--lp-ink-2)] max-w-xl mx-auto leading-relaxed">
-                Every feature was thoughtfully crafted to serve a single purpose. No bloated menus, no clutter — just an elegant instrument for your business.
+              <p className="font-sans text-[1.0625rem] text-[var(--lp-ink-3)] max-w-lg mx-auto leading-relaxed">
+                Every feature crafted for a single purpose. No bloated menus, no clutter — just a clean instrument for your business.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {features.map((f, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+              {features.map((f) => (
                 <div
                   key={f.title}
-                  className={`group relative bg-[#FAFAF7]/80 backdrop-blur-md p-5 sm:p-6 md:p-10 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(14,17,23,0.05)] transition-all duration-500 flex flex-col ${f.className}`}
+                  className={`group bg-white rounded-2xl border border-[rgba(14,17,23,0.08)] p-6 sm:p-8 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col ${f.className}`}
                 >
-                  {/* Outer classic border */}
-                  <div className="absolute inset-0 border border-[var(--lp-border)] pointer-events-none transition-colors group-hover:border-[var(--lp-teal)]/20"></div>
-
-                  {/* Inner decorative border */}
-                  <div className="absolute inset-2 border border-[var(--lp-border)] opacity-40 pointer-events-none"></div>
-
-                  <div className="relative z-10 flex flex-col h-full">
-                    <div className="w-10 h-10 sm:w-14 sm:h-14 mb-4 sm:mb-8 flex items-center justify-center rounded-full bg-white text-[var(--lp-teal)] text-lg sm:text-xl border border-[var(--lp-border)] shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:border-[var(--lp-teal)]/30">
-                      {f.icon}
-                    </div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-[var(--lp-ink)] mb-2 sm:mb-4 group-hover:text-[var(--lp-teal)] transition-colors leading-[1.1] sm:leading-[1.2]">
-                      {f.title}
-                    </h3>
-                    <p className="font-sans text-xs sm:text-[0.9375rem] text-[var(--lp-ink-2)] leading-[1.6] sm:leading-[1.75] mt-auto">
-                      {f.description}
-                    </p>
+                  <div className="w-11 h-11 mb-6 flex items-center justify-center rounded-xl bg-[var(--lp-teal-light)] text-[var(--lp-teal)] text-lg transition-transform duration-300 group-hover:scale-110">
+                    {f.icon}
                   </div>
+                  <h3
+                    className="text-lg text-[var(--lp-ink)] mb-2 font-bold leading-snug tracking-tight group-hover:text-[var(--lp-teal)] transition-colors"
+                    style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+                  >
+                    {f.title}
+                  </h3>
+                  <p className="font-sans text-sm text-[var(--lp-ink-3)] leading-relaxed mt-auto">
+                    {f.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -230,41 +225,51 @@ export default function Home() {
         </section>
 
         {/* ── How it works ── */}
-        <section className="bg-[var(--lp-ink)] text-white py-32 px-6 lg:px-8 relative overflow-hidden">
-          {/* Subtle background gradients */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(13,115,119,0.15),transparent_50%)] pointer-events-none"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.03),transparent_50%)] pointer-events-none"></div>
+        <section className="bg-[var(--lp-ink)] text-white py-28 px-6 lg:px-8 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(13,115,119,0.18),transparent_50%)] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(13,115,119,0.08),transparent_50%)] pointer-events-none"></div>
 
           <div className="max-w-6xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
               <div>
-                <div className="font-sans font-bold text-[var(--lp-teal)] uppercase tracking-[0.15em] text-[0.6875rem] mb-6">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[rgba(13,115,119,0.4)] bg-[rgba(13,115,119,0.12)] text-[#5CC8CC] text-[0.6875rem] font-bold tracking-[0.15em] uppercase mb-6">
                   How it works
                 </div>
-                <h2 className="font-serif text-5xl md:text-6xl tracking-tight leading-[1.05] max-w-lg">
+                <h2
+                  className="text-5xl md:text-6xl tracking-[-0.04em] leading-[1.05] max-w-lg font-extrabold"
+                  style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+                >
                   Three steps.
                   <br />
-                  <em className="text-white/80 italic">One beautiful invoice.</em>
+                  <span className="text-white/70">One beautiful invoice.</span>
                 </h2>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {steps.map((s) => (
-                <div key={s.step} className="group relative bg-white/[0.02] border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden">
-                  {/* Large watermark number */}
-                  <div className="absolute -right-4 -bottom-10 font-serif text-[12rem] text-white/[0.03] leading-none select-none group-hover:text-white/[0.05] transition-colors duration-500 pointer-events-none">
+                <div key={s.step} className="group relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-7 sm:p-9 hover:bg-white/[0.06] hover:border-white/[0.14] transition-all duration-300 overflow-hidden">
+                  <div
+                    className="absolute -right-3 -bottom-8 text-[10rem] text-white/[0.04] leading-none select-none font-extrabold tracking-[-0.08em] group-hover:text-white/[0.06] transition-colors duration-300 pointer-events-none"
+                    style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}
+                  >
                     {s.step}
                   </div>
 
                   <div className="relative z-10">
-                    <div className="font-serif text-2xl text-[var(--lp-teal)] mb-6 opacity-80">
+                    <div
+                      className="text-2xl text-[#5CC8CC] mb-5 font-extrabold tracking-[-0.04em]"
+                      style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}
+                    >
                       {s.step}
                     </div>
-                    <h3 className="font-serif text-[1.65rem] leading-[1.2] mb-4 text-white">
+                    <h3
+                      className="text-[1.5rem] leading-[1.2] mb-3 font-bold tracking-tight text-white"
+                      style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+                    >
                       {s.title}
                     </h3>
-                    <p className="font-sans text-white/60 leading-relaxed text-[0.95rem]">
+                    <p className="font-sans text-white/55 leading-relaxed text-[0.9375rem]">
                       {s.description}
                     </p>
                   </div>
@@ -280,7 +285,7 @@ export default function Home() {
             <div className="grid grid-cols-[1fr_1.4fr] gap-16 items-start max-lg:grid-cols-1 max-lg:gap-8">
               <div className="max-lg:static">
                 <div className="landing-section-label">Common questions</div>
-                <h2 className="landing-section-title mt-5">
+                <h2 className="landing-section-title mt-5" style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}>
                   Things people ask
                   <br />
                   before signing up.
@@ -345,7 +350,12 @@ export default function Home() {
           <div className="mx-auto w-full max-w-6xl">
             <div className="flex flex-col md:flex-row justify-between items-start gap-12 md:gap-8 mb-16">
               <div className="flex flex-col gap-6 max-w-sm">
-                <DrawLineText text='billy' className="font-serif italic text-4xl text-[var(--lp-ink)] tracking-tight">billy</DrawLineText>
+                <span
+                  className="text-2xl font-extrabold tracking-[-0.05em] text-[var(--lp-ink)]"
+                  style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+                >
+                  billy
+                </span>
                 <p className="text-[var(--lp-ink-2)] text-sm leading-relaxed">
                   The direct-manipulation invoice editor for freelancers and small businesses. Beautiful, print-ready, and simple.
                 </p>
