@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import { InvoicePage } from "@/components/invoice/invoice-page"
-import { InvoiceSettingsPanel } from "@/components/invoice/invoice-settings-panel"
 
 export const invoiceCanvasId = "invoice-canvas"
 
@@ -43,10 +42,7 @@ export function InvoiceCanvas() {
   
   return (
     <div ref={containerRef} className="flex min-h-full w-full flex-col items-center gap-6 pb-12">
-      {/* Editor settings (presets + field toggles) above the actual A4 sheet */}
-      <InvoiceSettingsPanel />
-
-      <div 
+      <div
         style={{ 
           width: 794 * scale, 
           height: innerHeight * scale,

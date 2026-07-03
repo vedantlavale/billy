@@ -13,6 +13,8 @@ const presetLabels = {
   other: "Other",
 } as const
 
+const KEY_LETTERS = ["A", "B", "C", "D", "E", "F", "G"]
+
 export function ProfessionPreset() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
@@ -28,13 +30,14 @@ export function ProfessionPreset() {
         Profession Preset
       </p>
       <div className="flex flex-wrap gap-2">
-        {Object.keys(professionPresets).map((presetId) => (
+        {Object.keys(professionPresets).map((presetId, index) => (
           <button
             key={presetId}
             type="button"
             onClick={() => handleApply(presetId as keyof typeof professionPresets)}
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:border-slate-300 hover:text-slate-900"
+            className="app-option px-3 py-1.5 text-xs"
           >
+            <span className="app-kbd">{KEY_LETTERS[index] ?? "•"}</span>
             {presetLabels[presetId as keyof typeof presetLabels]}
           </button>
         ))}

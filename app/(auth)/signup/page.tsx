@@ -9,25 +9,32 @@ export default function SignupPage() {
   const [state, action, pending] = useActionState(signup, undefined)
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[oklch(0.955_0.003_60)]">
+    <div
+      className="flex min-h-dvh flex-col bg-white text-[#0B0B0F] selection:bg-[#0778F2]/15"
+      style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+    >
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-        <Link href="/" className="text-lg font-semibold tracking-tight">
-          billy
+        <Link
+          href="/"
+          className="text-[1.5rem] leading-none text-[#0B0B0F]"
+          style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
+        >
+          billy*
         </Link>
         <Link
           href="/login"
-          className="rounded-full bg-[oklch(0.18_0.01_265)] px-4 py-2 text-sm font-medium text-white"
+          className="rounded-[9px] bg-[#0778F2] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0561CC]"
         >
           Sign in
         </Link>
       </nav>
 
-      <div className="flex flex-1 items-center justify-center px-6">
+      <div className="flex flex-1 items-center justify-center px-6 pb-16">
         <div className="w-full max-w-sm">
-          <h1 className="mb-1 text-2xl font-semibold tracking-tight">
+          <h1 className="mb-1.5 text-[1.75rem] font-bold tracking-[-0.02em] text-[#0B0B0F]">
             Create your account
           </h1>
-          <p className="mb-8 text-sm text-[oklch(0.48_0.02_260)]">
+          <p className="mb-8 text-sm text-[#82868F]">
             Start invoicing in under a minute
           </p>
 
@@ -35,7 +42,7 @@ export default function SignupPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-1 block text-sm font-medium text-[oklch(0.35_0.03_255)]"
+                className="mb-1.5 block text-sm font-medium text-[#494E57]"
               >
                 Email
               </label>
@@ -44,14 +51,14 @@ export default function SignupPage() {
                 name="email"
                 type="email"
                 required
-                className="w-full rounded-lg border border-[oklch(0.9_0.02_260)] bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[oklch(0.35_0.03_255)]"
+                className="w-full rounded-[10px] border border-[#EBEBEE] bg-white px-4 py-2.5 text-sm text-[#0B0B0F] outline-none transition-colors focus:border-[#0778F2] focus:ring-2 focus:ring-[#0778F2]/20"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="mb-1 block text-sm font-medium text-[oklch(0.35_0.03_255)]"
+                className="mb-1.5 block text-sm font-medium text-[#494E57]"
               >
                 Password
               </label>
@@ -61,9 +68,9 @@ export default function SignupPage() {
                 type="password"
                 required
                 minLength={6}
-                className="w-full rounded-lg border border-[oklch(0.9_0.02_260)] bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[oklch(0.35_0.03_255)]"
+                className="w-full rounded-[10px] border border-[#EBEBEE] bg-white px-4 py-2.5 text-sm text-[#0B0B0F] outline-none transition-colors focus:border-[#0778F2] focus:ring-2 focus:ring-[#0778F2]/20"
               />
-              <p className="mt-1 text-xs text-[oklch(0.52_0.02_260)]">
+              <p className="mt-1.5 text-xs text-[#82868F]">
                 At least 6 characters
               </p>
             </div>
@@ -75,7 +82,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={pending}
-              className="w-full rounded-lg bg-[oklch(0.18_0.01_265)] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="w-full rounded-[10px] bg-[#0778F2] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0561CC] disabled:opacity-50"
             >
               {pending ? "Creating account..." : "Create account"}
             </button>
@@ -83,12 +90,10 @@ export default function SignupPage() {
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[oklch(0.9_0.02_260)]" />
+              <div className="w-full border-t border-[#EBEBEE]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[oklch(0.955_0.003_60)] px-2 text-[oklch(0.52_0.02_260)]">
-                or
-              </span>
+              <span className="bg-white px-2 text-[#82868F]">or</span>
             </div>
           </div>
 
@@ -98,7 +103,7 @@ export default function SignupPage() {
               signInWithGoogle()
             }}
             type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[oklch(0.9_0.02_260)] bg-white px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[oklch(0.985_0.003_255)]"
+            className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-[#EBEBEE] bg-white px-4 py-2.5 text-sm font-medium text-[#0B0B0F] transition-colors hover:bg-[#FAFAFB]"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -121,9 +126,9 @@ export default function SignupPage() {
             Continue with Google
           </button>
 
-          <p className="mt-8 text-center text-sm text-[oklch(0.52_0.02_260)]">
+          <p className="mt-8 text-center text-sm text-[#82868F]">
             Already have an account?{" "}
-            <Link href="/login" className="font-medium text-[oklch(0.18_0.01_265)] underline">
+            <Link href="/login" className="font-semibold text-[#0778F2] hover:underline">
               Sign in
             </Link>
           </p>

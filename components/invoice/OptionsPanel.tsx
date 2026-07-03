@@ -59,15 +59,15 @@ function ToggleChip({
       type="button"
       onClick={() => !disabled && onChange(!checked)}
       disabled={disabled}
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium border transition-all select-none ${
-        disabled
-          ? "bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed opacity-60"
-          : checked
-          ? "bg-[var(--invoice-ink)] border-[var(--invoice-ink)] text-white shadow-xs hover:opacity-90 cursor-pointer"
-          : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 cursor-pointer"
-      }`}
+      data-selected={checked || undefined}
+      aria-pressed={checked}
+      className="app-option select-none px-3 py-1.5 text-xs"
     >
-      {checked && <CheckIcon />}
+      {checked && (
+        <span className="text-[#E216BD]">
+          <CheckIcon />
+        </span>
+      )}
       {!checked && isProField && <LockIcon />}
       <span>{label}</span>
       {isProField && !checked && (

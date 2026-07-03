@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { PrinterIcon, Refresh01Icon } from "@hugeicons/core-free-icons"
+import { PrinterIcon, Refresh01Icon, SlidersHorizontalIcon } from "@hugeicons/core-free-icons"
 import { useAuth } from "@/lib/auth-context"
 import { signOut } from "@/app/auth/actions"
 
@@ -11,8 +11,6 @@ import {
   UserDropdown,
   type UserDropdownAction,
 } from "@/components/ui/user-dropdown"
-import { CurrencySelect } from "@/components/invoice/currency-select"
-import { TemplateSelector } from "@/components/invoice/template-selector"
 import { renderInvoiceDocument } from "@/lib/render-invoice-document"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import type { InvoiceData } from "@/lib/types"
@@ -181,7 +179,12 @@ function AuthControls() {
   )
 }
 
-export function Toolbar() {
+interface ToolbarProps {
+  customizeOpen?: boolean
+  onToggleCustomize?: () => void
+}
+
+export function Toolbar({ customizeOpen, onToggleCustomize }: ToolbarProps) {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
   const { isAuthenticated } = useAuth()
@@ -283,33 +286,36 @@ export function Toolbar() {
           <Link
             href="/"
             aria-label="Billy home"
-            className="shrink-0 font-serif text-[28px] italic leading-none text-[var(--invoice-ink)]"
+            className="shrink-0 font-serif text-[26px] leading-none text-[#0B0B0F]"
           >
-            billy
+            billy*
           </Link>
-          <span className="hidden h-5 w-px bg-[var(--invoice-panel-border)] opacity-60 sm:block" />
-          <div className="hidden min-w-0 sm:block">
-            <div className="flex items-center gap-2">
-              <h1 className="truncate text-sm font-medium text-[var(--invoice-ink)]">
-                Invoice editor
-              </h1>
-              <span className="nav-chip hidden items-center px-2.5 py-0.5 text-[11px] font-medium text-[var(--invoice-muted)] sm:inline-flex">
-                {state.invoiceNumber}
-              </span>
-            </div>
-            <p className="truncate text-xs text-[var(--invoice-muted)]">
-              {state.clientName}
-            </p>
-          </div>
+          <span className="hidden h-5 w-px bg-[#EBEBEE] sm:block" />
+          <span className="nav-chip hidden items-center px-2.5 py-0.5 text-[11px] font-medium text-[#82868F] sm:inline-flex">
+            {state.invoiceNumber}
+          </span>
         </div>
 
         <div className="flex flex-wrap items-center justify-start gap-2 sm:justify-end">
-          <TemplateSelector />
-          <CurrencySelect />
+          {onToggleCustomize && (
+            <button
+              type="button"
+              onClick={onToggleCustomize}
+              aria-pressed={customizeOpen}
+              className={`nav-control inline-flex h-9 items-center gap-1.5 px-3.5 text-xs font-medium ${
+                customizeOpen
+                  ? "!border-[#0778F2] !bg-[#EAF3FE] !text-[#0778F2]"
+                  : "text-[#0B0B0F]"
+              }`}
+            >
+              <HugeiconsIcon icon={SlidersHorizontalIcon} size={15} />
+              Customize
+            </button>
+          )}
           <button
             type="button"
             onClick={handleReset}
-            className="nav-control inline-flex h-9 items-center gap-1.5 px-3.5 text-xs font-medium text-[var(--invoice-ink)]"
+            className="nav-control inline-flex h-9 items-center gap-1.5 px-3.5 text-xs font-medium text-[#0B0B0F]"
           >
             <HugeiconsIcon icon={Refresh01Icon} size={15} />
             New
@@ -322,7 +328,7 @@ export function Toolbar() {
             <HugeiconsIcon icon={PrinterIcon} size={15} />
             Export PDF
           </button>
-          <span className="mx-0.5 hidden h-6 w-px bg-[var(--invoice-panel-border)] opacity-60 sm:block" />
+          <span className="mx-0.5 hidden h-6 w-px bg-[#EBEBEE] sm:block" />
           <AuthControls />
         </div>
       </div>

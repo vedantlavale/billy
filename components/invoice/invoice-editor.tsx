@@ -13,17 +13,22 @@ import {
 import type { InvoiceData } from "@/lib/types"
 import { ResizableSplit } from "@/components/ui/resizable-split"
 import { Toolbar } from "@/components/invoice/toolbar"
+import { CustomizePanel } from "@/components/invoice/customize-panel"
 import { getTemplate } from "@/lib/templates"
 
 function EditorWorkspace() {
   const state = useInvoiceState()
   const template = React.useMemo(() => getTemplate(state.templateId), [state.templateId])
+  const [customizeOpen, setCustomizeOpen] = React.useState(false)
 
   return (
     <div
       className="invoice-editor h-dvh flex flex-col"
       style={{
-        backgroundColor: template.colors.desk,
+        // The desk (app shell behind the paper) is always the neutral Billy
+        // surface, matching the landing page. Only the paper itself carries the
+        // template's colors.
+        backgroundColor: "#F7F7F8",
         color: template.colors.ink,
         "--invoice-ink": template.colors.ink,
         "--invoice-muted": template.colors.muted,
@@ -31,17 +36,20 @@ function EditorWorkspace() {
         "--invoice-paper": template.colors.paper,
         "--invoice-border": template.colors.border,
         "--invoice-accent": template.colors.accent,
-        "--invoice-desk": template.colors.desk,
-        "--invoice-panel": template.colors.panel,
-        "--invoice-panel-border": template.colors.panelBorder,
-        "--invoice-toolbar": template.colors.toolbar,
+        "--invoice-desk": "#F7F7F8",
+        "--invoice-panel": "#FFFFFF",
+        "--invoice-panel-border": "#EBEBEE",
+        "--invoice-toolbar": "#FFFFFF",
         "--invoice-primary": template.colors.primary,
         "--invoice-secondary": template.colors.secondary,
         "--invoice-font": template.cssFontFamily,
       } as React.CSSProperties}
     >
-      <Toolbar />
-      <div className="flex-1 min-h-0">
+      <Toolbar
+        customizeOpen={customizeOpen}
+        onToggleCustomize={() => setCustomizeOpen((open) => !open)}
+      />
+      <div className="relative flex-1 min-h-0">
         <ResizableSplit
           defaultLeftPercent={50}
           minLeftPercent={30}
@@ -61,6 +69,7 @@ function EditorWorkspace() {
             </aside>
           }
         />
+        {customizeOpen && <CustomizePanel onClose={() => setCustomizeOpen(false)} />}
       </div>
     </div>
   )

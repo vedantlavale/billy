@@ -340,13 +340,13 @@ export default function Home() {
               <span className="landing-footer-head">Product</span>
               <a href="#features" className="landing-footer-link">Features</a>
               <a href="#designed" className="landing-footer-link">Templates</a>
-              <a href="/signup" className="landing-footer-link">Pricing</a>
-              <a href="/signup" className="landing-footer-link">Sign up</a>
+              <Link href="/signup" className="landing-footer-link">Pricing</Link>
+              <Link href="/signup" className="landing-footer-link">Sign up</Link>
             </div>
             <div className="landing-footer-col">
               <span className="landing-footer-head">Help</span>
               <a href="#faq" className="landing-footer-link">Questions &amp; answers</a>
-              <a href="/login" className="landing-footer-link">Log in</a>
+              <Link href="/login" className="landing-footer-link">Log in</Link>
             </div>
             <div className="landing-footer-col">
               <span className="landing-footer-head">Company</span>

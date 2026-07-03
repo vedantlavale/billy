@@ -128,7 +128,7 @@
     @apply font-sans;
   }
   ::selection {
-    background-color: rgba(13, 115, 119, 0.25);
+    background-color: rgba(7, 120, 242, 0.18);
   }
 }
 
@@ -952,23 +952,127 @@
 }
 
 
+/* Notion-style resting fields: fully quiet until you hover or focus.
+   The transparent border keeps layout identical to the old dashed box. */
 .invoice-editor .invoice-field {
-  border: 1px dashed oklch(0.85 0.01 260);
+  border: 1px solid transparent;
   background-color: transparent;
   cursor: text;
   border-radius: 4px;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: background-color 0.15s ease;
 }
 
 .invoice-editor .invoice-field:hover {
-  background-color: oklch(0.97 0.01 250);
-  border-color: oklch(0.6 0.04 255);
+  background-color: rgba(11, 11, 15, 0.045);
 }
 
 .invoice-editor .invoice-input {
   font-family: inherit;
   outline: none;
 }
+
+/* ═══════════════════════════════════════════════════
+   APP CHROME — Tally-style form components
+   Shared by the editor and dashboard: compact rounded-lg
+   controls, hairline borders, blue focus halo, key badges.
+═══════════════════════════════════════════════════ */
+
+.app-input {
+  border-radius: 8px;
+  border: 1px solid #E2E2E5;
+  background-color: #ffffff;
+  color: #0B0B0F;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.app-input::placeholder { color: #9CA0A8; }
+.app-input:hover { border-color: #C9C9CF; }
+.app-input:focus,
+.app-input:focus-visible {
+  border-color: #0778F2;
+  box-shadow: 0 0 0 3px rgba(7, 120, 242, 0.14);
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.app-btn:active { transform: translateY(1px); }
+.app-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(7, 120, 242, 0.3);
+}
+.app-btn--dark {
+  background-color: #0B0B0F;
+  color: #ffffff;
+  border: 1px solid #0B0B0F;
+}
+.app-btn--dark:hover { background-color: #26262B; border-color: #26262B; }
+.app-btn--blue {
+  background-color: #0778F2;
+  color: #ffffff;
+  border: 1px solid #0778F2;
+}
+.app-btn--blue:hover { background-color: #0561CC; border-color: #0561CC; }
+.app-btn--ghost {
+  background-color: #ffffff;
+  color: #0B0B0F;
+  border: 1px solid #E2E2E5;
+}
+.app-btn--ghost:hover { background-color: #FAFAFB; border-color: #C9C9CF; }
+
+/* Option button (Tally multiple-choice style): white card, hairline border,
+   optional key badge; selecting draws a 2px accent border without layout shift. */
+.app-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #E2E2E5;
+  background-color: #ffffff;
+  color: #26262B;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(11, 11, 15, 0.03);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+.app-option:hover { border-color: #C9C9CF; }
+.app-option:focus-visible {
+  outline: none;
+  border-color: #0778F2;
+  box-shadow: 0 0 0 3px rgba(7, 120, 242, 0.14);
+}
+.app-option[data-selected="true"] {
+  border-color: #E216BD;
+  box-shadow: inset 0 0 0 1px #E216BD;
+  color: #0B0B0F;
+}
+.app-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  background-color: #FAFAFB;
+}
+
+.app-kbd {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: #26262B;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+.app-option[data-selected="true"] .app-kbd { background-color: #E216BD; }
 
 .invoice-canvas {
   background-color: var(--invoice-paper);
@@ -1370,17 +1474,18 @@
   }
 }
 
-/* Plain premium editor navbar. */
+/* Editor navbar — fixed neutral chrome matching the landing identity
+   (white / ink #0B0B0F / blue #0778F2), independent of the active template. */
 .premium-nav {
-  background-color: color-mix(in srgb, var(--invoice-toolbar, #ffffff) 96%, #f8fafc);
-  border-bottom: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 82%, #ffffff);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
+  background-color: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #EBEBEE;
+  box-shadow: 0 1px 2px rgba(11, 11, 15, 0.03);
 }
 
 .nav-control,
 .nav-chip {
   border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 82%, #ffffff);
+  border: 1px solid #EBEBEE;
   background-color: #ffffff;
   box-shadow: none;
   transition:
@@ -1390,27 +1495,32 @@
 }
 
 .nav-control:hover {
-  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 70%, #ffffff);
-  border-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 18%, var(--invoice-panel-border, #e2e8f0));
+  background-color: #F7F7F8;
+  border-color: #D9D9DE;
 }
 
 .nav-control:active {
-  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 92%, #ffffff);
+  background-color: #F0F0F2;
 }
 
 .nav-control:focus-visible,
-.nav-primary:focus-visible,
 .nav-avatar:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--invoice-ink, #1e293b) 28%, transparent);
-  outline-offset: 2px;
+  outline: none;
+  border-color: #0778F2;
+  box-shadow: 0 0 0 3px rgba(7, 120, 242, 0.16);
+}
+
+.nav-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(7, 120, 242, 0.35);
 }
 
 .nav-primary {
   border-radius: 8px;
   color: #ffffff;
-  border: 1px solid color-mix(in srgb, var(--invoice-ink, #1e293b) 88%, #ffffff);
-  background-color: var(--invoice-ink, #1e293b);
-  box-shadow: 0 8px 18px -14px rgba(15, 23, 42, 0.65);
+  border: 1px solid #0778F2;
+  background-color: #0778F2;
+  box-shadow: 0 8px 18px -14px rgba(7, 120, 242, 0.7);
   transition:
     background-color 0.16s ease,
     box-shadow 0.16s ease,
@@ -1418,8 +1528,9 @@
 }
 
 .nav-primary:hover {
-  background-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 92%, #ffffff);
-  box-shadow: 0 10px 20px -15px rgba(15, 23, 42, 0.75);
+  background-color: #0561CC;
+  border-color: #0561CC;
+  box-shadow: 0 10px 20px -15px rgba(7, 120, 242, 0.8);
 }
 
 .nav-primary:active {
@@ -1433,9 +1544,9 @@
   flex-shrink: 0;
   place-items: center;
   border-radius: 9999px;
-  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 84%, #ffffff);
+  border: 1px solid #EBEBEE;
   background-color: #ffffff;
-  color: var(--invoice-ink, #1e293b);
+  color: #0B0B0F;
   font-size: 0.8125rem;
   font-weight: 650;
   line-height: 1;
@@ -1446,17 +1557,17 @@
 }
 
 .nav-avatar:hover {
-  background-color: color-mix(in srgb, var(--invoice-panel-soft, #f8fafc) 70%, #ffffff);
-  border-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 18%, var(--invoice-panel-border, #e2e8f0));
+  background-color: #F7F7F8;
+  border-color: #D9D9DE;
 }
 
 .nav-menu {
   border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--invoice-panel-border, #e2e8f0) 86%, #ffffff);
+  border: 1px solid #EBEBEE;
   background-color: #ffffff;
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.05),
-    0 18px 40px -24px rgba(15, 23, 42, 0.35);
+    0 1px 2px rgba(11, 11, 15, 0.05),
+    0 18px 40px -24px rgba(11, 11, 15, 0.35);
 }
 
 .nav-menu-item {
@@ -1468,14 +1579,14 @@
   padding: 0.5rem 0.625rem;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--invoice-ink, #1e293b);
+  color: #0B0B0F;
   outline: none;
   transition: background-color 0.15s ease;
 }
 
 .nav-menu-item:hover,
 .nav-menu-item[data-highlighted] {
-  background-color: color-mix(in srgb, var(--invoice-ink, #1e293b) 8%, transparent);
+  background-color: rgba(11, 11, 15, 0.06);
 }
 
 /* Smooth height animation for the collapsible invoice-setup panel. */

@@ -139,7 +139,7 @@ export function LineItemsTable() {
           size="sm"
           onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
           data-break-block
-          className="gap-2 border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+          className="app-btn app-btn--ghost h-8 gap-2 px-3 text-xs font-medium"
         >
           <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
           Add Item

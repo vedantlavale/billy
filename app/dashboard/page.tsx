@@ -404,7 +404,7 @@ export default function DashboardPage() {
 
   return (
     <main
-      className="flex min-h-dvh flex-col bg-white text-[#0E1117] selection:bg-[#E4F2F2] selection:text-[#0D7377]"
+      className="flex min-h-dvh flex-col bg-white text-[#0B0B0F] selection:bg-[#0778F2]/15"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Navbar */}
@@ -412,12 +412,12 @@ export default function DashboardPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
           <div className="flex items-center gap-3">
             <span
-              className="text-[1.1rem] font-extrabold tracking-[-0.05em] text-[#0E1117]"
-              style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+              className="text-[1.35rem] leading-none text-[#0B0B0F]"
+              style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
-              billy
+              billy*
             </span>
-            <span className="hidden rounded-full bg-[#E4F2F2] px-2.5 py-0.5 text-xs font-semibold text-[#0D7377] sm:inline-block">
+            <span className="hidden rounded-full bg-[#FCEBF8] px-2.5 py-0.5 text-xs font-semibold text-[#E216BD] sm:inline-block">
               {profile?.plan === "pro" ? "Pro Plan" : "Free Plan"}
             </span>
           </div>
@@ -425,7 +425,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/editor"
-              className="rounded-full border border-[#E8E8E8] bg-white px-4 py-1.5 text-xs font-semibold text-[#3A3F4B] transition-all hover:border-[#0E1117] hover:text-[#0E1117] hover:shadow-sm"
+              className="app-btn app-btn--ghost px-3.5 py-1.5 text-xs"
             >
               Open Editor
             </Link>
@@ -451,17 +451,14 @@ export default function DashboardPage() {
         {/* Welcome and Summary Cards */}
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1
-              className="text-2xl font-extrabold tracking-[-0.04em] text-[#0E1117]"
-              style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
-            >
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-[#0B0B0F]">
               Invoices
             </h1>
             <p className="text-sm text-[#7C8090] mt-0.5">Manage your documents and track invoices.</p>
           </div>
           <Link
             href="/editor"
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0D7377] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(13,115,119,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(13,115,119,0.4)] hover:bg-[#0A5C60]"
+            className="app-btn app-btn--blue px-4 py-2 text-sm"
           >
             Create new invoice →
           </Link>
@@ -470,7 +467,7 @@ export default function DashboardPage() {
         {/* Overview Stats Bento */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* Card 1: Total Invoiced */}
-          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
+          <div className="rounded-xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_2px_rgba(11,11,15,0.04)]">
             <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Total Invoiced</span>
             <div className="mt-2 space-y-1">
               {Object.keys(currencyTotals).length > 0 ? (
@@ -486,17 +483,17 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 2: Count */}
-          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
+          <div className="rounded-xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_2px_rgba(11,11,15,0.04)]">
             <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Invoices Created</span>
             <div className="mt-2 text-3xl font-bold tracking-tight text-[#0E1117]">{invoices.length}</div>
             <p className="mt-1 text-xs text-[#7C8090]">Total drafts and sent invoices saved.</p>
           </div>
 
           {/* Card 3: Free Plan limits */}
-          <div className="rounded-2xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] sm:col-span-2 lg:col-span-1">
+          <div className="rounded-xl border border-[#E8E8E8] bg-white p-5 shadow-[0_1px_2px_rgba(11,11,15,0.04)] sm:col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold tracking-widest text-[#7C8090] uppercase">Monthly Usage</span>
-              <span className="text-xs font-semibold text-[#0D7377]">
+              <span className="text-xs font-semibold text-[#0778F2]">
                 {profile?.plan === "pro" ? "Unlimited" : `${freeInvoicesUsed} / ${freeLimit}`}
               </span>
             </div>
@@ -504,7 +501,7 @@ export default function DashboardPage() {
               <div className="mt-4">
                 <div className="h-1.5 w-full rounded-full bg-[#F0F0F0] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[#0D7377] transition-all duration-500"
+                    className="h-full rounded-full bg-[#0778F2] transition-all duration-500"
                     style={{ width: `${limitPercent}%` }}
                   />
                 </div>
@@ -514,7 +511,7 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="mt-3">
-                <div className="inline-flex rounded-full bg-[#E4F2F2] px-2.5 py-0.5 text-xs font-medium text-[#0D7377]">
+                <div className="inline-flex rounded-full bg-[#FCEBF8] px-2.5 py-0.5 text-xs font-medium text-[#E216BD]">
                   Active Pro features
                 </div>
                 <p className="mt-2 text-xs text-[#7C8090]">Enjoy unlimited invoice saves and premium templates.</p>
@@ -524,7 +521,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Toolbar: Search, Filters, Sort */}
-        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-[#E8E8E8] bg-white p-4 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] md:flex-row md:items-center md:justify-between">
+        <div className="mb-6 flex flex-col gap-4 rounded-xl border border-[#E8E8E8] bg-white p-4 shadow-[0_1px_2px_rgba(11,11,15,0.04)] md:flex-row md:items-center md:justify-between">
           {/* Search bar */}
           <div className="relative flex-1">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-[#7C8090]">
@@ -537,7 +534,7 @@ export default function DashboardPage() {
               placeholder="Search by client or invoice #..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-[#E8E8E8] bg-[#F8F8F8] py-2 pl-9 pr-4 text-sm outline-none transition-colors focus:border-[#0D7377] focus:bg-white"
+              className="app-input w-full py-2 pl-9 pr-4 text-sm"
             />
           </div>
 
@@ -548,7 +545,7 @@ export default function DashboardPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="rounded-lg border border-[#E8E8E8] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
+                className="app-input px-2.5 py-1.5 text-xs font-medium"
               >
                 <option value="all">All Invoices</option>
                 <option value="draft">Draft</option>
@@ -563,7 +560,7 @@ export default function DashboardPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="rounded-lg border border-[#E8E8E8] bg-white px-2.5 py-1.5 text-xs font-medium outline-none transition-colors hover:border-[#0E1117]"
+                className="app-input px-2.5 py-1.5 text-xs font-medium"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -576,8 +573,8 @@ export default function DashboardPage() {
 
         {/* Invoice List Content */}
         {filteredAndSortedInvoices.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#E8E8E8] bg-white px-6 py-16 text-center shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
-            <div className="flex size-14 items-center justify-center rounded-2xl bg-[#E4F2F2] text-[#0D7377]">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#E8E8E8] bg-white px-6 py-16 text-center shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+            <div className="flex size-14 items-center justify-center rounded-xl bg-[#FCEBF8] text-[#E216BD]">
               <svg className="size-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
               </svg>
@@ -596,22 +593,22 @@ export default function DashboardPage() {
                     setStatusFilter("all")
                     setSortBy("newest")
                   }}
-                  className="rounded-full border border-[#E8E8E8] bg-white px-4 py-2 text-xs font-semibold text-[#3A3F4B] transition-all hover:border-[#0E1117] hover:text-[#0E1117] hover:shadow-sm"
+                  className="app-btn app-btn--ghost px-4 py-2 text-xs"
                 >
                   Clear all filters
                 </button>
               ) : (
                 <Link
                   href="/editor"
-                  className="inline-flex rounded-full bg-[#0D7377] px-5 py-2.5 text-xs font-semibold text-white shadow-[0_4px_14px_rgba(13,115,119,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(13,115,119,0.35)]"
+                  className="app-btn app-btn--blue px-4 py-2 text-xs"
                 >
-                  Create Invoice
+                  Create Invoice →
                 </Link>
               )}
             </div>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-[#E8E8E8] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]">
+          <div className="overflow-x-auto rounded-xl border border-[#E8E8E8] bg-white shadow-[0_1px_2px_rgba(11,11,15,0.04)]">
             <table className="w-full min-w-[700px] border-collapse text-left text-sm">
               <thead className="border-b border-[#F0F0F0] bg-[#FAFAFA]">
                 <tr>
@@ -635,7 +632,7 @@ export default function DashboardPage() {
                       <td className="px-6 py-4 font-semibold text-[#0E1117]">
                         <button
                           onClick={() => handleEdit(invoice)}
-                          className="hover:underline text-left outline-none font-medium hover:text-[#0D7377]"
+                          className="hover:underline text-left outline-none font-medium hover:text-[#0778F2]"
                         >
                           {invoice.data.invoiceNumber || "INV-UNTITLED"}
                         </button>
@@ -669,12 +666,12 @@ export default function DashboardPage() {
                         <button
                           onClick={() => toggleStatus(invoice)}
                           disabled={isBusy}
-                          className={`inline-flex cursor-pointer items-center rounded-full px-2.5 py-1 text-xs font-semibold select-none transition-colors duration-150 outline-none hover:opacity-85 ${
+                          className={`inline-flex cursor-pointer items-center rounded-lg border px-2.5 py-1 text-xs font-semibold select-none transition-colors duration-150 outline-none hover:opacity-85 ${
                             invoice.status === "paid"
-                              ? "bg-emerald-50 text-emerald-700"
+                              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
                               : invoice.status === "sent"
-                              ? "bg-blue-50 text-blue-700"
-                              : "bg-gray-100 text-gray-600"
+                              ? "border-blue-200 bg-blue-50 text-blue-700"
+                              : "border-gray-200 bg-white text-gray-600"
                           }`}
                           title="Click to toggle status"
                         >
@@ -702,7 +699,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDownloadPdf(invoice)}
                             disabled={isBusy}
-                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#E4F2F2] hover:text-[#0D7377] disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#EAF3FE] hover:text-[#0778F2] disabled:opacity-50"
                             title="Download PDF"
                           >
                             {isBusy ? (
@@ -718,7 +715,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDuplicate(invoice)}
                             disabled={isBusy}
-                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#E4F2F2] hover:text-[#0D7377] disabled:opacity-50"
+                            className="rounded-lg p-1.5 text-[#3A3F4B] transition-colors hover:bg-[#EAF3FE] hover:text-[#0778F2] disabled:opacity-50"
                             title="Duplicate Invoice"
                           >
                             <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -751,10 +748,10 @@ export default function DashboardPage() {
       {/* Footer */}
       <footer className="border-t border-[#F0F0F0] bg-white py-8 text-center">
         <span
-          className="text-sm font-extrabold tracking-[-0.05em] text-[#0E1117]"
-          style={{ fontFamily: "var(--font-outfit), var(--font-dm-sans), system-ui, sans-serif" }}
+          className="text-lg leading-none text-[#0B0B0F]"
+          style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
         >
-          billy
+          billy*
         </span>
         <p className="mt-2 text-xs text-[#7C8090]">
           © 2026 · Invoice Management Dashboard · All data belongs to you.
