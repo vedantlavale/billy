@@ -1,71 +1,55 @@
 import { NextResponse } from "next/server"
+import { dodo } from "@/lib/dodo"
 import { activateProPlan, deactivateProPlan } from "@/lib/billing"
 
-/**
- * Webhook receiver route handler to process subscription event payloads.
- * Features signature verification scaffolding for production environments.
- */
 export async function POST(request: Request) {
+  const rawBody = await request.text()
+
+  let event: ReturnType<typeof dodo.webhooks.unwrap>
   try {
-    const signature = request.headers.get("x-dodo-signature")
-    const payloadText = await request.text()
+    event = dodo.webhooks.unwrap(rawBody, {
+      headers: {
+        "webhook-id": request.headers.get("webhook-id") ?? "",
+        "webhook-signature": request.headers.get("webhook-signature") ?? "",
+        "webhook-timestamp": request.headers.get("webhook-timestamp") ?? "",
+      },
+      key: process.env.DODO_WEBHOOK_SECRET,
+    })
+  } catch (err: any) {
+    console.error("Webhook signature verification failed:", err.message)
+    return NextResponse.json({ error: "Invalid webhook signature" }, { status: 400 })
+  }
 
-    // Webhook signature validation scaffolding (active in production)
-    if (!signature) {
-      return NextResponse.json({ error: "Missing x-dodo-signature header" }, { status: 401 })
-    }
-
-    // Example verification process:
-    // const webhookSecret = process.env.DODO_WEBHOOK_SECRET
-    // const verified = verifyDodoSignature(payloadText, signature, webhookSecret)
-    // if (!verified) return NextResponse.json({ error: "Invalid signature payload" }, { status: 403 })
-
-    let body
-    try {
-      body = JSON.parse(payloadText)
-    } catch {
-      return NextResponse.json({ error: "Invalid payload JSON" }, { status: 400 })
-    }
-
-    const { event, data } = body
-
-    if (!event || !data) {
-      return NextResponse.json({ error: "Invalid event data format" }, { status: 400 })
-    }
-
-    switch (event) {
-      case "subscription.created":
+  try {
+    switch (event.type) {
+      case "subscription.active":
       case "subscription.renewed": {
-        const userId = data.client_reference_id
-        const subId = data.subscription_id
-        const planId = data.plan_id
-        const planType = data.plan_type || "month"
-        const currentPeriodEnd = new Date(data.current_period_end || Date.now() + 30 * 24 * 60 * 60 * 1000)
-
-        if (!userId || !subId || !planId) {
-          return NextResponse.json({ error: "Missing client_reference_id, subscription_id, or plan_id" }, { status: 400 })
+        const sub = event.data
+        const userId = sub.metadata?.user_id
+        if (!userId) {
+          console.error("No user_id in subscription metadata for sub:", sub.subscription_id)
+          return NextResponse.json({ error: "No user_id in subscription metadata" }, { status: 400 })
         }
 
-        await activateProPlan(userId, subId, planId, planType, currentPeriodEnd)
+        const periodEnd = new Date(sub.next_billing_date)
+        // TimeInterval is 'Day' | 'Week' | 'Month' | 'Year' — lowercase for storage
+        const planType = sub.payment_frequency_interval.toLowerCase()
+
+        await activateProPlan(userId, sub.subscription_id, sub.product_id, planType, periodEnd)
         break
       }
       case "subscription.cancelled":
       case "subscription.expired": {
-        const subId = data.subscription_id
-        if (!subId) {
-          return NextResponse.json({ error: "Missing subscription_id" }, { status: 400 })
-        }
-
-        await deactivateProPlan(subId)
+        await deactivateProPlan(event.data.subscription_id)
         break
       }
       default:
-        console.log("Unhandled billing webhook event:", event)
+        console.log("Unhandled billing webhook event:", event.type)
     }
 
     return NextResponse.json({ received: true })
   } catch (error: any) {
-    console.error("Webhook route error:", error)
+    console.error("Webhook handler error:", error)
     return NextResponse.json(
       { error: error.message || "Webhook processing failed" },
       { status: 500 },

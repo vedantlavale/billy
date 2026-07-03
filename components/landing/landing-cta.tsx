@@ -3,8 +3,6 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
-
 export type LandingCtaVariant =
   | "nav-link"
   | "nav-pill"
@@ -20,7 +18,7 @@ interface LandingCtaProps {
 }
 
 const baseReset =
-  "inline-flex items-center justify-center cursor-pointer appearance-none border-0 font-sans"
+  "inline-flex items-center justify-center cursor-pointer appearance-none border-0"
 
 const variantClass: Record<LandingCtaVariant, string> = {
   "nav-link": "landing-nav-link",
@@ -35,18 +33,6 @@ export function LandingCta({ variant, label, className }: LandingCtaProps) {
   const router = useRouter()
   const handleClick = () => {
     router.push("/signup")
-  }
-
-  if (variant === "nav-pill") {
-    return (
-      <InteractiveHoverButton
-        type="button"
-        onClick={handleClick}
-        className={className}
-      >
-        {label}
-      </InteractiveHoverButton>
-    )
   }
 
   return (

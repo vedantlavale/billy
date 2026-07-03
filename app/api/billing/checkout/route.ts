@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { isPaywallEnabled } from "@/lib/config"
+import { dodo } from "@/lib/dodo"
 
-/**
- * Endpoint to create a billing checkout session.
- * Gated by isPaywallEnabled() configuration.
- */
-export async function POST(request: Request) {
+export async function POST() {
   try {
     const supabase = await createClient()
     const {
@@ -24,16 +21,31 @@ export async function POST(request: Request) {
       })
     }
 
-    // Scaffolding Dodo Payments checkout session redirect
-    // const dodoApiKey = process.env.DODO_PAYMENTS_API_KEY
-    // const dodoClient = new DodoPayments(dodoApiKey)
-    
-    const checkoutUrl = `https://test.dodopayments.com/checkout?client_reference_id=${user.id}&email=${encodeURIComponent(user.email || "")}`
+    const productId = process.env.DODO_PRODUCT_ID
+    if (!productId) {
+      console.error("DODO_PRODUCT_ID env var is not set")
+      return NextResponse.json({ error: "Payment product not configured" }, { status: 500 })
+    }
 
-    return NextResponse.json({
-      url: checkoutUrl,
-      message: "Checkout session url successfully generated (scaffold).",
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+
+    const session = await dodo.checkoutSessions.create({
+      product_cart: [{ product_id: productId, quantity: 1 }],
+      customer: {
+        email: user.email!,
+        name: user.user_metadata?.full_name || user.user_metadata?.name || user.email!,
+      },
+      // user_id is echoed back on subscription.metadata so the webhook can identify the user
+      metadata: { user_id: user.id },
+      return_url: `${appUrl}/dashboard?upgraded=true`,
+      cancel_url: `${appUrl}/dashboard`,
     })
+
+    if (!session.checkout_url) {
+      return NextResponse.json({ error: "No checkout URL returned from Dodo" }, { status: 500 })
+    }
+
+    return NextResponse.json({ url: session.checkout_url })
   } catch (error: any) {
     console.error("Checkout route error:", error)
     return NextResponse.json(
