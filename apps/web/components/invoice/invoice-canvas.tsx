@@ -64,13 +64,13 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
   }, [])
 
   // The page remounts when the mode flips, so re-attach the height observer.
+  // offsetHeight is the unscaled border-box height; contentRect would drop the
+  // sheet's padding and under-reserve space for the scaled page.
   React.useEffect(() => {
     const page = pageRef.current
     if (!page) return
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setPageHeight(entry.contentRect.height)
-      }
+    const observer = new ResizeObserver(() => {
+      setPageHeight(page.offsetHeight)
     })
     observer.observe(page)
     return () => observer.disconnect()
