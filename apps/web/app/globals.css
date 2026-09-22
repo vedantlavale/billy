@@ -134,6 +134,25 @@
   }
 }
 
+/* Brand lockup (components/brand.tsx) */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #37352f;
+  text-decoration: none;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+}
+.brand-word {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.brand--sm .brand-word { font-size: 19px; }
+.brand--lg .brand-word { font-size: 28px; }
+.brand--lg { gap: 11px; }
+
 
 .invoice-editor {
   color: var(--invoice-ink);
@@ -299,21 +318,39 @@
     0 12px 40px -12px rgba(15, 23, 42, 0.16);
 }
 
+/* Bank details print on one line separated by dots (read-only), so a filled
+   footer stays short enough for a typical invoice to fit one page. */
+.footer-bank > * + *::before {
+  content: "·";
+  margin-right: 0.75rem;
+  color: var(--invoice-subtle);
+}
+
+/* Footer bands assume they sit at the bottom of the sheet. Once an invoice
+   paginates, the footer may start a later page, so the edge-to-edge bleed
+   is dropped and it becomes a padded block inside the page margins. */
+.invoice-canvas[data-multipage="true"] .footer-section {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 6px;
+}
+
 /* Template: Modern Green */
 .invoice-canvas[data-template="modern-green"] {
   border-radius: 8px;
   padding: 0 !important;
 }
 .invoice-canvas[data-template="modern-green"] .invoice-canvas-inner {
-  padding: 40px;
+  padding: 32px 40px 40px;
 }
 .invoice-canvas[data-template="modern-green"] .header-section {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   background-color: var(--invoice-primary);
-  padding: 40px;
-  margin: -40px -40px 24px -40px;
+  padding: 22px 40px;
+  margin: -32px -40px 12px -40px;
   border-bottom: none;
 }
 .invoice-canvas[data-template="modern-green"] .header-title-container {
@@ -337,48 +374,48 @@
   flex-direction: row;
   justify-content: space-between;
   background: white;
-  padding: 16px;
+  padding: 8px 14px;
   border: 1px solid var(--invoice-border);
-  margin-top: 24px;
+  margin-top: 10px;
 }
 .invoice-canvas[data-template="modern-green"] .client-section {
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 8px 12px;
+  gap: 8px;
   background: var(--invoice-primary);
   margin-bottom: -1px; /* collapse border */
 }
 .invoice-canvas[data-template="modern-green"] .meta-section {
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 8px 12px;
+  gap: 8px;
   background: var(--invoice-primary);
 }
 .invoice-canvas[data-template="modern-green"] .client-details,
 .invoice-canvas[data-template="modern-green"] .meta-item {
   background: white;
-  padding: 8px;
+  padding: 4px 8px;
   border: 1px solid var(--invoice-border);
 }
 .invoice-canvas[data-template="modern-green"] .line-items-header {
   background: var(--invoice-primary);
-  padding: 12px;
+  padding: 8px 12px;
   border: 1px solid var(--invoice-border);
   color: var(--invoice-ink);
 }
 .invoice-canvas[data-template="modern-green"] .line-item-row {
   border: 1px solid var(--invoice-border);
   border-top: none;
-  padding: 12px;
+  padding: 10px 12px;
 }
 .invoice-canvas[data-template="modern-green"] .totals-box {
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 10px 14px;
 }
 .invoice-canvas[data-template="modern-green"] .footer-section {
   background: var(--invoice-primary);
-  padding: 24px;
-  margin: 24px -40px -40px -40px;
+  padding: 14px 24px;
+  margin: 12px -40px -40px -40px;
 }
 
 /* Template: Minimal Teal */
@@ -540,7 +577,7 @@
 /* Template: Corporate Blue */
 .invoice-canvas[data-template="corporate-blue"] .header-section {
   position: relative;
-  padding-bottom: 48px;
+  padding-bottom: 40px;
   border-bottom: 2px solid var(--invoice-ink);
   margin-bottom: 24px;
 }
@@ -588,7 +625,7 @@
 .invoice-canvas[data-template="corporate-blue"] .footer-section {
   background: var(--invoice-primary);
   color: white;
-  padding: 20px 40px;
+  padding: 16px 40px;
   margin: 24px -40px -40px -40px;
   border-top: none;
 }
@@ -628,8 +665,8 @@
   padding: 0 44px 44px;
 }
 .invoice-canvas[data-template="studio"] .header-section {
-  margin: 0 -44px 28px;
-  padding: 40px 44px 32px;
+  margin: 0 -44px 20px;
+  padding: 30px 44px 24px;
   background: var(--invoice-primary);
   border-bottom: 6px solid var(--invoice-accent);
 }
@@ -750,20 +787,21 @@
 /* Template: Receipt — compact, centred, dotted rules */
 .invoice-canvas[data-template="receipt"] {
   border-radius: 0;
-  padding: 48px 72px !important;
+  padding: 40px 64px !important;
 }
 .invoice-canvas[data-template="receipt"] .invoice-canvas-inner {
   gap: 0;
 }
 .invoice-canvas[data-template="receipt"] .invoice-canvas-inner > * + * {
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 }
 .invoice-canvas[data-template="receipt"] .header-section {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 10px;
   border-bottom: 2px dotted var(--invoice-ink);
-  padding-bottom: 20px;
+  padding-bottom: 14px;
 }
 .invoice-canvas[data-template="receipt"] .header-brand {
   flex-direction: column;
@@ -842,8 +880,8 @@
   padding: 0 48px 48px;
 }
 .invoice-canvas[data-template="letterhead"] .header-section {
-  margin: 0 -48px 32px;
-  padding: 36px 48px 28px;
+  margin: 0 -48px 24px;
+  padding: 28px 48px 22px;
   background: var(--invoice-primary);
   border-bottom: 4px solid var(--invoice-accent);
   align-items: center;

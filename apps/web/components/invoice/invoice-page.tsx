@@ -197,7 +197,7 @@ export const InvoicePage = React.forwardRef<
           minHeight: multiPage ? stackHeight : PAGE_H,
         }}
       >
-        <div className="invoice-canvas-inner space-y-6">
+        <div className="invoice-canvas-inner space-y-4">
           <HeaderSection />
           <ClientSection />
           <MetaSection />

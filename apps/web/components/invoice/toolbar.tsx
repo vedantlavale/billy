@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react"
-import Link from "next/link"
+import { Brand } from "@/components/brand"
 
 import { Kbd, useModKey } from "@/components/invoice/editor-ui"
 import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
@@ -73,13 +73,7 @@ export function Toolbar({
   return (
     <header className="ed-topbar ed-chrome toolbar editor-chrome">
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <Link
-          href="/"
-          aria-label="Billy home"
-          className="shrink-0 font-serif text-[26px] leading-none"
-        >
-          billy*
-        </Link>
+        <Brand size="sm" />
         <span className="hidden h-5 w-px bg-[#E5E7EB] sm:block" aria-hidden />
         <div className="hidden min-w-0 items-center gap-2 sm:flex">
           <span className="truncate text-sm font-semibold leading-5">

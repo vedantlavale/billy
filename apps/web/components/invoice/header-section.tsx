@@ -11,7 +11,7 @@ export function HeaderSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section data-break-block className="header-section flex flex-col gap-6 border-b border-[var(--invoice-border)] pb-4 md:flex-row md:items-start md:justify-between">
+    <section data-break-block className="header-section flex flex-col gap-4 border-b border-[var(--invoice-border)] pb-4 md:flex-row md:items-start md:justify-between">
       <div className="header-brand flex items-center gap-5">
         <div className="header-title-container hidden">
           <h1 className="header-title text-4xl font-bold tracking-widest text-[var(--invoice-ink)]">INVOICE</h1>
@@ -44,7 +44,7 @@ export function HeaderSection() {
           </div>
         </div>
       </div>
-      <div className="header-contact flex flex-col space-y-3 text-sm text-[var(--invoice-muted)] md:text-right">
+      <div className="header-contact flex flex-col space-y-2 text-sm text-[var(--invoice-muted)] md:text-right">
         <div>
           <EditableText
             value={state.businessAddress}
