@@ -67,8 +67,8 @@ export function LandingNav({ minimal = false }: { minimal?: boolean }) {
 
         {!minimal && (
           <nav className="lx-nav-links" aria-label="Sections">
-            <a className="lx-nav-link" href="#how">
-              How it works
+            <a className="lx-nav-link" href="#features">
+              Features
             </a>
             <a className="lx-nav-link" href="#built-for">
               Built for

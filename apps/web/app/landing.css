@@ -440,26 +440,6 @@
   line-height: 20px;
 }
 
-.lx-hero-sparkles {
-  left: -4%;
-  top: 22%;
-  width: 56px;
-  transform: rotate(-12deg);
-}
-
-.lx-hero-coin {
-  right: -3%;
-  top: 38%;
-  width: 52px;
-  transform: rotate(10deg);
-}
-
-@media (max-width: 900px) {
-  .lx-hero-sparkles,
-  .lx-hero-coin {
-    display: none;
-  }
-}
 
 /* ═══ PRODUCT SHOT — live invoice in a browser frame, with annotations ═══ */
 
@@ -775,130 +755,227 @@
   list-style: none;
 }
 
-/* ═══ STEPS — three open columns, no cards ═══════════════════════════════ */
+/* ═══ SECTION MODULE (#21) — header · bento · mini-features ══════════════
+   Adapted from tally.so: every feature section repeats one rich module. */
 
-.lx-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 3vw, 40px);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.lx-shead {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.lx-shead-copy {
+  max-width: 600px;
+}
+
+.lx-shead-copy .lx-h2 {
+  font-size: clamp(30px, 3.6vw, 40px);
+}
+
+.lx-shead-copy .lx-lead {
+  margin-top: 14px;
+}
+
+.lx-shead .lx-underline svg {
+  bottom: -0.28em;
+  height: 0.3em;
+}
+
+.lx-shead-art {
+  position: relative;
+  flex: none;
+  width: 220px;
+  height: 150px;
+  color: var(--lx-ink);
 }
 
 @media (max-width: 900px) {
-  .lx-steps {
+  .lx-shead-art {
+    display: none;
+  }
+}
+
+/* Doodle compositions beside headers */
+.lx-art { position: absolute; inset: 0; }
+.lx-art svg { position: absolute; }
+.lx-art-face { width: 96px; left: 18px; bottom: 0; transform: rotate(-6deg); }
+.lx-art-bubble { width: 112px; right: 0; top: 0; color: var(--lx-blue); }
+.lx-art-stars { width: 136px; left: 0; top: 10px; }
+.lx-art-pencil { width: 104px; right: 0; bottom: 0; }
+.lx-art-receipt { position: absolute; width: 104px; right: 40px; bottom: 0; transform: rotate(8deg); }
+.lx-art-plane { position: absolute; width: 170px; right: 0; bottom: 6px; }
+
+/* Bento */
+.lx-bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .lx-bento {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-.lx-step {
+.lx-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-top: 24px;
-  border-top: 1px solid var(--lx-line);
+  overflow: hidden;
+  border: 1px solid var(--lx-line);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 28px 32px 0;
+  box-shadow: 0 1px 2px rgba(55, 53, 47, 0.04);
+  transition: border-color var(--lx-base) var(--lx-out), box-shadow var(--lx-base) var(--lx-out);
 }
 
-.lx-step-num {
-  display: inline-grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  margin-bottom: 6px;
-  border: 1.5px solid var(--lx-ink);
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 700;
+.lx-card:hover {
+  border-color: #cfd3d9;
+  box-shadow: 0 1px 2px rgba(55, 53, 47, 0.04), 0 18px 40px -30px rgba(55, 53, 47, 0.35);
 }
 
-/* Illustration well under each step — a muted media slot, not a card. */
-.lx-well {
-  display: flex;
+.lx-card--wide {
+  grid-column: 1 / -1;
+}
+
+.lx-card--accent {
+  border: 2px solid var(--lx-blue);
+}
+
+.lx-card--accent .lx-card-title,
+.lx-card--accent .lx-card-icon {
+  color: var(--lx-blue);
+}
+
+.lx-card--split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   align-items: center;
+  gap: 24px;
+  padding-bottom: 24px;
+}
+
+@media (max-width: 860px) {
+  .lx-card--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.lx-card-icon {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--lx-blue);
+}
+
+.lx-card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.lx-card-text {
+  max-width: 56ch;
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.lx-card-media {
+  display: flex;
   justify-content: center;
-  height: 172px;
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: var(--lx-r-lg);
-  background: var(--lx-muted);
+  margin-top: auto;
+  padding: 24px 0 20px;
+}
+
+.lx-card--split .lx-card-media {
+  margin: 0;
+  padding: 0;
+}
+
+.lx-card--accent .lx-card-media {
+  margin: 12px -33px 0;
+  padding: 0;
+}
+
+.lx-landscape {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--lx-ink);
 }
 
 .lx-scene {
   display: block;
   width: 100%;
-  max-width: 300px;
+  max-width: 340px;
   height: auto;
   overflow: visible;
   font-family: inherit;
 }
 
-/* ═══ FACTS — the privacy argument, big numerals ═════════════════════════ */
+.lx-scene--wide {
+  max-width: 640px;
+}
 
-.lx-facts {
+/* Feature tiles — one scannable section instead of prose grids */
+.lx-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.lx-fact {
-  display: grid;
-  grid-template-columns: 128px minmax(0, 1fr);
-  gap: 24px;
-  align-items: baseline;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--lx-line);
+@media (max-width: 960px) {
+  .lx-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.lx-fact:first-child {
-  border-top: 1px solid var(--lx-line);
-}
-
-.lx-stat-n {
-  font-size: clamp(38px, 4.4vw, 49px);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.lx-stat-k {
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.lx-stat-k strong {
-  display: block;
+.lx-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid var(--lx-line);
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 15px;
   font-weight: 600;
+  line-height: 1.3;
+  transition: border-color var(--lx-fast) var(--lx-out), transform var(--lx-fast) var(--lx-out);
 }
 
-.lx-privacy-head {
-  position: relative;
+.lx-tile:hover {
+  border-color: #c9ccd2;
+  transform: translateY(-2px);
 }
 
-.lx-privacy-head .lx-body {
-  margin-top: 16px;
-  max-width: 40ch;
+.lx-tile-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--lx-blue-wash);
+  color: var(--lx-blue);
+  transition: background-color var(--lx-fast) var(--lx-out), color var(--lx-fast) var(--lx-out);
 }
 
-.lx-privacy-scene {
-  max-width: 400px;
-  margin-top: 36px;
-  padding: 16px;
-  border-radius: var(--lx-r-lg);
-  background: var(--lx-muted);
+.lx-tile:hover .lx-tile-icon {
+  background: var(--lx-blue);
+  color: #ffffff;
 }
 
-.lx-scene--wide {
-  max-width: none;
-}
 
-@media (max-width: 560px) {
-  .lx-fact {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-}
 
 /* ═══ USES — four open columns ═══════════════════════════════════════════ */
 
@@ -960,6 +1037,72 @@
   border-bottom: 1.75px solid var(--lx-blue);
   transform: rotate(-45deg) translateY(-2px);
 }
+
+/* Use cases live in one large card (Tally's "Designed for you"). */
+.lx-uses-card {
+  padding: 32px;
+}
+
+.lx-uses-card .lx-use {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.lx-uses-card .lx-use-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--lx-blue);
+}
+
+.lx-uses-cta {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--lx-line);
+}
+
+.lx-uses-card {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-areas:
+    "uses scene"
+    "cta cta";
+  gap: 32px;
+  align-items: center;
+}
+
+.lx-uses-card .lx-uses {
+  grid-area: uses;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lx-uses-scene {
+  grid-area: scene;
+  display: flex;
+  justify-content: center;
+}
+
+.lx-uses-card .lx-uses-cta {
+  grid-area: cta;
+  margin-top: 0;
+}
+
+@media (max-width: 860px) {
+  .lx-uses-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "scene"
+      "uses"
+      "cta";
+  }
+}
+
+.lx-final-art {
+  width: 320px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.lx-final-art .lx-scene { max-width: 320px; }
 
 /* ═══ FAQ — heading column + hairline rows ══════════════════════════════ */
 
@@ -1073,87 +1216,90 @@
   }
 }
 
-/* ═══ CLOSING BAND ═══════════════════════════════════════════════════════ */
+/* ═══ FINAL CTA — illustration + confetti, Tally-style ═══════════════════ */
 
-.lx-closing {
+.lx-final {
   position: relative;
   max-width: var(--lx-max);
   margin: var(--lx-section) auto 0;
-  padding: 0 var(--lx-gutter);
+  padding: 24px var(--lx-gutter) 16px;
 }
 
-.lx-closing-inner {
+.lx-final-inner {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: clamp(56px, 8vw, 96px) var(--lx-gutter);
-  border-radius: var(--lx-r-xl);
-  background: var(--lx-muted);
+  gap: 14px;
   text-align: center;
 }
 
-.lx-closing .lx-h2 {
-  max-width: 18ch;
-}
+.lx-final-inner .lx-h2 { max-width: 20ch; font-size: clamp(30px, 3.6vw, 40px); }
+.lx-final-inner .lx-btn { margin-top: 12px; }
 
-.lx-closing .lx-btn {
-  margin-top: 16px;
-}
 
-.lx-closing-plane {
-  right: 8%;
-  top: 18%;
-  width: 120px;
-}
-
-.lx-closing-check {
-  left: 7%;
-  bottom: 16%;
-  width: 92px;
-}
-
-@media (max-width: 900px) {
-  .lx-closing-plane,
-  .lx-closing-check {
-    display: none;
-  }
-}
-
-/* ═══ FOOTER ═════════════════════════════════════════════════════════════ */
+/* ═══ FOOTER — a muted band, so it reads as the end of the page ═════════ */
 
 .lx-footer {
   margin-top: var(--lx-section);
   border-top: 1px solid var(--lx-line);
+  background: var(--lx-muted);
+}
+
+.lx-footer-inner {
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: 64px var(--lx-gutter) 28px;
 }
 
 .lx-footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
-  gap: 36px;
-  max-width: var(--lx-max);
-  margin: 0 auto;
-  padding: 56px var(--lx-gutter) 40px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 760px) {
   .lx-footer-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
   }
+}
+
+.lx-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 36ch;
+}
+
+.lx-footer-brand .lx-wordmark {
+  font-size: 34px;
+}
+
+.lx-footer-privacy {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lx-footer-privacy svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--lx-blue);
 }
 
 .lx-footer-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
 }
 
 .lx-footer-head {
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .lx-footer-link {
@@ -1161,101 +1307,106 @@
   border: 0;
   background: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--lx-ink);
   text-decoration: none;
   cursor: pointer;
+  transition: color var(--lx-fast) var(--lx-out);
 }
 
 .lx-footer-link:hover {
   color: var(--lx-blue);
 }
 
-/* ═══ MICRO-INTERACTIONS (#15) ══════════════════════════════════════════
-   Small, purposeful motion: hover feedback on things you can scan or click,
-   and a little life in the decorative doodles. All of it is removed under
-   prefers-reduced-motion (see the end of this file). ═══════════════════ */
-
-.lx-hero-sparkles path {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: lx-twinkle 2.8s var(--lx-inout) infinite;
+.lx-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--lx-line-2);
+  font-size: 14px;
 }
 
-.lx-hero-sparkles path + path {
-  animation-delay: 1.1s;
+.lx-footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 6px 10px 6px 8px;
+  border: 1px solid var(--lx-line-2);
+  border-radius: var(--lx-r-md);
+  background: #ffffff;
+  color: var(--lx-ink);
+  font-weight: 600;
+  text-decoration: none;
 }
 
-@keyframes lx-twinkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  45% { transform: scale(0.72) rotate(12deg); opacity: 0.55; }
+.lx-footer-top:hover {
+  border-color: var(--lx-ink);
 }
 
-.lx-hero-coin {
-  animation: lx-coin 5s var(--lx-inout) infinite;
+/* Final CTA claims + tooltip */
+.lx-claims {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-@keyframes lx-coin {
-  0%, 70%, 100% { transform: rotate(10deg) rotateY(0deg); }
-  82% { transform: rotate(10deg) rotateY(180deg); }
-  94% { transform: rotate(10deg) rotateY(360deg); }
+.lx-claim {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--lx-line);
+  border-radius: 9999px;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: help;
 }
 
-.lx-closing-plane {
-  animation: lx-glide 6s var(--lx-inout) infinite;
+.lx-claim svg { color: var(--lx-blue); }
+
+.lx-claim:hover,
+.lx-claim:focus-visible {
+  border-color: var(--lx-blue);
+  outline: none;
 }
 
-.lx-closing-plane path:last-child {
-  animation: lx-trail 1.6s linear infinite;
+.lx-tooltip {
+  display: block;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--lx-ink);
+  color: #ffffff;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 8px 24px -12px rgba(55, 53, 47, 0.5);
 }
 
-@keyframes lx-glide {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-10px, 6px) rotate(-4deg); }
-}
-
-@keyframes lx-trail {
-  to { stroke-dashoffset: -20; }
-}
+/* ═══ MICRO-INTERACTIONS ════════════════════════════════════════════════
+   Only feedback motion: things respond when you hover or press them. The
+   decorative doodles are still; the product scenes carry the movement. ══ */
 
 .lx-trades-list .lx-chip {
   transition: transform var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
 }
 
 .lx-trades-list .lx-chip:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   background: #e9eaec;
-}
-
-.lx-step .lx-step-num {
-  transition: background-color var(--lx-base) var(--lx-out), color var(--lx-base) var(--lx-out);
-}
-
-.lx-step:hover .lx-step-num {
-  background: var(--lx-ink);
-  color: #ffffff;
-}
-
-.lx-well {
-  transition: box-shadow var(--lx-base) var(--lx-out);
-}
-
-.lx-step:hover .lx-well {
-  box-shadow: inset 0 0 0 1px var(--lx-line);
-}
-
-.lx-use-icon {
-  transform-origin: 50% 80%;
-}
-
-.lx-use:hover .lx-use-icon {
-  animation: lx-wiggle 480ms var(--lx-inout);
-}
-
-@keyframes lx-wiggle {
-  25% { transform: rotate(-9deg); }
-  60% { transform: rotate(7deg); }
-  100% { transform: rotate(0deg); }
 }
 
 .lx-btn-primary {
@@ -1293,11 +1444,6 @@
 
   .lx-caret,
   .lx-pin-pulse,
-  .lx-hero-sparkles path,
-  .lx-hero-coin,
-  .lx-closing-plane,
-  .lx-closing-plane path,
-  .lx-use:hover .lx-use-icon,
   .lx-inv-total b[data-bumped="true"],
   .lx-faq details[open] .lx-faq-a {
     animation: none !important;

@@ -142,8 +142,8 @@ export function DoodleLandscape(props: DoodleProps) {
           <circle cx="2" cy="2" r="1.6" fill="currentColor" stroke="none" opacity="0.3" />
         </pattern>
       </defs>
-      <path d="M898 14 C918 32 934 50 946 68" stroke="var(--lp-blue)" strokeDasharray="2 9" strokeWidth={5} />
-      <path d="M862 26 C880 42 894 58 904 74" stroke="var(--lp-blue)" strokeDasharray="2 9" strokeWidth={5} />
+      <path d="M898 14 C918 32 934 50 946 68" stroke="var(--lx-blue)" strokeDasharray="2 9" strokeWidth={5} />
+      <path d="M862 26 C880 42 894 58 904 74" stroke="var(--lx-blue)" strokeDasharray="2 9" strokeWidth={5} />
       <path d="M-8 232 L-8 166 C90 108 240 96 380 148 C440 170 500 176 560 162 C680 134 830 108 1008 158 L1008 232 Z" fill="url(#lpDots)" />
       <path d="M-8 232 L-8 206 C140 168 320 170 470 204 C600 232 780 228 1008 186 L1008 232 Z" fill="#FFFFFF" />
       <path d="M228 44 C242 40 255 38 268 36 C271 47 274 57 276 68 C262 72 249 74 236 76 C233 65 230 55 228 44" fill="#FFFFFF" />
@@ -151,10 +151,10 @@ export function DoodleLandscape(props: DoodleProps) {
       <path d="M548 26 C560 23 571 22 582 22 C583 32 583 41 582 50 C570 53 559 53 549 51 C548 43 548 34 548 26" fill="#FFFFFF" />
       <path d="M700 84 C712 80 724 78 736 78 C738 89 739 99 738 108 C725 112 713 113 702 111 C700 102 699 93 700 84" fill="#FFFFFF" />
       <path d="M110 128 L116 142 L132 144 L121 155 L124 171 L110 163 L96 171 L99 155 L88 144 L104 142 Z" fill="#FFFFFF" />
-      <path d="M430 66 L430 96" stroke="var(--lp-blue)" strokeWidth={4} />
-      <path d="M415 81 L445 81" stroke="var(--lp-blue)" strokeWidth={4} />
-      <path d="M770 48 L770 68" stroke="var(--lp-blue)" strokeWidth={4} />
-      <path d="M760 58 L780 58" stroke="var(--lp-blue)" strokeWidth={4} />
+      <path d="M430 66 L430 96" stroke="var(--lx-blue)" strokeWidth={4} />
+      <path d="M415 81 L445 81" stroke="var(--lx-blue)" strokeWidth={4} />
+      <path d="M770 48 L770 68" stroke="var(--lx-blue)" strokeWidth={4} />
+      <path d="M760 58 L780 58" stroke="var(--lx-blue)" strokeWidth={4} />
       <path d="M868 88 C876 78 890 78 896 88 C902 98 896 110 884 110 C874 110 862 98 868 88" fill="#FFFFFF" />
       <path d="M884 110 C880 126 874 140 862 152" />
       <path d="M886 114 C900 106 912 94 920 80" />
@@ -295,6 +295,46 @@ export function IconRocket(props: DoodleProps) {
       <path d="M15.2 12 C16.7 13.2 17.5 14.8 17.7 16.8 C16.2 16.3 14.8 16 13.5 16" />
       <path d="M10.8 16.3 C10.8 17.8 11.2 19.2 12 20.5 C12.8 19.2 13.2 17.8 13.2 16.3" />
       <path d="M12 7.4 C12.7 7.4 13.2 7.9 13.2 8.6 C13.2 9.3 12.7 9.9 12 9.9 C11.3 9.9 10.8 9.3 10.8 8.6 C10.8 7.9 11.3 7.4 12 7.4 Z" />
+    </svg>
+  )
+}
+
+/* ── Tally-style extras (#21) ── */
+
+/** A hand-drawn speech bubble with a short handwritten-ish word inside. */
+export function DoodleBubble({ text, tail = "left", ...props }: DoodleProps & { text: string; tail?: "left" | "right" }) {
+  const flip = tail === "right"
+  return (
+    <svg viewBox="0 0 120 84" {...doodleDefaults({ strokeWidth: 2.25, ...props })}>
+      <g transform={flip ? "translate(120 0) scale(-1 1)" : undefined}>
+        <path d="M24 12 C48 4 88 5 104 16 C116 26 114 48 100 56 C82 64 50 64 34 57 C30 64 22 72 10 76 C16 67 18 60 16 52 C4 42 6 20 24 12" />
+      </g>
+      <text
+        x="61"
+        y="42"
+        textAnchor="middle"
+        fontSize="19"
+        fontWeight="700"
+        fill="currentColor"
+        stroke="none"
+        transform="rotate(-6 61 38)"
+        style={{ fontFamily: "var(--font-serif), Georgia, serif", fontStyle: "italic" }}
+      >
+        {text}
+      </text>
+    </svg>
+  )
+}
+
+/** A receipt with a torn edge, rupee sign and a tick. */
+export function DoodleReceipt(props: DoodleProps) {
+  return (
+    <svg viewBox="0 0 110 130" {...doodleDefaults({ strokeWidth: 2.25, ...props })}>
+      <path d="M22 10 C44 7 70 7 90 10 C92 44 92 82 90 112 L82 106 L74 114 L66 106 L58 114 L50 106 L42 114 L34 106 L26 114 L20 108 C18 76 18 42 22 10" />
+      <path d="M34 30 C46 29 58 29 70 30" />
+      <path d="M34 42 C44 41 52 41 60 42" />
+      <path d="M36 62 h20 M36 70 h20 M46 62 C54 62 56 74 46 76 L58 88" />
+      <path d="M66 70 C70 74 72 78 74 80 C78 72 82 66 88 60" stroke="var(--lx-blue)" />
     </svg>
   )
 }
