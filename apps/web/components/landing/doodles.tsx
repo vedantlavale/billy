@@ -36,7 +36,7 @@ export function DoodleUnderlineSquiggle(props: DoodleProps) {
       preserveAspectRatio="none"
       {...doodleDefaults({ strokeWidth: 5, ...props })}
     >
-      <path d="M5 14 C15 5 25 5 35 14 C45 23 55 23 65 14 C75 5 85 5 95 14 C105 23 115 23 125 14 C135 5 145 5 155 14 C165 23 175 23 185 14 C195 6 205 6 215 12" />
+      <path d="M5 14 C15 5 25 5 35 14 C45 23 55 23 65 14 C75 5 85 5 95 14 C105 23 115 23 125 14 C135 5 145 5 155 14 C165 23 175 23 185 14 C195 6 205 6 215 12" pathLength={1} />
     </svg>
   )
 }
@@ -64,9 +64,8 @@ export function DoodleSparkles(props: DoodleProps) {
 export function DoodleArcArrow(props: DoodleProps) {
   return (
     <svg viewBox="0 0 100 60" {...doodleDefaults(props)}>
-      <path d="M6 44 C24 6 68 2 92 22" />
-      <path d="M92 22 L80 16" />
-      <path d="M92 22 L84 33" />
+      <path d="M6 44 C24 6 68 2 92 22" pathLength={1} />
+      <path d="M80 16 L92 22 L84 33" pathLength={1} />
     </svg>
   )
 }
