@@ -8,6 +8,8 @@ import { LiveInvoice } from "@/components/landing/live-invoice"
 import {
   ArrowLeftRightIcon,
   CalendarIcon,
+  ChevronUpIcon,
+  CircleCheckIcon,
   CircleUserIcon,
   CloudIcon,
   ColumnsIcon,
@@ -36,6 +38,7 @@ import {
   ZapIcon,
 } from "@/components/icons/rune"
 import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
+import { Tooltip } from "@/components/motion/tooltip"
 import { Reveal } from "@/components/landing/reveal"
 import {
   BlankPageScene,
@@ -157,9 +160,16 @@ const GST_DEMO = {
   total: formatCurrency(11800, "INR"),
 }
 
+/** The trust claims under the final CTA, each with the reason it's true. */
+const CLAIMS = [
+  { label: "Free during alpha", why: "Every feature is unlocked. There is no plan to pick and no card to add." },
+  { label: "No account", why: "The editor opens straight away. There is no sign-up, login or email." },
+  { label: "Nothing uploaded", why: "Your draft is saved in this browser's storage. Billy has no server to send it to." },
+]
+
 export default function Home() {
   return (
-    <main className="lx">
+    <main className="lx" id="top">
       <LandingNav />
 
       {/* ═══ HERO — centered promise above the real product ═══ */}
@@ -420,53 +430,88 @@ export default function Home() {
           </div>
           <h2 className="lx-h2">Your next invoice is a blank page away</h2>
           <p className="lx-lead">It takes about a minute, and you don&apos;t even need an account.</p>
-          <Cta label="Create a free invoice" tone="primary" large />
-          <p className="lx-hero-note">Free during alpha. Nothing uploaded.</p>
-        </Reveal>
-      </section>
-
-      {/* ═══ FOOTER ═══ */}
-      <footer className="lx-footer">
-        <div className="lx-footer-grid">
-          <div className="lx-footer-col">
-            <Link href="/" className="lx-wordmark">
-              billy<i>*</i>
-            </Link>
-            <p className="lx-small" style={{ maxWidth: "30ch" }}>
-              A free, open-source invoice editor that runs entirely in your browser.
-            </p>
-            <p className="lx-small">© {new Date().getFullYear()} Billy</p>
-          </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Product</span>
-            <a className="lx-footer-link" href="#features">
-              Features
-            </a>
-            <a className="lx-footer-link" href="#built-for">
-              Built for
-            </a>
-            <Link className="lx-footer-link" href="/editor">
-              Create an invoice
-            </Link>
-          </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Help</span>
-            <a className="lx-footer-link" href="#faq">
-              Questions
-            </a>
-          </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Project</span>
+          <div className="lx-hero-actions">
+            <Cta label="Create a free invoice" tone="primary" large />
             <a
-              className="lx-footer-link"
+              className="lx-btn lx-btn-ghost lx-btn-lg"
               href="https://github.com/vedantlavale/billy"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Source on GitHub
+              View the source
+            </a>
+          </div>
+          <ul className="lx-claims" aria-label="Why you can trust this">
+            {CLAIMS.map((c) => (
+              <li key={c.label}>
+                <Tooltip content={c.why} className="lx-claim">
+                  <CircleCheckIcon size={14} />
+                  {c.label}
+                </Tooltip>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </section>
+
+      {/* ═══ FOOTER — a distinct muted band ═══ */}
+      <footer className="lx-footer">
+        <div className="lx-footer-inner">
+          <div className="lx-footer-grid">
+            <div className="lx-footer-brand">
+              <Link href="/" className="lx-wordmark">
+                billy<i>*</i>
+              </Link>
+              <p className="lx-body">
+                A free, open-source invoice editor that runs entirely in your browser.
+              </p>
+              <p className="lx-small lx-footer-privacy">
+                <LockIcon size={14} />
+                Your drafts stay on this device. There is no server to send them to.
+              </p>
+            </div>
+
+            <div className="lx-footer-col">
+              <span className="lx-footer-head">Product</span>
+              <Link className="lx-footer-link" href="/editor">
+                Open the editor
+              </Link>
+              <a className="lx-footer-link" href="#features">
+                Features
+              </a>
+              <a className="lx-footer-link" href="#built-for">
+                Built for
+              </a>
+              <a className="lx-footer-link" href="#faq">
+                Questions
+              </a>
+            </div>
+
+            <div className="lx-footer-col">
+              <span className="lx-footer-head">Open source</span>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy" target="_blank" rel="noreferrer noopener">
+                GitHub
+              </a>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues/new" target="_blank" rel="noreferrer noopener">
+                Report a bug
+              </a>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues" target="_blank" rel="noreferrer noopener">
+                Issues
+              </a>
+            </div>
+          </div>
+
+          <div className="lx-footer-bar">
+            <span>© {new Date().getFullYear()} Billy</span>
+            <span>
+              Built by{" "}
+              <a className="lx-link" href="https://vedantworks.com" target="_blank" rel="noreferrer noopener">
+                vedantworks
+              </a>
+            </span>
+            <a className="lx-footer-top" href="#top" aria-label="Back to top">
+              <ChevronUpIcon size={16} />
+              Top
             </a>
           </div>
         </div>

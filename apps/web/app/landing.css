@@ -1238,39 +1238,68 @@
 .lx-final-inner .lx-btn { margin-top: 12px; }
 
 
-/* ═══ FOOTER ═════════════════════════════════════════════════════════════ */
+/* ═══ FOOTER — a muted band, so it reads as the end of the page ═════════ */
 
 .lx-footer {
   margin-top: var(--lx-section);
   border-top: 1px solid var(--lx-line);
+  background: var(--lx-muted);
+}
+
+.lx-footer-inner {
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: 64px var(--lx-gutter) 28px;
 }
 
 .lx-footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
-  gap: 36px;
-  max-width: var(--lx-max);
-  margin: 0 auto;
-  padding: 56px var(--lx-gutter) 40px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 760px) {
   .lx-footer-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
   }
+}
+
+.lx-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 36ch;
+}
+
+.lx-footer-brand .lx-wordmark {
+  font-size: 34px;
+}
+
+.lx-footer-privacy {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lx-footer-privacy svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--lx-blue);
 }
 
 .lx-footer-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
 }
 
 .lx-footer-head {
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .lx-footer-link {
@@ -1278,14 +1307,93 @@
   border: 0;
   background: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--lx-ink);
   text-decoration: none;
   cursor: pointer;
+  transition: color var(--lx-fast) var(--lx-out);
 }
 
 .lx-footer-link:hover {
   color: var(--lx-blue);
+}
+
+.lx-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--lx-line-2);
+  font-size: 14px;
+}
+
+.lx-footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 6px 10px 6px 8px;
+  border: 1px solid var(--lx-line-2);
+  border-radius: var(--lx-r-md);
+  background: #ffffff;
+  color: var(--lx-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lx-footer-top:hover {
+  border-color: var(--lx-ink);
+}
+
+/* Final CTA claims + tooltip */
+.lx-claims {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lx-claim {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--lx-line);
+  border-radius: 9999px;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: help;
+}
+
+.lx-claim svg { color: var(--lx-blue); }
+
+.lx-claim:hover,
+.lx-claim:focus-visible {
+  border-color: var(--lx-blue);
+  outline: none;
+}
+
+.lx-tooltip {
+  display: block;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--lx-ink);
+  color: #ffffff;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 8px 24px -12px rgba(55, 53, 47, 0.5);
 }
 
 /* ═══ MICRO-INTERACTIONS ════════════════════════════════════════════════
