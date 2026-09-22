@@ -11,9 +11,9 @@ export function FooterSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section data-break-block className="footer-section space-y-6 border-t border-[var(--invoice-border)] pt-6">
+    <section data-break-block className="footer-section space-y-4 border-t border-[var(--invoice-border)] pt-5">
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="footer-info space-y-4">
+        <div className="footer-info space-y-3">
           <div className="footer-item space-y-2">
             <p className="footer-label text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
               Notes
@@ -25,7 +25,7 @@ export function FooterSection() {
               }
               placeholder="Add a note or thank you message"
               multiline
-              rows={4}
+              rows={3}
               className="footer-value text-sm text-[var(--invoice-muted)]"
             />
           </div>
@@ -47,7 +47,7 @@ export function FooterSection() {
               <p className="footer-label text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
                 Bank Details
               </p>
-              <div className="space-y-1.5 text-sm text-[var(--invoice-muted)]">
+              <div className="footer-bank flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm text-[var(--invoice-muted)]">
                 <EditableText
                   value={state.bankName}
                   onCommit={(value) =>
@@ -76,7 +76,7 @@ export function FooterSection() {
             </div>
           )}
         </div>
-        <div className="flex flex-col items-end justify-end gap-4">
+        <div className="footer-stamp flex flex-col items-end justify-end gap-3">
           {state.options.showDigitalStamp && (
             <StampUpload
               stampUrl={state.stampUrl}

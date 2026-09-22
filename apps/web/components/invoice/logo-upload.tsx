@@ -26,7 +26,7 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
   if (readOnly) {
     return (
       <div className={cn("flex items-center", className)}>
-        <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg">
+        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg">
           {logoUrl ? (
             <img
               src={logoUrl}
@@ -67,7 +67,7 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
         className={cn(
-          "relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] disabled:cursor-not-allowed disabled:opacity-70",
+          "relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] disabled:cursor-not-allowed disabled:opacity-70",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/50"
         )}
       >

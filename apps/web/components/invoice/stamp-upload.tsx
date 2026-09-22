@@ -28,7 +28,7 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
           Stamp / Authorised Signatory
         </p>
-        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
+        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg">
           <img src={stampUrl} alt="Stamp" className="h-full w-full object-contain" />
         </div>
       </div>
@@ -66,7 +66,7 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="group relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/50 disabled:cursor-not-allowed disabled:opacity-70"
+          className="group relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/50 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {stampUrl ? (
             <img
