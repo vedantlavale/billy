@@ -44,6 +44,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Billy — Lightweight Invoice Editor",
+  openGraph: {
+    title: "Billy — Invoicing that feels like typing a document",
+    description: "Edit an invoice like a document and download a print-ready PDF. Runs entirely in your browser.",
+    images: [{ url: "/brand/og.png", width: 1200, height: 630 }],
+  },
+  twitter: { card: "summary_large_image" },
   description:
     "Direct-edit invoices in your browser and export polished PDFs in seconds. No sign-up, no servers, no data leaves your machine.",
 };

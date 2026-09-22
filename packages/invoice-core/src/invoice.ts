@@ -60,6 +60,11 @@ export function calculateTotals(data: InvoiceData): InvoiceTotals {
     data.options.showSGST ||
     data.options.showIGST
 
+  // Discount comes off first; tax is charged on what the client actually
+  // pays (the taxable value), which is also how GST is assessed.
+  const discountAmount = (subtotal * data.discountRate) / 100
+  const taxable = subtotal - discountAmount
+
   let cgstAmount = 0
   let sgstAmount = 0
   let igstAmount = 0
@@ -67,18 +72,17 @@ export function calculateTotals(data: InvoiceData): InvoiceTotals {
 
   if (gstEnabled) {
     if (data.options.showIGST) {
-      igstAmount = (subtotal * data.taxRate) / 100
+      igstAmount = (taxable * data.taxRate) / 100
     } else {
-      cgstAmount = (subtotal * data.taxRate) / 200
-      sgstAmount = (subtotal * data.taxRate) / 200
+      cgstAmount = (taxable * data.taxRate) / 200
+      sgstAmount = (taxable * data.taxRate) / 200
     }
     taxAmount = cgstAmount + sgstAmount + igstAmount
   } else {
-    taxAmount = (subtotal * data.taxRate) / 100
+    taxAmount = (taxable * data.taxRate) / 100
   }
 
-  const discountAmount = (subtotal * data.discountRate) / 100
-  const total = subtotal + taxAmount - discountAmount
+  const total = taxable + taxAmount
 
   return {
     subtotal,

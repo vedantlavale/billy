@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
+import { Brand } from "@/components/brand"
 import { useRouter } from "next/navigation"
 
 import { prefersReducedMotion, useInView } from "./reveal"
@@ -61,14 +61,12 @@ export function LandingNav({ minimal = false }: { minimal?: boolean }) {
   return (
     <header className="lx-nav" data-stuck={stuck ? "true" : "false"}>
       <div className="lx-nav-inner">
-        <Link href="/" className="lx-wordmark">
-          billy<i>*</i>
-        </Link>
+        <Brand />
 
         {!minimal && (
           <nav className="lx-nav-links" aria-label="Sections">
-            <a className="lx-nav-link" href="#how">
-              How it works
+            <a className="lx-nav-link" href="#features">
+              Features
             </a>
             <a className="lx-nav-link" href="#built-for">
               Built for

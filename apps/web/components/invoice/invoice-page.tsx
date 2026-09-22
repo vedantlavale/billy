@@ -165,6 +165,7 @@ export const InvoicePage = React.forwardRef<
   return (
     <div
       className="invoice-paper-stack"
+      data-template={state.templateId}
       style={{ position: "relative", width: PAGE_W, height: stackHeight, ...style }}
     >
       {multiPage &&
@@ -196,7 +197,7 @@ export const InvoicePage = React.forwardRef<
           minHeight: multiPage ? stackHeight : PAGE_H,
         }}
       >
-        <div className="invoice-canvas-inner space-y-6">
+        <div className="invoice-canvas-inner space-y-4">
           <HeaderSection />
           <ClientSection />
           <MetaSection />
