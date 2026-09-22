@@ -2,15 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 
+import { HeroAnnotations } from "./hero-annotations"
 import { prefersReducedMotion, useInView } from "./reveal"
 
 /**
  * The hero's media slot.
  *
- * Both locked references are image-led (gradient renders / 3D stills). We
- * can't produce those honestly, so the real product surface fills the slot
- * instead: an actual invoice, oversized and cropped by the panel's bottom
- * edge the way Tirtus crops its media.
+ * The real product surface carries the hero's media role: an actual invoice
+ * in a browser frame, annotated by hand-drawn notes on the landing page.
  *
  * It types one line item in and recalculates the total — which is the product
  * claim ("edit like a document, totals update with every keystroke") shown
@@ -35,13 +34,6 @@ export function LiveInvoice() {
   const [rate, setRate] = useState("")
   const [total, setTotal] = useState(BASE_TOTAL)
   const [bumped, setBumped] = useState(false)
-
-  const cardRef = useRef<HTMLDivElement | null>(null)
-  const reduced = useRef(false)
-
-  useEffect(() => {
-    reduced.current = prefersReducedMotion()
-  }, [])
 
   /* ── The typing run ───────────────────────────────────────────────────────
      Guarded by a ref, NOT by `phase`. Putting `phase` in the dependency list
@@ -103,54 +95,24 @@ export function LiveInvoice() {
     return () => timers.forEach(clearTimeout)
   }, [inView])
 
-  /* ── Pointer parallax. Fine pointers only, and never under reduced
-        motion — motion.md removes parallax outright in that mode. ───────── */
-  useEffect(() => {
-    const card = cardRef.current
-    if (!card) return
-    if (reduced.current) return
-    if (!window.matchMedia?.("(pointer: fine)").matches) return
-
-    let frame = 0
-
-    const onMove = (e: PointerEvent) => {
-      if (frame) return
-      frame = requestAnimationFrame(() => {
-        frame = 0
-        const fromCentre = e.clientX / window.innerWidth - 0.5
-        const depth = Math.min(Math.max(e.clientY / window.innerHeight, 0), 1)
-        card.style.setProperty("--lx-tilt", `${(1 - depth) * 3.4 + 0.6}deg`)
-        card.style.setProperty("--lx-pan", `${fromCentre * -16}px`)
-      })
-    }
-
-    window.addEventListener("pointermove", onMove, { passive: true })
-    return () => {
-      window.removeEventListener("pointermove", onMove)
-      if (frame) cancelAnimationFrame(frame)
-    }
-  }, [])
-
   const amount = qty && rate ? money(Number(qty) * Number(rate)) : ""
   const typing = phase !== "idle" && phase !== "done"
 
   return (
     <div className="lx-invoice-wrap" ref={viewRef}>
-      <div className="lx-invoice" ref={cardRef}>
+      <div className="lx-invoice">
         <div className="lx-invoice-bar" aria-hidden="true">
           <i />
           <i />
           <i />
-          <span>Billy editor</span>
+          <span>billy · invoice editor</span>
         </div>
 
         <div className="lx-invoice-doc">
           <div className="lx-inv-head">
             <div>
               <div className="lx-inv-co">Acme Studio</div>
-              <div className="lx-small" style={{ color: "var(--lx-ink-3)" }}>
-                Design &amp; Development
-              </div>
+              <div className="lx-small">Design &amp; Development</div>
             </div>
             <div style={{ textAlign: "right" }}>
               <div className="lx-inv-k" style={{ marginBottom: 2 }}>
@@ -199,7 +161,7 @@ export function LiveInvoice() {
 
             {/* The row being written. aria-live keeps screen readers informed
                 of the value that lands, without narrating every keystroke. */}
-            <div className="lx-inv-row" data-live={typing ? "true" : undefined}>
+            <div className="lx-inv-row" data-live={typing ? "true" : undefined} data-annotate="row">
               <span>
                 {desc}
                 {phase === "desc" && <span className="lx-caret" aria-hidden="true" />}
@@ -217,15 +179,14 @@ export function LiveInvoice() {
           </div>
 
           <div className="lx-inv-total">
-            <span className="lx-small" style={{ fontWeight: 500 }}>
-              Total due
-            </span>
-            <b data-bumped={bumped ? "true" : undefined} aria-live="polite">
+            <span>Total due</span>
+            <b data-bumped={bumped ? "true" : undefined} aria-live="polite" data-annotate="total">
               {money(total)}
             </b>
           </div>
         </div>
       </div>
+      <HeroAnnotations typing={typing} />
     </div>
   )
 }

@@ -10,7 +10,7 @@ import { prefersReducedMotion, useInView } from "./reveal"
    /editor is a client route with no server work, so the CTA pushes rather
    than doing a document navigation. */
 
-type CtaTone = "primary" | "ghost" | "onDark"
+type CtaTone = "primary" | "ghost"
 
 export function Cta({
   label,
@@ -97,43 +97,24 @@ export function LandingNav({ minimal = false }: { minimal?: boolean }) {
   )
 }
 
-/* ══ MARQUEE ══════════════════════════════════════════════════════════════
-   Continuous horizontal drift. The track holds the list twice and travels
-   -50%, so the loop is seamless. Pauses on hover; removed under reduced
-   motion by the stylesheet. */
-
-export function Marquee({ items }: { items: string[] }) {
-  return (
-    <div className="lx-marquee" aria-hidden="true">
-      <div className="lx-marquee-track">
-        {[0, 1].map((copy) => (
-          <div className="lx-marquee-item" key={copy}>
-            {items.map((item) => (
-              <span key={`${copy}-${item}`}>{item}</span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 /* ══ STAT ═════════════════════════════════════════════════════════════════
-   Tirtus's oversized numerals. Numeric stats count up once on reveal; the
-   real text stays in the DOM for assistive tech and for no-JS. */
+   A big numeral beside its meaning. Numeric stats count up once on reveal;
+   the real text stays in the DOM for assistive tech and for no-JS. */
 
 export function Stat({
   value,
   suffix = "",
   prefix = "",
+  title,
   caption,
 }: {
   value: number
   suffix?: string
   prefix?: string
+  title: string
   caption: string
 }) {
-  const { ref, inView } = useInView<HTMLDivElement>("-8% 0px")
+  const { ref, inView } = useInView<HTMLLIElement>("-8% 0px")
   const [shown, setShown] = useState(value)
   const ran = useRef(false)
 
@@ -163,27 +144,16 @@ export function Stat({
   }, [inView, value])
 
   return (
-    <div className="lx-stat" ref={ref}>
+    <li className="lx-fact" ref={ref}>
       <div className="lx-stat-n">
         {prefix}
         {shown}
         {suffix}
       </div>
-      <div className="lx-stat-k">{caption}</div>
-      <div className="lx-stat-round" aria-hidden="true">
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M5 12h13M12 5l7 7-7 7" />
-        </svg>
+      <div className="lx-stat-k">
+        <strong>{title}</strong>
+        {caption}
       </div>
-    </div>
+    </li>
   )
 }
