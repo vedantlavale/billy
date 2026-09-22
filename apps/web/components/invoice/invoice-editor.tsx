@@ -154,6 +154,7 @@ function EditorWorkspace() {
         onOpenSettings={() => setSettingsOpen(true)}
         onNew={() => setConfirmNew(true)}
         onExport={() => void handleExport()}
+        onOpenCommands={() => setPaletteOpen(true)}
         exporting={exporting}
       />
 

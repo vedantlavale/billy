@@ -244,9 +244,9 @@ export function InspectorPanel({
       )}
       <div className="ed-inspector-scroll">
         <Summary />
+        <PaymentTerms />
         <TemplateGallery />
         <CurrencyField />
-        <PaymentTerms />
         <ProfessionPreset />
         <OptionsPanel />
         <section className="ed-section">

@@ -1197,6 +1197,27 @@
   }
   .ed-palette-foot span { display: inline-flex; align-items: center; gap: 4px; }
 
+  /* Toolbar: command launcher + undo/redo */
+  .ed-history { display: inline-flex; gap: 2px; }
+  .ed-history .ed-btn:disabled { cursor: default; opacity: 0.35; }
+  .ed-history .ed-btn:disabled:hover { background-color: transparent; }
+  .ed-divider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--ed-line);
+  }
+  .ed-btn--commands { gap: 8px; padding: 0 8px 0 12px; font-weight: 500; }
+  /* The launcher collapses to an icon before the other buttons do. */
+  @media (max-width: 1279px) {
+    .ed-btn--commands { width: 36px; padding: 0; }
+    .ed-btn--commands .ed-btn-label,
+    .ed-btn--commands .ed-kbd { display: none; }
+  }
+  @media (max-width: 639px) {
+    .ed-history,
+    .ed-divider { display: none; }
+  }
+
   /* Payment-term quick picks */
   .ed-terms {
     display: grid;
