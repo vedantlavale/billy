@@ -2,22 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import {
-  CloudCheck,
-  Download,
-  Eye,
-  FilePlus2,
-  LoaderCircle,
-  PenLine,
-  Redo2,
-  Search,
-  SlidersHorizontal,
-  Undo2,
-} from "lucide-react"
 
 import { Kbd, useModKey } from "@/components/invoice/editor-ui"
 import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
 import { useInvoiceDispatch, useInvoiceHistory, useInvoiceState } from "@/components/invoice/invoice-context"
+import { CloudIcon, EyeIcon, FileDownIcon, FilePlusIcon, PencilIcon, RedoIcon, SearchIcon, SlidersIcon, SpinnerIcon, UndoIcon } from "@/components/icons/rune"
 
 export type EditorMode = "edit" | "preview"
 
@@ -58,9 +47,9 @@ function SaveStatus() {
       title="Saved in this browser. Nothing leaves your device."
     >
       {saving ? (
-        <LoaderCircle size={14} className="animate-spin" aria-hidden />
+        <SpinnerIcon size={14} className="animate-spin" aria-hidden />
       ) : (
-        <CloudCheck size={14} aria-hidden />
+        <CloudIcon size={14} aria-hidden />
       )}
       {saving ? "Saving…" : "Saved on this device"}
     </span>
@@ -110,11 +99,11 @@ export function Toolbar({
       >
         <TabsList aria-label="Editor mode">
           <TabsTrigger value="edit" aria-label="Edit" title={`Edit (${mod} E)`} className="gap-1.5 px-3 py-[5px]">
-            <PenLine size={14} aria-hidden />
+            <PencilIcon size={14} aria-hidden />
             <span className="hidden sm:inline">Edit</span>
           </TabsTrigger>
           <TabsTrigger value="preview" aria-label="Preview" title={`Preview (${mod} E)`} className="gap-1.5 px-3 py-[5px]">
-            <Eye size={14} aria-hidden />
+            <EyeIcon size={14} aria-hidden />
             <span className="hidden sm:inline">Preview</span>
           </TabsTrigger>
         </TabsList>
@@ -129,7 +118,7 @@ export function Toolbar({
           aria-label="Search commands"
           aria-keyshortcuts="Meta+K Control+K"
         >
-          <Search size={15} aria-hidden />
+          <SearchIcon size={15} aria-hidden />
           <span className="ed-btn-label">Commands</span>
           <Kbd>{mod}K</Kbd>
         </button>
@@ -143,7 +132,7 @@ export function Toolbar({
             aria-label="Undo"
             aria-keyshortcuts="Meta+Z Control+Z"
           >
-            <Undo2 size={16} aria-hidden />
+            <UndoIcon size={16} aria-hidden />
           </button>
           <button
             type="button"
@@ -154,7 +143,7 @@ export function Toolbar({
             aria-label="Redo"
             aria-keyshortcuts="Shift+Meta+Z Control+Y"
           >
-            <Redo2 size={16} aria-hidden />
+            <RedoIcon size={16} aria-hidden />
           </button>
         </div>
         <span className="ed-divider" aria-hidden />
@@ -164,7 +153,7 @@ export function Toolbar({
           className="ed-btn ed-btn--secondary ed-btn--icon lg:hidden"
           aria-label="Invoice settings"
         >
-          <SlidersHorizontal size={16} aria-hidden />
+          <SlidersIcon size={16} aria-hidden />
         </button>
         <button
           type="button"
@@ -173,7 +162,7 @@ export function Toolbar({
           title="Start a new invoice"
           aria-label="New invoice"
         >
-          <FilePlus2 size={16} aria-hidden />
+          <FilePlusIcon size={16} aria-hidden />
           <span className="ed-btn-label">New</span>
         </button>
         <button
@@ -185,9 +174,9 @@ export function Toolbar({
           aria-label="Download PDF"
         >
           {exporting ? (
-            <LoaderCircle size={16} className="animate-spin" aria-hidden />
+            <SpinnerIcon size={16} className="animate-spin" aria-hidden />
           ) : (
-            <Download size={16} aria-hidden />
+            <FileDownIcon size={16} aria-hidden />
           )}
           <span className="ed-btn-label">{exporting ? "Preparing…" : "Download PDF"}</span>
           <span className="hidden xl:inline-flex" aria-hidden>

@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cn } from "@/lib/utils"
+import { CheckIcon, ChevronDownIcon } from "@/components/icons/rune"
 
 function Select({
   ...props
@@ -38,19 +39,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="size-3.5 shrink-0 text-[var(--invoice-muted)]"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <ChevronDownIcon size={14} className="shrink-0" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -105,19 +94,7 @@ function SelectItem({
     >
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       <SelectPrimitive.ItemIndicator className="ml-auto">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="size-3.5 text-[var(--invoice-muted)]"
-        >
-          <path d="M20 6 9 17l-5-5" />
-        </svg>
+        <CheckIcon size={14} className="text-[#0070D7]" />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
   )

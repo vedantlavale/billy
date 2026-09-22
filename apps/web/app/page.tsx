@@ -5,6 +5,7 @@ import { TEMPLATES } from "@billy/invoice-core"
 
 import { Cta, LandingNav, Stat } from "@/components/landing/landing-chrome"
 import { LiveInvoice } from "@/components/landing/live-invoice"
+import { CircleUserIcon, MessageSquareTextIcon, PackageIcon, UsersIcon } from "@/components/icons/rune"
 import { Reveal } from "@/components/landing/reveal"
 import { ExportScene, PrivacyScene, ThemeScene, TypeScene } from "@/components/landing/step-scenes"
 import {
@@ -13,10 +14,6 @@ import {
   DoodlePencilCheck,
   DoodleSparkles,
   DoodleUnderlineSquiggle,
-  IconBriefcase,
-  IconBulb,
-  IconHammer,
-  IconUser,
 } from "@/components/landing/doodles"
 
 export const metadata: Metadata = {
@@ -44,22 +41,22 @@ const TRADES = [
 
 const USES = [
   {
-    icon: IconUser,
+    icon: CircleUserIcon,
     title: "Freelancers",
     items: ["Bill a client in a couple of minutes", "Look established from invoice one", "Keep a local draft to reuse"],
   },
   {
-    icon: IconBriefcase,
+    icon: UsersIcon,
     title: "Studios & agencies",
     items: ["Your logo on every invoice", "One template across clients", "PO numbers when clients ask"],
   },
   {
-    icon: IconBulb,
+    icon: MessageSquareTextIcon,
     title: "Consultants",
     items: ["Itemise hours and retainers", "GST, CGST/SGST or IGST lines", "Bank details in the footer"],
   },
   {
-    icon: IconHammer,
+    icon: PackageIcon,
     title: "Contractors",
     items: ["Split materials from labour", "Stamp or sign digitally", "Export and send, done"],
   },
@@ -270,7 +267,7 @@ export default function Home() {
             const Icon = use.icon
             return (
               <Reveal key={use.title} delay={i * 60} className="lx-use">
-                <Icon className="lx-use-icon" />
+                <Icon className="lx-use-icon" size={28} strokeWidth={1.75} />
                 <h3 className="lx-h3">{use.title}</h3>
                 <ul className="lx-use-list">
                   {use.items.map((item) => (

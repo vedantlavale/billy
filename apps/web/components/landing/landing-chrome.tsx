@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import { prefersReducedMotion, useInView } from "./reveal"
+import { ArrowRightIcon } from "@/components/icons/rune"
 
 /* ══ CTA ═══════════════════════════════════════════════════════════════════
    /editor is a client route with no server work, so the CTA pushes rather
@@ -37,20 +38,7 @@ export function Cta({
     >
       {label}
       {arrow && (
-        <svg
-          className="lx-arrow"
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M5 12h13M12 5l7 7-7 7" />
-        </svg>
+        <ArrowRightIcon className="lx-arrow" size={15} />
       )}
     </button>
   )

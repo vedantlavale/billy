@@ -6,6 +6,7 @@ import posthog from "posthog-js"
 import { useReadOnly } from "@/components/invoice/render-mode"
 import { MorphingSquare } from "@/components/ui/morphing-square"
 import { uploadInvoiceAsset } from "@/lib/storage"
+import { ShieldCheckIcon } from "@/components/icons/rune"
 
 export interface StampUploadProps {
   stampUrl: string | null
@@ -74,20 +75,7 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
               className="h-full w-full object-contain"
             />
           ) : (
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v5l3 3" />
-              <path d="M8 3.5a9 9 0 1 1 7 16.5" />
-            </svg>
+            <ShieldCheckIcon size={28} strokeWidth={1.5} />
           )}
           {uploading ? (
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">

@@ -10,6 +10,7 @@
  * do on screen) and assembles the sheets into a PDF with jsPDF. No server, no
  * second layout implementation, no divergence.
  */
+import { flushSync } from "react-dom"
 import { createRoot } from "react-dom/client"
 
 import { InvoicePage } from "@/components/invoice/invoice-page"
@@ -193,7 +194,10 @@ async function renderInvoiceToPdf(data: InvoiceData) {
   const root = createRoot(mount)
 
   try {
-    await new Promise<void>((resolve) => {
+    // Render synchronously: createRoot().render() is concurrent in React 19,
+    // and a single animation frame wasn't always enough for it to commit on
+    // a cold or slow page, so the lookup below found nothing (#19).
+    flushSync(() => {
       root.render(
         <InvoiceStateProvider data={inlined}>
           <RenderModeProvider readOnly>
@@ -201,9 +205,9 @@ async function renderInvoiceToPdf(data: InvoiceData) {
           </RenderModeProvider>
         </InvoiceStateProvider>,
       )
-      // Let React commit before we start measuring.
-      requestAnimationFrame(() => resolve())
     })
+    // One frame for layout effects (pagination) before measuring.
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
 
     const stackEl = mount.querySelector<HTMLElement>(".invoice-paper-stack")
     const canvasEl = mount.querySelector<HTMLElement>(".invoice-canvas")
