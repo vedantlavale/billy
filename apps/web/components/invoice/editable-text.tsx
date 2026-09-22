@@ -118,19 +118,17 @@ export function EditableText({
 
   // Static preview: render the same markup/typography as the resting canvas
   // state (so per-template CSS applies identically) but without any editing
-  // affordance — no click-to-edit, no focus ring, no field padding.
+  // affordance — no click-to-edit, no focus ring, no field padding. Empty
+  // fields render nothing: placeholders are prompts for the editor and must
+  // never end up in the preview or the PDF.
   if (readOnly) {
+    if (isEmpty) return null
     return (
       <DisplayTag
-        className={cn(
-          "inline-block",
-          multiline && "whitespace-pre-line",
-          isEmpty && "text-slate-400",
-          className
-        )}
+        className={cn("inline-block", multiline && "whitespace-pre-line", className)}
         aria-label={ariaLabel}
       >
-        {isEmpty ? placeholder ?? "" : displayText}
+        {displayText}
       </DisplayTag>
     )
   }
@@ -149,7 +147,7 @@ export function EditableText({
         className={cn(
           "invoice-field inline-block min-w-[2ch] rounded-sm px-1 -mx-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/40",
           multiline && "whitespace-pre-line",
-          isEmpty && "text-slate-400",
+          isEmpty && "text-[var(--invoice-subtle)]",
           className
         )}
         aria-label={ariaLabel}
@@ -171,7 +169,7 @@ export function EditableText({
         placeholder={placeholder}
         aria-label={ariaLabel}
         className={cn(
-          "invoice-input w-full rounded-md bg-white px-1 -mx-1 text-slate-900 ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
+          "invoice-input w-full rounded-md bg-white px-1 -mx-1 text-[var(--invoice-ink)] ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
           "min-h-[3.5rem] resize-none",
           className,
           inputClassName
@@ -191,7 +189,7 @@ export function EditableText({
       placeholder={placeholder}
       aria-label={ariaLabel}
       className={cn(
-        "invoice-input h-8 w-full rounded-md bg-white px-1 -mx-1 text-slate-900 ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
+        "invoice-input h-8 w-full rounded-md bg-white px-1 -mx-1 text-[var(--invoice-ink)] ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
         className,
         inputClassName
       )}
