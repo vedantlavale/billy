@@ -350,17 +350,31 @@
   color: var(--lx-ink);
 }
 
-/* Paths opted in with pathLength="1" draw themselves once, like a pen. */
-.lx-draw path {
+/* Paths opted in with pathLength="1" draw themselves once, like a pen.
+   Inside a Reveal they wait until the block scrolls into view. */
+.lx-draw [data-draw] {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: lx-draw 900ms var(--lx-emph) forwards;
   animation-delay: var(--lx-draw-delay, 350ms);
 }
 
-.lx-draw path + path {
+.lx-draw [data-draw] + [data-draw],
+.lx-draw .lx-draw-late {
   animation-delay: calc(var(--lx-draw-delay, 350ms) + 700ms);
-  animation-duration: 260ms;
+  animation-duration: 320ms;
+}
+
+:root[data-js="1"] .lx-reveal:not([data-shown="true"]) .lx-draw [data-draw] {
+  animation-play-state: paused;
+}
+
+:root[data-js="1"] .lx-draw-view:not([data-drawn]) .lx-draw [data-draw] {
+  animation-play-state: paused;
+}
+
+.lx-draw-view {
+  display: block;
 }
 
 @keyframes lx-draw {
@@ -750,98 +764,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 132px;
+  height: 172px;
   margin-top: 14px;
-  padding: 16px;
+  padding: 12px 16px;
   border-radius: var(--lx-r-lg);
   background: var(--lx-muted);
 }
 
-.lx-field {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  max-width: 280px;
-  height: 44px;
-  padding: 0 14px;
-  border-radius: var(--lx-r-sm);
-  background: #ffffff;
-  box-shadow: 0 0 0 1px var(--lx-blue), 0 0 0 4px rgba(0, 112, 215, 0.14);
-  font-size: 14px;
-}
-
-.lx-field b {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.lx-swatches {
-  display: grid;
-  grid-template-columns: repeat(3, 52px);
-  gap: 10px;
-}
-
-.lx-swatch {
-  position: relative;
-  height: 44px;
-  overflow: hidden;
-  border-radius: var(--lx-r-sm);
-  border: 1px solid var(--lx-line);
-}
-
-.lx-swatch i,
-.lx-swatch b {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  border-radius: 2px;
-}
-
-.lx-swatch i {
-  top: 8px;
-  height: 5px;
-}
-
-.lx-swatch b {
-  bottom: 8px;
-  left: auto;
-  width: 18px;
-  height: 5px;
-}
-
-.lx-swatch[data-selected="true"] {
-  border-color: var(--lx-blue);
-  box-shadow: 0 0 0 1px var(--lx-blue);
-}
-
-.lx-file {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px 10px 10px;
-  border-radius: var(--lx-r-lg);
-  border: 1px solid var(--lx-line);
-  background: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.lx-file-icon {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--lx-r-md);
-  background: var(--lx-blue-wash);
-  color: var(--lx-blue);
-}
-
-.lx-file small {
+.lx-scene {
   display: block;
-  font-size: 12px;
-  font-weight: 400;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
 }
 
 /* ═══ FACTS — the privacy argument, big numerals ═════════════════════════ */
@@ -1209,7 +1145,7 @@
     animation: none !important;
   }
 
-  .lx-draw path {
+  .lx-draw [data-draw] {
     animation: none !important;
     stroke-dashoffset: 0 !important;
   }

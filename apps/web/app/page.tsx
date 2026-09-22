@@ -5,7 +5,9 @@ import { TEMPLATES } from "@billy/invoice-core"
 
 import { Cta, LandingNav, Stat } from "@/components/landing/landing-chrome"
 import { LiveInvoice } from "@/components/landing/live-invoice"
+import { DrawOnView } from "@/components/landing/draw-on-view"
 import { Reveal } from "@/components/landing/reveal"
+import { ExportScene, ThemeScene, TypeScene } from "@/components/landing/step-scenes"
 import {
   DoodleArcArrow,
   DoodleCoin,
@@ -16,7 +18,6 @@ import {
   DoodleUnderlineSquiggle,
   IconBriefcase,
   IconBulb,
-  IconDoc,
   IconHammer,
   IconUser,
 } from "@/components/landing/doodles"
@@ -94,24 +95,15 @@ const FAQS = [
   },
 ]
 
-/** Six real template palettes, straight from invoice-core. */
-function TemplateSwatches() {
-  return (
-    <div className="lx-swatches" aria-hidden="true">
-      {TEMPLATES.slice(0, 6).map((template, i) => (
-        <span
-          key={template.id}
-          className="lx-swatch"
-          data-selected={i === 3 ? "true" : undefined}
-          style={{ backgroundColor: template.colors.paper }}
-        >
-          <i style={{ backgroundColor: template.colors.primary }} />
-          <b style={{ backgroundColor: template.colors.accent }} />
-        </span>
-      ))}
-    </div>
-  )
-}
+/** Four real template palettes, straight from invoice-core, for step 2. */
+const SCENE_PALETTES = TEMPLATES.filter((t) => ["clean", "modern-green", "minimal-teal", "corporate-blue"].includes(t.id)).map(
+  (t) => ({
+    paper: t.colors.paper,
+    // Clean has no header band (primary is "transparent"); show its accent instead.
+    primary: t.colors.primary === "transparent" ? t.colors.accent : t.colors.primary,
+    accent: t.colors.accent,
+  }),
+)
 
 const drawDelay = (ms: number) => ({ "--lx-draw-delay": `${ms}ms` }) as React.CSSProperties
 
@@ -205,14 +197,8 @@ export default function Home() {
               No forms and no field labels to hunt for. The invoice on screen is the document
               you edit.
             </p>
-            <div className="lx-well" aria-hidden="true">
-              <span className="lx-field">
-                <span>
-                  Brand identity design
-                  <span className="lx-caret" />
-                </span>
-                <b>$1,200</b>
-              </span>
+            <div className="lx-well">
+              <TypeScene />
             </div>
           </Reveal>
 
@@ -224,7 +210,7 @@ export default function Home() {
               them.
             </p>
             <div className="lx-well">
-              <TemplateSwatches />
+              <ThemeScene palettes={SCENE_PALETTES} />
             </div>
           </Reveal>
 
@@ -234,16 +220,8 @@ export default function Home() {
             <p className="lx-body">
               What you see is exactly what you get. No print dialog, no watermark, no limit.
             </p>
-            <div className="lx-well" aria-hidden="true">
-              <span className="lx-file">
-                <span className="lx-file-icon">
-                  <IconDoc width={20} height={20} />
-                </span>
-                <span>
-                  invoice-INV-042.pdf
-                  <small>Ready · 1 page</small>
-                </span>
-              </span>
+            <div className="lx-well">
+              <ExportScene />
             </div>
           </Reveal>
         </ol>
@@ -260,7 +238,9 @@ export default function Home() {
               they print one page. Billy has no backend at all, so there is nothing to sign up
               for, nothing to breach and nothing to sync.
             </p>
-            <DoodleStamp className="lx-doodle lx-privacy-stamp" />
+            <DrawOnView>
+              <DoodleStamp className="lx-doodle lx-privacy-stamp lx-draw" />
+            </DrawOnView>
           </Reveal>
 
           <Reveal delay={80}>
