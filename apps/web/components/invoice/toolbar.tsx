@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 
 import { Kbd, useModKey } from "@/components/invoice/editor-ui"
+import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
 import { useInvoiceState } from "@/components/invoice/invoice-context"
 
 export type EditorMode = "edit" | "preview"
@@ -95,28 +96,22 @@ export function Toolbar({
         <SaveStatus />
       </div>
 
-      <div className="ed-segment" role="group" aria-label="Editor mode">
-        <button
-          type="button"
-          className="ed-segment-item"
-          aria-pressed={mode === "edit"}
-          onClick={() => onModeChange("edit")}
-          title={`Edit (${mod} E)`}
-        >
-          <PenLine size={14} aria-hidden />
-          <span className="hidden sm:inline">Edit</span>
-        </button>
-        <button
-          type="button"
-          className="ed-segment-item"
-          aria-pressed={mode === "preview"}
-          onClick={() => onModeChange("preview")}
-          title={`Preview (${mod} E)`}
-        >
-          <Eye size={14} aria-hidden />
-          <span className="hidden sm:inline">Preview</span>
-        </button>
-      </div>
+      <Tabs
+        value={mode}
+        onValueChange={(value) => onModeChange(value as EditorMode)}
+        variant="segment"
+      >
+        <TabsList aria-label="Editor mode">
+          <TabsTrigger value="edit" aria-label="Edit" title={`Edit (${mod} E)`} className="gap-1.5 px-3 py-[5px]">
+            <PenLine size={14} aria-hidden />
+            <span className="hidden sm:inline">Edit</span>
+          </TabsTrigger>
+          <TabsTrigger value="preview" aria-label="Preview" title={`Preview (${mod} E)`} className="gap-1.5 px-3 py-[5px]">
+            <Eye size={14} aria-hidden />
+            <span className="hidden sm:inline">Preview</span>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       <div className="flex flex-1 items-center justify-end gap-2">
         <button
