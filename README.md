@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Billy
 
-## Getting Started
+**A free, open-source, fully client-side invoice editor.** Edit an invoice like a
+document, then export a pixel-perfect PDF — entirely in your browser. No accounts,
+no server, no data ever leaves your machine.
 
-First, run the development server:
+- **What-you-see-is-what-you-get PDF** — the PDF is rendered from the exact same
+  DOM you edit (via `html-to-image` + `jsPDF`), so the export matches the preview.
+- **Zero backend** — no auth, no database, no API. Your draft lives in
+  `localStorage`; logos/stamps are embedded inline as data URLs.
+- **Static** — ships as plain files (`next build` → `out/`), deployed to
+  Cloudflare Pages.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Monorepo layout
+
+A [Turborepo](https://turborepo.com) managed with [Bun](https://bun.sh) workspaces:
+
+```
+billy/
+├─ apps/
+│  └─ web/                 # the Next.js app (static export) — landing + editor
+├─ packages/
+│  ├─ invoice-core/        # @billy/invoice-core — pure TS domain: types, totals,
+│  │                       #   templates, theme, currencies, presets (no React)
+│  ├─ design/              # @billy/design — the "Tally" design tokens (CSS +
+│  │                       #   Tailwind theme), DESIGN.md, and DTCG tokens.json
+│  └─ typescript-config/   # @billy/typescript-config — shared tsconfig base
+├─ turbo.json
+└─ package.json            # workspaces + Turbo pipeline
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The design system is documented in [`packages/design/DESIGN.md`](packages/design/DESIGN.md).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Requires [Bun](https://bun.sh) (see `packageManager` in `package.json`).
 
-## Learn More
+```bash
+bun install      # install all workspaces
+bun run dev      # start the app (Turbo → next dev)
+bun run build    # static production build → apps/web/out
+bun run lint     # lint all workspaces
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open http://localhost:3000.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment (Cloudflare Pages)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app is a static export (`output: 'export'` in `apps/web/next.config.ts`).
 
-## Deploy on Vercel
+- **Build command:** `bun run build`
+- **Output directory:** `apps/web/out`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Security headers are served via `apps/web/public/_headers`. Because there's no
+server, PostHog analytics call their host directly (see
+`apps/web/instrumentation-client.ts`); add a Cloudflare rule if you want
+first-party proxying.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech
+
+Next.js 16 (App Router, static export) · React 19 · Tailwind CSS v4 · TypeScript ·
+Turborepo · Bun.
+
+## License
+
+MIT

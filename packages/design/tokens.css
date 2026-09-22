@@ -1,0 +1,119 @@
+/*
+ * Tally Forms design tokens — the product's design system.
+ * Human reference: /DESIGN.md · interchange format (DTCG): /design-tokens.json
+ *
+ * This file is imported by app/globals.css and is the single active source of
+ * the Tally palette, type scale, radii and shadows. Token names mirror
+ * DESIGN.md, with two deliberate exceptions to avoid silently restyling the
+ * existing app:
+ *   - radius utilities are namespaced (rounded-card / -button / -tag / -input)
+ *     so they don't override shadcn's in-use rounded-md / rounded-lg.
+ *   - shadow utilities are namespaced (shadow-card / -feature / -highlight)
+ *     so they don't override Tailwind's in-use shadow-md.
+ *
+ * Two-colour discipline: --color-action-blue is the ONLY chromatic fill (primary
+ * buttons); --color-tally-magenta is decoration/illustration only — never a
+ * button fill, link, or body-text colour. See DESIGN.md → Two-Color Discipline.
+ */
+
+@theme {
+  /* ── Palette ───────────────────────────────────────────────────────────── */
+  --color-tally-magenta: #f81ce5; /* decorative / illustrative accent only */
+  --color-action-blue: #0070d7; /* primary action fills only */
+  --color-ink: #37352f; /* primary text, heading fills, dominant borders */
+  --color-paper: #e0e0df; /* page canvas */
+  --color-mist: #f3f3f3; /* secondary elevated / hover surfaces */
+  --color-graphite: #898884; /* secondary text, helper copy */
+  --color-ash: #777672; /* muted borders, dividers */
+  --color-charcoal: #45433e; /* dark borders, inline-link text */
+  --color-purple-to-pink: #f81ce0; /* underline-flourish solid fallback */
+
+  /* ── Type scale (size · line-height · letter-spacing) ──────────────────── */
+  --text-caption: 13px;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: -0.4px;
+
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.5px;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.5;
+  --text-body-lg--letter-spacing: -0.56px;
+
+  --text-subheading: 22px;
+  --text-subheading--line-height: 1.25;
+  --text-subheading--letter-spacing: -0.68px;
+
+  --text-heading-sm: 26px;
+  --text-heading-sm--line-height: 1.25;
+  --text-heading-sm--letter-spacing: -0.81px;
+
+  --text-heading: 30px;
+  --text-heading--line-height: 1.25;
+  --text-heading--letter-spacing: -0.93px;
+
+  --text-heading-lg: 36px;
+  --text-heading-lg--line-height: 1.15;
+  --text-heading-lg--letter-spacing: -1.12px;
+
+  --text-display: 64px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -1.98px;
+
+  /* ── Radius (namespaced — see header note) ─────────────────────────────── */
+  --radius-card: 10px;
+  --radius-button: 7px;
+  --radius-tag: 7px;
+  --radius-input: 7px;
+
+  /* ── Elevation (namespaced — see header note) ──────────────────────────── */
+  /* Form-preview / product surface: 4-stack warm shadow */
+  --shadow-card: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(61, 59, 53, 0.16) 0px 0px 0px 1px,
+    rgba(61, 59, 53, 0.08) 0px 3px 9px 0px, rgba(61, 59, 53, 0.08) 0px 2px 5px 0px;
+  /* Standard feature card: single soft layer */
+  --shadow-feature: rgba(0, 0, 0, 0.09) 0px 3px 12px 0px;
+  /* Highlighted card: magenta ring + glow */
+  --shadow-highlight: 0px 0px 0px 2px #f81ce5, 0px 0px 0px 4px rgba(248, 28, 229, 0.36);
+}
+
+/*
+ * Inter is the only typeface in the system. It's already loaded (all weights,
+ * variable font) by next/font in app/layout.tsx as --font-inter, so we expose a
+ * `font-inter` utility that references that optimised family — mirroring how
+ * --font-sans is wired.
+ */
+@theme inline {
+  --font-inter: var(--font-inter);
+}
+
+/*
+ * Plain reference custom properties for direct var() use. These do not generate
+ * utilities and are namespaced/valued so they never override Tailwind's own
+ * theme (spacing utilities stay on Tailwind's 4px scale).
+ */
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Decorative gradients (radial glow + violet→magenta underline sweep) */
+  --gradient-tally-magenta: radial-gradient(circle, rgba(248, 28, 229, 0.36) 0%, rgba(248, 28, 229, 0) 70%);
+  --gradient-purple-to-pink: linear-gradient(to right, rgb(138, 70, 255) 0%, rgb(248, 28, 224) 50%);
+
+  /* Spacing scale (reference; use Tailwind's p-2/-4/-6/-8/-16/-48 utilities) */
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-64: 64px;
+  --spacing-192: 192px;
+
+  /* Layout */
+  --page-max-width: 1200px;
+  --section-gap: 64px;
+  --card-padding: 24px;
+  --element-gap: 8px;
+
+  /* Doodle / pill radius for direct use */
+  --radius-doodles: 9999px;
+}
