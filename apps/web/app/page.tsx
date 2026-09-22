@@ -35,7 +35,7 @@ import {
   WalletIcon,
   ZapIcon,
 } from "@/components/icons/rune"
-import { Bento, BentoCard, Confetti, MiniFeatures, SectionHeader, Underlined } from "@/components/landing/bento"
+import { Bento, BentoCard, Confetti, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
 import { Reveal } from "@/components/landing/reveal"
 import {
   CurrencyScene,
@@ -262,16 +262,6 @@ export default function Home() {
             there&apos;s nothing to breach and nothing to sync.
           </BentoCard>
         </Bento>
-        <MiniFeatures
-          items={[
-            { icon: CloudIcon, lead: "Autosave", text: "Every edit is saved on this device as you type." },
-            { icon: UndoIcon, lead: "Undo & redo", text: "Step back through any change with ⌘Z." },
-            { icon: SearchIcon, lead: "Command palette", text: "⌘K finds any action, from templates to tax." },
-            { icon: ZapIcon, lead: "Keyboard first", text: "⌘P downloads, ⌘E previews, ⌘K does the rest." },
-            { icon: LayersIcon, lead: "Multi-page", text: "Long invoices paginate into real A4 sheets." },
-            { icon: LaptopIcon, lead: "Runs on your device", text: "Keeps working if your connection drops." },
-          ]}
-        />
       </section>
 
       {/* ═══ 2 · MAKE IT YOURS ═══ */}
@@ -304,16 +294,6 @@ export default function Home() {
             Ten currencies, each formatted the local way, down to lakh separators for rupees.
           </BentoCard>
         </Bento>
-        <MiniFeatures
-          items={[
-            { icon: CalendarIcon, lead: "Payment terms", text: "Net 7, 15 or 30 sets the due date in a click." },
-            { icon: WalletIcon, lead: "Bank details", text: "Account and IFSC in the footer when you need them." },
-            { icon: TagIcon, lead: "PO numbers", text: "Add the client's purchase order when they ask." },
-            { icon: ReceiptIcon, lead: "Tax & discount", text: "Edit rates right on the invoice; totals follow." },
-            { icon: FileTextIcon, lead: "Notes & terms", text: "Thank-you notes and payment instructions." },
-            { icon: SlidersIcon, lead: "Quick setup", text: "Presets for freelancers, agencies and GST vendors." },
-          ]}
-        />
       </section>
 
       {/* ═══ 3 · BUILT FOR GST ═══ */}
@@ -334,13 +314,6 @@ export default function Home() {
             same state or IGST for another. The total never moves.
           </BentoCard>
         </Bento>
-        <MiniFeatures
-          items={[
-            { icon: FingerprintIcon, lead: "GSTIN", text: "Your GST number, printed under your address." },
-            { icon: ColumnsIcon, lead: "HSN / SAC", text: "A code column on every line item." },
-            { icon: ArrowLeftRightIcon, lead: "Reverse charge", text: "A one-switch note for RCM supplies." },
-          ]}
-        />
       </section>
 
       {/* ═══ 4 · SEND ═══ */}
@@ -359,6 +332,35 @@ export default function Home() {
             the PDF.
           </BentoCard>
         </Bento>
+      </section>
+
+      {/* ═══ EVERYTHING AN INVOICE NEEDS — scannable tiles, no prose ═══ */}
+      <section className="lx-section" id="everything">
+        <SectionHeader
+          title={<><Underlined>Everything</Underlined> an invoice needs</>}
+          subtitle="All of it built in, none of it behind a paywall."
+          art={<DoodleCoin className="lx-art-coin" />}
+        />
+        <FeatureTiles
+          items={[
+            { icon: CloudIcon, label: "Autosave" },
+            { icon: UndoIcon, label: "Undo & redo" },
+            { icon: SearchIcon, label: "⌘K commands" },
+            { icon: ZapIcon, label: "Keyboard shortcuts" },
+            { icon: LayersIcon, label: "Multi-page" },
+            { icon: LaptopIcon, label: "Works offline" },
+            { icon: CalendarIcon, label: "Payment terms" },
+            { icon: DollarSignIcon, label: "10 currencies" },
+            { icon: WalletIcon, label: "Bank details" },
+            { icon: TagIcon, label: "PO numbers" },
+            { icon: ReceiptIcon, label: "Tax & discount" },
+            { icon: FileTextIcon, label: "Notes & terms" },
+            { icon: SlidersIcon, label: "Quick presets" },
+            { icon: FingerprintIcon, label: "GSTIN" },
+            { icon: ColumnsIcon, label: "HSN / SAC codes" },
+            { icon: ArrowLeftRightIcon, label: "Reverse charge" },
+          ]}
+        />
       </section>
 
       {/* ═══ 5 · DESIGNED FOR YOU ═══ */}

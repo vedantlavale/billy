@@ -948,43 +948,58 @@
   max-width: 640px;
 }
 
-/* Mini-feature grid */
-.lx-minis {
+/* Feature tiles — one scannable section instead of prose grids */
+.lx-tiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px 40px;
-  margin: 44px 0 0;
-  padding: 0 4px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
-@media (max-width: 860px) {
-  .lx-minis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 960px) {
+  .lx-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 520px) {
-  .lx-minis { grid-template-columns: minmax(0, 1fr); }
-}
-
-.lx-mini {
+.lx-tile {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.lx-mini-icon {
-  color: var(--lx-blue);
-}
-
-.lx-mini p {
-  margin: 0;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid var(--lx-line);
+  border-radius: 10px;
+  background: #ffffff;
   font-size: 15px;
-  line-height: 1.5;
+  font-weight: 600;
+  line-height: 1.3;
+  transition: border-color var(--lx-fast) var(--lx-out), transform var(--lx-fast) var(--lx-out);
 }
 
-.lx-mini b {
-  font-weight: 700;
+.lx-tile:hover {
+  border-color: #c9ccd2;
+  transform: translateY(-2px);
 }
+
+.lx-tile-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--lx-blue-wash);
+  color: var(--lx-blue);
+  transition: background-color var(--lx-fast) var(--lx-out), color var(--lx-fast) var(--lx-out);
+}
+
+.lx-tile:hover .lx-tile-icon {
+  background: var(--lx-blue);
+  color: #ffffff;
+}
+
+.lx-art-coin { position: absolute; width: 96px; right: 50px; bottom: 6px; animation: lx-coin 5s var(--lx-inout) infinite; }
 
 /* Confetti strokes (hero + final CTA) */
 .lx-confetti {
@@ -1410,6 +1425,7 @@
   .lx-caret,
   .lx-pin-pulse,
   .lx-hero-sparkles path,
+  .lx-art-coin,
   .lx-hero-coin,
   .lx-art-plane,
   .lx-art-plane path,

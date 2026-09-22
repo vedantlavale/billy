@@ -83,15 +83,19 @@ export function Bento({ children }: { children: ReactNode }) {
   return <div className="lx-bento">{children}</div>
 }
 
-export function MiniFeatures({ items }: { items: { icon: Icon; lead: string; text: string }[] }) {
+/**
+ * A scannable grid of everything built in: icon + a two-to-three word label,
+ * no sentences. The sections above carry the explanations.
+ */
+export function FeatureTiles({ items }: { items: { icon: Icon; label: string }[] }) {
   return (
-    <ul className="lx-minis">
-      {items.map(({ icon: IconCmp, lead, text }, i) => (
-        <Reveal as="li" key={lead} delay={(i % 3) * 60} className="lx-mini">
-          <IconCmp size={20} className="lx-mini-icon" />
-          <p>
-            <b>{lead}.</b> {text}
-          </p>
+    <ul className="lx-tiles">
+      {items.map(({ icon: IconCmp, label }, i) => (
+        <Reveal as="li" key={label} delay={(i % 4) * 50} className="lx-tile">
+          <span className="lx-tile-icon">
+            <IconCmp size={18} />
+          </span>
+          {label}
         </Reveal>
       ))}
     </ul>
