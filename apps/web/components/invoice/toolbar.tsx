@@ -9,12 +9,15 @@ import {
   FilePlus2,
   LoaderCircle,
   PenLine,
+  Redo2,
+  Search,
   SlidersHorizontal,
+  Undo2,
 } from "lucide-react"
 
 import { Kbd, useModKey } from "@/components/invoice/editor-ui"
 import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
-import { useInvoiceState } from "@/components/invoice/invoice-context"
+import { useInvoiceDispatch, useInvoiceHistory, useInvoiceState } from "@/components/invoice/invoice-context"
 
 export type EditorMode = "edit" | "preview"
 
@@ -24,6 +27,7 @@ interface ToolbarProps {
   onOpenSettings: () => void
   onNew: () => void
   onExport: () => void
+  onOpenCommands: () => void
   exporting: boolean
 }
 
@@ -69,9 +73,12 @@ export function Toolbar({
   onOpenSettings,
   onNew,
   onExport,
+  onOpenCommands,
   exporting,
 }: ToolbarProps) {
   const state = useInvoiceState()
+  const dispatch = useInvoiceDispatch()
+  const { canUndo, canRedo } = useInvoiceHistory()
   const mod = useModKey()
 
   return (
@@ -114,6 +121,43 @@ export function Toolbar({
       </Tabs>
 
       <div className="flex flex-1 items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={onOpenCommands}
+          className="ed-btn ed-btn--secondary ed-btn--commands"
+          title={`Search commands (${mod} K)`}
+          aria-label="Search commands"
+          aria-keyshortcuts="Meta+K Control+K"
+        >
+          <Search size={15} aria-hidden />
+          <span className="ed-btn-label">Commands</span>
+          <Kbd>{mod}K</Kbd>
+        </button>
+        <div className="ed-history" role="group" aria-label="History">
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "UNDO" })}
+            disabled={!canUndo}
+            className="ed-btn ed-btn--ghost ed-btn--icon"
+            title={`Undo (${mod} Z)`}
+            aria-label="Undo"
+            aria-keyshortcuts="Meta+Z Control+Z"
+          >
+            <Undo2 size={16} aria-hidden />
+          </button>
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "REDO" })}
+            disabled={!canRedo}
+            className="ed-btn ed-btn--ghost ed-btn--icon"
+            title={`Redo (⇧ ${mod} Z)`}
+            aria-label="Redo"
+            aria-keyshortcuts="Shift+Meta+Z Control+Y"
+          >
+            <Redo2 size={16} aria-hidden />
+          </button>
+        </div>
+        <span className="ed-divider" aria-hidden />
         <button
           type="button"
           onClick={onOpenSettings}
