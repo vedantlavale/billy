@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { InspectorSection } from "@/components/invoice/editor-ui"
+import { PAYMENT_TERMS, addDays, currentTermDays } from "@/lib/payment-terms"
 import { OptionsPanel } from "@/components/invoice/OptionsPanel"
 import { ProfessionPreset } from "@/components/invoice/ProfessionPreset"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
@@ -173,6 +174,32 @@ function CurrencyField() {
   )
 }
 
+function PaymentTerms() {
+  const state = useInvoiceState()
+  const dispatch = useInvoiceDispatch()
+  const current = currentTermDays(state.invoiceDate, state.dueDate)
+
+  return (
+    <InspectorSection title="Payment terms" hint="Sets the due date from the issue date.">
+      <div className="ed-terms" role="group" aria-label="Payment terms">
+        {PAYMENT_TERMS.map((term) => (
+          <button
+            key={term.days}
+            type="button"
+            aria-pressed={current === term.days}
+            onClick={() =>
+              dispatch({ type: "UPDATE_FIELD", field: "dueDate", value: addDays(state.invoiceDate, term.days) })
+            }
+            className="ed-option"
+          >
+            {term.label}
+          </button>
+        ))}
+      </div>
+    </InspectorSection>
+  )
+}
+
 /**
  * Persistent settings rail beside the invoice. On large screens it is always
  * visible; below `lg` it becomes a slide-over drawer opened from the top bar.
@@ -219,6 +246,7 @@ export function InspectorPanel({
         <Summary />
         <TemplateGallery />
         <CurrencyField />
+        <PaymentTerms />
         <ProfessionPreset />
         <OptionsPanel />
         <section className="ed-section">

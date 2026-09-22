@@ -14,7 +14,9 @@ type InvoiceAction =
   | { type: "SET_STAMP"; value: string | null }
   | { type: "RESET_INVOICE" }
   | { type: "SET_ID"; id: string }
-  | { type: "LOAD_STATE"; payload: InvoiceData }
+  | { type: "LOAD_STATE"; payload: InvoiceData; history?: "reset" }
+  | { type: "UNDO" }
+  | { type: "REDO" }
 
 const STORAGE_KEY = "billy_invoice_data"
 
@@ -95,6 +97,19 @@ function createLineItem(id: string): LineItem {
   }
 }
 
+/**
+ * The number that follows `current`, keeping any prefix and zero padding:
+ * INV-1024 → INV-1025, 2026/009 → 2026/010. Falls back to the default when
+ * there's no trailing number to bump.
+ */
+export function nextInvoiceNumber(current: string): string {
+  const match = current.trim().match(/^(.*?)(\d+)$/)
+  if (!match) return createDefaultInvoice().invoiceNumber
+  const [, prefix, digits] = match
+  const next = String(Number(digits) + 1).padStart(digits.length, "0")
+  return `${prefix}${next}`
+}
+
 function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData {
   switch (action.type) {
     case "UPDATE_FIELD":
@@ -139,6 +154,7 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
     case "RESET_INVOICE":
       return {
         ...createDefaultInvoice(),
+        invoiceNumber: nextInvoiceNumber(state.invoiceNumber),
         // Preserve business details and logo on reset
         businessName: state.businessName,
         businessTagline: state.businessTagline,
@@ -170,11 +186,63 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
   }
 }
 
+/* ── Undo / redo ────────────────────────────────────────────────────────
+   Every committed edit is one history step: EditableText commits on blur,
+   so a whole field edit is undone at once, not per keystroke. The initial
+   load from localStorage resets history rather than becoming an undo step. */
+
+const HISTORY_LIMIT = 100
+
+interface HistoryState {
+  past: InvoiceData[]
+  present: InvoiceData
+  future: InvoiceData[]
+}
+
+function historyReducer(history: HistoryState, action: InvoiceAction): HistoryState {
+  const { past, present, future } = history
+  switch (action.type) {
+    case "UNDO": {
+      if (past.length === 0) return history
+      return { past: past.slice(0, -1), present: past[past.length - 1], future: [present, ...future] }
+    }
+    case "REDO": {
+      if (future.length === 0) return history
+      return { past: [...past, present], present: future[0], future: future.slice(1) }
+    }
+    default: {
+      const next = invoiceReducer(present, action)
+      if (next === present) return history
+      if (action.type === "LOAD_STATE" && action.history === "reset") {
+        return { past: [], present: next, future: [] }
+      }
+      return { past: [...past, present].slice(-HISTORY_LIMIT), present: next, future: [] }
+    }
+  }
+}
+
+interface InvoiceHistory {
+  canUndo: boolean
+  canRedo: boolean
+}
+
+const InvoiceHistoryContext = React.createContext<InvoiceHistory>({ canUndo: false, canRedo: false })
+
+/** Whether undo/redo are available. Dispatch `{ type: "UNDO" | "REDO" }` to use them. */
+export function useInvoiceHistory() {
+  return React.useContext(InvoiceHistoryContext)
+}
+
 export function InvoiceProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = React.useReducer(
-    invoiceReducer,
-    undefined,
-    createDefaultInvoice
+  const [history, dispatch] = React.useReducer(historyReducer, undefined, () => ({
+    past: [],
+    present: createDefaultInvoice(),
+    future: [],
+  }))
+  const state = history.present
+  const historyValue = React.useMemo(
+    () => ({ canUndo: history.past.length > 0, canRedo: history.future.length > 0 }),
+    [history.past.length, history.future.length],
   )
 
   // Load state from localStorage on initial mount
@@ -183,7 +251,7 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
         const parsed = JSON.parse(saved) as InvoiceData
-        dispatch({ type: "LOAD_STATE", payload: parsed })
+        dispatch({ type: "LOAD_STATE", payload: parsed, history: "reset" })
         return
       }
     } catch (error) {
@@ -193,7 +261,7 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
     const presetId = localStorage.getItem("billy_profession_preset")
     if (presetId && presetId in professionPresets) {
       const updated = applyProfessionPreset(createDefaultInvoice(), presetId as keyof typeof professionPresets)
-      dispatch({ type: "LOAD_STATE", payload: updated })
+      dispatch({ type: "LOAD_STATE", payload: updated, history: "reset" })
       localStorage.removeItem("billy_profession_preset")
     }
   }, [])
@@ -210,7 +278,7 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
   return (
     <InvoiceStateContext.Provider value={state}>
       <InvoiceDispatchContext.Provider value={dispatch}>
-        {children}
+        <InvoiceHistoryContext.Provider value={historyValue}>{children}</InvoiceHistoryContext.Provider>
       </InvoiceDispatchContext.Provider>
     </InvoiceStateContext.Provider>
   )

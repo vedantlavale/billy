@@ -6,6 +6,7 @@ import { Eye, Minus, MousePointerClick, Plus, X } from "lucide-react"
 import { InvoicePage } from "@/components/invoice/invoice-page"
 import { RenderModeProvider } from "@/components/invoice/render-mode"
 import type { EditorMode } from "@/components/invoice/toolbar"
+import { Kbd, useModKey } from "@/components/invoice/editor-ui"
 
 export const invoiceCanvasId = "invoice-canvas"
 
@@ -49,6 +50,7 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
   const [zoom, setZoom] = React.useState<number | null>(null) // null = fit width
   const [pageHeight, setPageHeight] = React.useState(1123)
   const [hintVisible, dismissHint] = useEditHint()
+  const mod = useModKey()
 
   React.useEffect(() => {
     const desk = deskRef.current
@@ -93,7 +95,9 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
           {mode === "edit" && hintVisible && (
             <div className="ed-hint ed-chrome">
               <MousePointerClick size={16} aria-hidden />
-              <span>Click any text on the invoice to edit it.</span>
+              <span>
+                Click any text to edit it. <Kbd>{mod}K</Kbd> for commands.
+              </span>
               <button
                 type="button"
                 onClick={dismissHint}

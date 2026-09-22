@@ -9,12 +9,20 @@ import {
   useInvoiceDispatch,
   useInvoiceState,
 } from "@/components/invoice/invoice-context"
+import { CommandPalette } from "@/components/invoice/command-palette"
+import { useModKey } from "@/components/invoice/editor-ui"
 import { InspectorPanel } from "@/components/invoice/inspector-panel"
+import { useEditorCommands } from "@/components/invoice/use-editor-commands"
 import { Toolbar, type EditorMode } from "@/components/invoice/toolbar"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { useToast } from "@/components/ui/toast"
 import { exportInvoicePdf } from "@/lib/pdf/client-export"
 import { getTemplate } from "@billy/invoice-core"
+
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false
+  return target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
+}
 
 function EditorWorkspace() {
   const state = useInvoiceState()
@@ -72,10 +80,40 @@ function EditorWorkspace() {
   const closeConfirm = React.useCallback(() => setConfirmNew(false), [])
   const closeSettings = React.useCallback(() => setSettingsOpen(false), [])
 
+  const mod = useModKey()
+  const [paletteOpen, setPaletteOpen] = React.useState(false)
+  const closePalette = React.useCallback(() => setPaletteOpen(false), [])
+  const openNewConfirm = React.useCallback(() => setConfirmNew(true), [])
+  const commands = useEditorCommands({
+    mod,
+    mode,
+    setMode,
+    onExport: () => void handleExport(),
+    onNew: openNewConfirm,
+  })
+
   React.useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (!(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return
+      if (!(event.metaKey || event.ctrlKey) || event.altKey) return
       const key = event.key.toLowerCase()
+
+      // ⌘K works everywhere, even mid-edit, so it's always one chord away.
+      if (key === "k" && !event.shiftKey) {
+        event.preventDefault()
+        setPaletteOpen((open) => !open)
+        return
+      }
+
+      // Undo/redo step through invoice history, but stand aside while a
+      // text field is focused so the browser's own text undo keeps working.
+      const redo = (key === "z" && event.shiftKey) || (key === "y" && !event.shiftKey)
+      if ((key === "z" || redo) && !isEditableTarget(event.target)) {
+        event.preventDefault()
+        dispatch({ type: redo ? "REDO" : "UNDO" })
+        return
+      }
+
+      if (event.shiftKey) return
       if (key === "p") {
         // Replace the browser's print dialog with our real PDF export.
         event.preventDefault()
@@ -87,7 +125,7 @@ function EditorWorkspace() {
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [handleExport])
+  }, [handleExport, dispatch])
 
   return (
     <div
@@ -125,6 +163,8 @@ function EditorWorkspace() {
       </div>
 
       {settingsOpen && <InspectorPanel variant="drawer" onClose={closeSettings} />}
+
+      <CommandPalette open={paletteOpen} onClose={closePalette} commands={commands} />
 
       <ConfirmDialog
         isOpen={confirmNew}
