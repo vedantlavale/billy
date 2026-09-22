@@ -122,7 +122,7 @@ export function LineItemsTable() {
                   onClick={() =>
                     dispatch({ type: "REMOVE_LINE_ITEM", id: item.id })
                   }
-                  className="text-slate-400 opacity-0 transition hover:text-red-600 group-hover:opacity-100 focus-visible:opacity-100"
+                  className="text-slate-400 opacity-0 transition hover:text-[#D92D20] group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Remove line item"
                 >
                   <HugeiconsIcon icon={Delete02Icon} size={16} />
@@ -133,17 +133,16 @@ export function LineItemsTable() {
         })}
       </div>
       {!readOnly && (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
           onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
           data-break-block
-          className="app-btn app-btn--ghost h-8 gap-2 px-3 text-xs font-medium"
+          className="flex w-full items-center justify-center gap-2 rounded-[7px] border border-dashed border-[#D1D5DB] py-2.5 text-sm font-medium text-[#37352f] transition-colors hover:border-[#0070D7] hover:bg-[#0070D7]/[0.04] hover:text-[#0070D7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070D7]"
+          style={{ fontFamily: "var(--font-inter), Inter, sans-serif" }}
         >
           <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
-          Add Item
-        </Button>
+          Add line item
+        </button>
       )}
     </section>
   )

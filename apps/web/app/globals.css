@@ -151,7 +151,16 @@
 }
 
 .invoice-editor .invoice-field:hover {
-  background-color: rgba(11, 11, 15, 0.045);
+  background-color: rgba(0, 112, 215, 0.06);
+  box-shadow: inset 0 -1px 0 rgba(0, 112, 215, 0.45);
+}
+
+/* While the pointer is anywhere on the sheet, every editable field shows a
+   faint dotted baseline so the page reads as a form, not a static document.
+   Only the editable canvas renders .invoice-field — the read-only preview and
+   the PDF exporter never do — so none of this can leak into exports. */
+.invoice-editor .invoice-canvas:hover .invoice-field:not(:hover) {
+  box-shadow: inset 0 -1px 0 rgba(55, 53, 47, 0.18);
 }
 
 .invoice-editor .invoice-input {
@@ -237,8 +246,8 @@
   box-shadow: 0 0 0 3px rgba(0, 112, 215, 0.14);
 }
 .app-option[data-selected="true"] {
-  border-color: #F81CE5;
-  box-shadow: inset 0 0 0 1px #F81CE5;
+  border-color: #0070D7;
+  box-shadow: inset 0 0 0 1px #0070D7;
   color: #37352f;
 }
 .app-option:disabled {
@@ -260,7 +269,7 @@
   font-weight: 700;
   line-height: 1;
 }
-.app-option[data-selected="true"] .app-kbd { background-color: #F81CE5; }
+.app-option[data-selected="true"] .app-kbd { background-color: #0070D7; }
 
 .invoice-canvas {
   background-color: var(--invoice-paper);
@@ -806,4 +815,371 @@
   to {
     height: 0;
   }
+}
+
+/* ═══════════════════════════════════════════════════
+   EDITOR CHROME — root DESIGN.md ("Tally Minimal Forms")
+   White surfaces, #37352f text (hierarchy by size/weight,
+   never a gray ramp), #E5E7EB hairlines, #F3F4F6 muted wash,
+   #0070D7 as the only chroma, 7px controls / 8px cards.
+   Scoped under .ed-root so template paper is untouched.
+═══════════════════════════════════════════════════ */
+
+@layer components {
+  .ed-root {
+    --ed-ink: #37352f;
+    --ed-line: #E5E7EB;
+    --ed-muted: #F3F4F6;
+    --ed-blue: #0070D7;
+    --ed-blue-hover: #005FB8;
+    --ed-blue-wash: rgba(0, 112, 215, 0.08);
+    --ed-error: #D92D20;
+    --ed-shadow: 0 1px 2px rgba(55, 53, 47, 0.06);
+    font-family: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0;
+    background-color: var(--ed-muted);
+  }
+
+  .ed-root .ed-chrome,
+  .ed-root .ed-chrome * {
+    color: var(--ed-ink);
+  }
+
+  /* Top bar */
+  .ed-topbar {
+    display: flex;
+    height: 60px;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 0 16px;
+  }
+  @media (min-width: 640px) {
+    .ed-topbar { padding: 0 24px; }
+  }
+
+  /* Buttons — 36px in the dense top bar, 7px radius */
+  .ed-btn {
+    display: inline-flex;
+    height: 36px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .ed-btn:focus-visible {
+    outline: 2px solid var(--ed-blue);
+    outline-offset: 2px;
+  }
+  .ed-btn:disabled { cursor: progress; opacity: 0.7; }
+  .ed-btn--primary {
+    background-color: var(--ed-blue);
+    border-color: var(--ed-blue);
+  }
+  .ed-root .ed-btn--primary,
+  .ed-root .ed-btn--primary * { color: #ffffff; }
+  .ed-btn--primary:hover:not(:disabled) {
+    background-color: var(--ed-blue-hover);
+    border-color: var(--ed-blue-hover);
+  }
+  .ed-btn--secondary {
+    background-color: #ffffff;
+    border-color: var(--ed-line);
+  }
+  .ed-btn--secondary:hover { background-color: var(--ed-muted); }
+  .ed-btn--ghost { background-color: transparent; }
+  .ed-btn--ghost:hover { background-color: var(--ed-muted); }
+  .ed-btn--icon { width: 36px; padding: 0; }
+
+  /* Segmented Edit / Preview switch */
+  .ed-segment {
+    display: inline-flex;
+    height: 36px;
+    align-items: center;
+    gap: 2px;
+    border-radius: 8px;
+    background-color: var(--ed-muted);
+    padding: 3px;
+  }
+  .ed-segment-item {
+    display: inline-flex;
+    height: 30px;
+    align-items: center;
+    gap: 6px;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ed-segment-item:hover { background-color: rgba(255, 255, 255, 0.6); }
+  .ed-segment-item[aria-pressed="true"] {
+    background-color: #ffffff;
+    box-shadow: var(--ed-shadow), 0 0 0 1px var(--ed-line);
+  }
+  .ed-segment-item:focus-visible {
+    outline: 2px solid var(--ed-blue);
+    outline-offset: 1px;
+  }
+
+  .ed-chip {
+    display: inline-flex;
+    height: 24px;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9999px;
+    background-color: var(--ed-muted);
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+
+  /* Inspector (left rail) */
+  .ed-inspector {
+    display: flex;
+    width: 340px;
+    flex-shrink: 0;
+    flex-direction: column;
+    border-right: 1px solid var(--ed-line);
+    background-color: #ffffff;
+  }
+  .ed-inspector-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .ed-section {
+    border-bottom: 1px solid var(--ed-line);
+    padding: 20px 24px;
+  }
+  .ed-section:last-child { border-bottom: none; }
+  .ed-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+  .ed-section-hint {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+  }
+
+  /* Amount-due summary card */
+  .ed-summary {
+    border-radius: 8px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 16px;
+    box-shadow: var(--ed-shadow);
+  }
+  .ed-summary-amount {
+    margin-top: 4px;
+    font-size: 29px;
+    font-weight: 700;
+    line-height: 35px;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  /* Template gallery */
+  .ed-template {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ed-template:hover { border-color: #C9CDD3; }
+  .ed-template:focus-visible {
+    outline: 2px solid var(--ed-blue);
+    outline-offset: 2px;
+  }
+  .ed-template[aria-pressed="true"] {
+    border-color: var(--ed-blue);
+    box-shadow: inset 0 0 0 1px var(--ed-blue);
+  }
+  .ed-template-thumb {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--ed-line);
+  }
+
+  /* Preset + list buttons */
+  .ed-option {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    border-radius: 7px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .ed-option:hover { background-color: var(--ed-muted); }
+  .ed-option:focus-visible {
+    outline: 2px solid var(--ed-blue);
+    outline-offset: 2px;
+  }
+  .ed-option[aria-pressed="true"] {
+    border-color: var(--ed-blue);
+    background-color: var(--ed-blue-wash);
+  }
+
+  /* Switch rows */
+  .ed-switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-radius: 7px;
+    padding: 8px 8px;
+    margin: 0 -8px;
+    width: calc(100% + 16px);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .ed-switch-row:hover { background-color: var(--ed-muted); }
+  .ed-switch-row:focus-visible {
+    outline: 2px solid var(--ed-blue);
+    outline-offset: 0;
+  }
+  .ed-switch-row:disabled { cursor: not-allowed; opacity: 0.5; }
+  .ed-switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: #D1D5DB;
+    transition: background-color 0.15s ease;
+  }
+  .ed-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px rgba(55, 53, 47, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .ed-switch[data-on="true"] { background-color: var(--ed-blue); }
+  .ed-switch[data-on="true"]::after { transform: translateX(14px); }
+
+  /* Desk + floating zoom bar */
+  .ed-desk {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    background-color: var(--ed-muted);
+  }
+  .ed-floating {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    border-radius: 8px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 3px;
+    box-shadow: 0 4px 16px -8px rgba(55, 53, 47, 0.25);
+  }
+  .ed-floating .ed-btn { height: 30px; font-size: 12px; }
+  .ed-floating .ed-btn--icon { width: 30px; }
+  .ed-floating .ed-btn[aria-pressed="true"] { background-color: var(--ed-muted); }
+  .ed-floating .ed-btn:disabled { cursor: not-allowed; opacity: 0.4; }
+
+  .ed-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 6px 6px 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    box-shadow: var(--ed-shadow);
+  }
+
+  .ed-kbd {
+    display: inline-grid;
+    min-width: 20px;
+    height: 20px;
+    place-items: center;
+    border-radius: 4px;
+    border: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .ed-btn--primary .ed-kbd {
+    border-color: rgba(255, 255, 255, 0.35);
+    background-color: transparent;
+  }
+
+  /* Mobile drawer backdrop */
+  .ed-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: rgba(55, 53, 47, 0.3);
+  }
+
+  /* Below sm, secondary/primary buttons collapse to icon-only. */
+  @media (max-width: 639px) {
+    .ed-btn--collapse { width: 36px; padding: 0; }
+    .ed-btn--collapse .ed-btn-label { display: none; }
+  }
+
+}
+
+@media print {
+  .ed-topbar,
+  .ed-inspector,
+  .ed-floating,
+  .ed-hint { display: none !important; }
+  .ed-root, .ed-desk { background: white !important; overflow: visible !important; }
 }

@@ -1,99 +1,160 @@
 'use client'
 
+import * as React from "react"
 import Link from "next/link"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { PrinterIcon, Refresh01Icon, SlidersHorizontalIcon } from "@hugeicons/core-free-icons"
-import { exportInvoicePdf } from "@/lib/pdf/client-export"
-import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
-import posthog from "posthog-js"
+import {
+  CloudCheck,
+  Download,
+  Eye,
+  FilePlus2,
+  LoaderCircle,
+  PenLine,
+  SlidersHorizontal,
+} from "lucide-react"
+
+import { Kbd, useModKey } from "@/components/invoice/editor-ui"
+import { useInvoiceState } from "@/components/invoice/invoice-context"
+
+export type EditorMode = "edit" | "preview"
 
 interface ToolbarProps {
-  customizeOpen?: boolean
-  onToggleCustomize?: () => void
+  mode: EditorMode
+  onModeChange: (mode: EditorMode) => void
+  onOpenSettings: () => void
+  onNew: () => void
+  onExport: () => void
+  exporting: boolean
 }
 
-export function Toolbar({ customizeOpen, onToggleCustomize }: ToolbarProps) {
+/**
+ * The invoice auto-saves to localStorage on every change (see
+ * InvoiceProvider). This mirrors that as a quiet status so people know their
+ * edits are safe without a save button.
+ */
+function SaveStatus() {
   const state = useInvoiceState()
-  const dispatch = useInvoiceDispatch()
+  const [saving, setSaving] = React.useState(false)
+  const first = React.useRef(true)
 
-  const handleExportPdf = async () => {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur()
+  React.useEffect(() => {
+    if (first.current) {
+      first.current = false
+      return
     }
-
-    await new Promise((resolve) => requestAnimationFrame(resolve))
-
-    try {
-      await exportInvoicePdf(state)
-      posthog.capture("invoice_pdf_exported", {
-        template_id: state.templateId,
-        invoice_number: state.invoiceNumber,
-        method: "client",
-      })
-    } catch (error) {
-      console.error("PDF export failed:", error)
-      alert("Something went wrong generating the PDF. Please try again.")
-    }
-  }
-
-  const handleReset = () => {
-    const shouldReset = window.confirm("Start a fresh invoice? This clears edits.")
-    if (shouldReset) {
-      posthog.capture("invoice_reset", { template_id: state.templateId })
-      dispatch({ type: "RESET_INVOICE" })
-    }
-  }
+    setSaving(true)
+    const timer = window.setTimeout(() => setSaving(false), 700)
+    return () => window.clearTimeout(timer)
+  }, [state])
 
   return (
-    <header className="toolbar editor-chrome premium-nav sticky top-0 z-20">
-      <div className="mx-auto flex min-h-16 w-full max-w-[1440px] flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
-          <Link
-            href="/"
-            aria-label="Billy home"
-            className="shrink-0 font-serif text-[26px] leading-none text-[#37352f]"
-          >
-            billy*
-          </Link>
-          <span className="hidden h-5 w-px bg-[#E4E2DD] sm:block" />
-          <span className="nav-chip hidden items-center px-2.5 py-0.5 text-[11px] font-medium text-[#898884] sm:inline-flex">
-            {state.invoiceNumber}
-          </span>
-        </div>
+    <span
+      className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap text-xs font-medium leading-4 xl:inline-flex"
+      aria-live="polite"
+      title="Saved in this browser. Nothing leaves your device."
+    >
+      {saving ? (
+        <LoaderCircle size={14} className="animate-spin" aria-hidden />
+      ) : (
+        <CloudCheck size={14} aria-hidden />
+      )}
+      {saving ? "Saving…" : "Saved on this device"}
+    </span>
+  )
+}
 
-        <div className="flex flex-wrap items-center justify-start gap-2 sm:justify-end">
-          {onToggleCustomize && (
-            <button
-              type="button"
-              onClick={onToggleCustomize}
-              aria-pressed={customizeOpen}
-              className={`nav-control inline-flex h-9 items-center gap-1.5 px-3.5 text-xs font-medium ${
-                customizeOpen
-                  ? "!border-[#0070d7] !bg-[#e5f0fc] !text-[#0070d7]"
-                  : "text-[#37352f]"
-              }`}
-            >
-              <HugeiconsIcon icon={SlidersHorizontalIcon} size={15} />
-              Customize
-            </button>
+export function Toolbar({
+  mode,
+  onModeChange,
+  onOpenSettings,
+  onNew,
+  onExport,
+  exporting,
+}: ToolbarProps) {
+  const state = useInvoiceState()
+  const mod = useModKey()
+
+  return (
+    <header className="ed-topbar ed-chrome toolbar editor-chrome">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <Link
+          href="/"
+          aria-label="Billy home"
+          className="shrink-0 font-serif text-[26px] leading-none"
+        >
+          billy*
+        </Link>
+        <span className="hidden h-5 w-px bg-[#E5E7EB] sm:block" aria-hidden />
+        <div className="hidden min-w-0 items-center gap-2 sm:flex">
+          <span className="truncate text-sm font-semibold leading-5">
+            {state.invoiceNumber || "Untitled"}
+          </span>
+          {state.clientName && (
+            <span className="hidden truncate text-sm leading-5 xl:inline">· {state.clientName}</span>
           )}
-          <button
-            type="button"
-            onClick={handleReset}
-            className="nav-control inline-flex h-9 items-center gap-1.5 px-3.5 text-xs font-medium text-[#37352f]"
-          >
-            <HugeiconsIcon icon={Refresh01Icon} size={15} />
-            New
-          </button>
-          <button
-            type="button"
-            onClick={handleExportPdf}
-            className="nav-primary inline-flex h-9 items-center gap-1.5 px-4 text-xs font-semibold"
-          >
-            <HugeiconsIcon icon={PrinterIcon} size={15} />
-            Export PDF
-          </button>
         </div>
+        <SaveStatus />
+      </div>
+
+      <div className="ed-segment" role="group" aria-label="Editor mode">
+        <button
+          type="button"
+          className="ed-segment-item"
+          aria-pressed={mode === "edit"}
+          onClick={() => onModeChange("edit")}
+          title={`Edit (${mod} E)`}
+        >
+          <PenLine size={14} aria-hidden />
+          <span className="hidden sm:inline">Edit</span>
+        </button>
+        <button
+          type="button"
+          className="ed-segment-item"
+          aria-pressed={mode === "preview"}
+          onClick={() => onModeChange("preview")}
+          title={`Preview (${mod} E)`}
+        >
+          <Eye size={14} aria-hidden />
+          <span className="hidden sm:inline">Preview</span>
+        </button>
+      </div>
+
+      <div className="flex flex-1 items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={onOpenSettings}
+          className="ed-btn ed-btn--secondary ed-btn--icon lg:hidden"
+          aria-label="Invoice settings"
+        >
+          <SlidersHorizontal size={16} aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={onNew}
+          className="ed-btn ed-btn--ghost ed-btn--collapse"
+          title="Start a new invoice"
+          aria-label="New invoice"
+        >
+          <FilePlus2 size={16} aria-hidden />
+          <span className="ed-btn-label">New</span>
+        </button>
+        <button
+          type="button"
+          onClick={onExport}
+          disabled={exporting}
+          className="ed-btn ed-btn--primary ed-btn--collapse"
+          title={`Download PDF (${mod} P)`}
+          aria-label="Download PDF"
+        >
+          {exporting ? (
+            <LoaderCircle size={16} className="animate-spin" aria-hidden />
+          ) : (
+            <Download size={16} aria-hidden />
+          )}
+          <span className="ed-btn-label">{exporting ? "Preparing…" : "Download PDF"}</span>
+          <span className="hidden xl:inline-flex" aria-hidden>
+            <Kbd>{mod}P</Kbd>
+          </span>
+        </button>
       </div>
     </header>
   )

@@ -1,180 +1,110 @@
 "use client"
 
-import * as React from "react"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
+import { InspectorSection, SwitchRow } from "@/components/invoice/editor-ui"
+import type { InvoiceData } from "@billy/invoice-core"
 
-interface ToggleChipProps {
-  label: string
-  checked: boolean
-  onChange: (value: boolean) => void
-  disabled?: boolean
-  isProField?: boolean
+type Options = InvoiceData["options"]
+type TaxMode = "standard" | "intra" | "inter"
+
+const TAX_MODES: { id: TaxMode; label: string; description: string }[] = [
+  { id: "standard", label: "Single tax", description: "One tax line" },
+  { id: "intra", label: "CGST + SGST", description: "Same state" },
+  { id: "inter", label: "IGST", description: "Other state" },
+]
+
+function taxModeOf(options: Options): TaxMode {
+  if (options.showIGST) return "inter"
+  if (options.showCGST || options.showSGST) return "intra"
+  return "standard"
 }
 
-const CheckIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="12"
-    height="12"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="shrink-0"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-)
-
-const LockIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="10"
-    height="10"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="shrink-0 text-slate-400"
-  >
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-  </svg>
-)
-
-function ToggleChip({
-  label,
-  checked,
-  onChange,
-  disabled,
-  isProField,
-}: ToggleChipProps) {
-  return (
-    <button
-      type="button"
-      onClick={() => !disabled && onChange(!checked)}
-      disabled={disabled}
-      data-selected={checked || undefined}
-      aria-pressed={checked}
-      className="app-option select-none px-3 py-1.5 text-xs"
-    >
-      {checked && (
-        <span className="text-[#F81CE5]">
-          <CheckIcon />
-        </span>
-      )}
-      {!checked && isProField && <LockIcon />}
-      <span>{label}</span>
-      {isProField && !checked && (
-        <span className="rounded bg-amber-50 px-1 py-0.25 text-[8px] font-bold text-amber-700 uppercase tracking-wider">
-          Pro
-        </span>
-      )}
-    </button>
-  )
-}
-
+/**
+ * Optional invoice fields and Indian GST settings. CGST/SGST and IGST are
+ * mutually exclusive on a real invoice (totals already treat IGST as
+ * overriding), so they're presented as one choice instead of three toggles.
+ */
 export function OptionsPanel() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
-  const isPro = true
 
-  const setOption = (field: keyof typeof state.options, value: boolean) => {
+  const setOptions = (patch: Partial<Options>) => {
     dispatch({
       type: "UPDATE_FIELD",
       field: "options",
-      value: {
-        ...state.options,
-        [field]: value,
-      },
+      value: { ...state.options, ...patch },
     })
   }
 
-  return (
-    <section className="space-y-4">
-      <div>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 mb-2">
-          Optional Fields
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          <ToggleChip
-            label="PO Number"
-            checked={state.options.showPONumber}
-            onChange={(value) => setOption("showPONumber", value)}
-          />
-          <ToggleChip
-            label="Bank Details"
-            checked={state.options.showBankDetails}
-            onChange={(value) => setOption("showBankDetails", value)}
-          />
-          <ToggleChip
-            label="Digital Stamp"
-            checked={state.options.showDigitalStamp}
-            onChange={(value) => setOption("showDigitalStamp", value)}
-          />
-        </div>
-      </div>
+  const setTaxMode = (mode: TaxMode) => {
+    setOptions({
+      showCGST: mode === "intra",
+      showSGST: mode === "intra",
+      showIGST: mode === "inter",
+    })
+  }
 
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-            GST Features
-          </h3>
-          {!isPro && (
-            <span className="text-[10px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-medium">
-              Pro plan required
-            </span>
-          )}
+  const taxMode = taxModeOf(state.options)
+
+  return (
+    <>
+      <InspectorSection title="Fields" hint="Show or hide optional parts of the invoice.">
+        <div className="space-y-0.5">
+          <SwitchRow
+            label="PO number"
+            checked={state.options.showPONumber}
+            onChange={(value) => setOptions({ showPONumber: value })}
+          />
+          <SwitchRow
+            label="Bank details"
+            description="Account and IFSC in the footer"
+            checked={state.options.showBankDetails}
+            onChange={(value) => setOptions({ showBankDetails: value })}
+          />
+          <SwitchRow
+            label="Digital stamp"
+            description="Upload a signature or seal"
+            checked={state.options.showDigitalStamp}
+            onChange={(value) => setOptions({ showDigitalStamp: value })}
+          />
         </div>
-        <div className="flex flex-wrap gap-2">
-          <ToggleChip
+      </InspectorSection>
+
+      <InspectorSection title="Tax" hint="The rate is edited on the invoice itself.">
+        <div className="grid grid-cols-3 gap-1.5" role="group" aria-label="Tax type">
+          {TAX_MODES.map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              aria-pressed={taxMode === mode.id}
+              onClick={() => setTaxMode(mode.id)}
+              className="ed-option flex-col !items-start !gap-0 !px-2.5"
+            >
+              <span className="text-[13px] font-semibold leading-5">{mode.label}</span>
+              <span className="text-xs font-normal leading-4">{mode.description}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-3 space-y-0.5">
+          <SwitchRow
             label="GSTIN"
+            description="Your GST number under the address"
             checked={state.options.showGSTIN}
-            onChange={(value) => setOption("showGSTIN", value)}
-            disabled={!isPro}
-            isProField
+            onChange={(value) => setOptions({ showGSTIN: value })}
           />
-          <ToggleChip
-            label="HSN/SAC Column"
+          <SwitchRow
+            label="HSN / SAC column"
             checked={state.options.showHSNCode}
-            onChange={(value) => setOption("showHSNCode", value)}
-            disabled={!isPro}
-            isProField
+            onChange={(value) => setOptions({ showHSNCode: value })}
           />
-          <ToggleChip
-            label="CGST"
-            checked={state.options.showCGST}
-            onChange={(value) => setOption("showCGST", value)}
-            disabled={!isPro}
-            isProField
-          />
-          <ToggleChip
-            label="SGST"
-            checked={state.options.showSGST}
-            onChange={(value) => setOption("showSGST", value)}
-            disabled={!isPro}
-            isProField
-          />
-          <ToggleChip
-            label="IGST"
-            checked={state.options.showIGST}
-            onChange={(value) => setOption("showIGST", value)}
-            disabled={!isPro}
-            isProField
-          />
-          <ToggleChip
-            label="Reverse Charge"
+          <SwitchRow
+            label="Reverse charge note"
             checked={state.options.showReverseCharge}
-            onChange={(value) => setOption("showReverseCharge", value)}
-            disabled={!isPro}
-            isProField
+            onChange={(value) => setOptions({ showReverseCharge: value })}
           />
         </div>
-      </div>
-    </section>
+      </InspectorSection>
+    </>
   )
 }

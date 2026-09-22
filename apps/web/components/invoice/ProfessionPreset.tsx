@@ -1,47 +1,56 @@
 "use client"
 
-import * as React from "react"
-
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
+import { InspectorSection } from "@/components/invoice/editor-ui"
 import { applyProfessionPreset, professionPresets } from "@billy/invoice-core"
+import type { InvoiceData } from "@billy/invoice-core"
 
-const presetLabels = {
+type PresetId = keyof typeof professionPresets
+
+const presetLabels: Record<PresetId, string> = {
   freelancer: "Freelancer",
-  gst_vendor: "GST Vendor",
+  gst_vendor: "GST vendor",
   agency: "Agency",
   consultant: "Consultant",
-  other: "Other",
-} as const
+  other: "Basic",
+}
 
-const KEY_LETTERS = ["A", "B", "C", "D", "E", "F", "G"]
+/** A preset is "active" when every field it controls matches the invoice. */
+function matchesPreset(state: InvoiceData, id: PresetId) {
+  const preset = professionPresets[id]
+  return (Object.keys(preset) as (keyof typeof preset)[]).every((key) =>
+    key === "taxLabel"
+      ? state.taxLabel === preset.taxLabel
+      : state.options[key] === preset[key],
+  )
+}
 
 export function ProfessionPreset() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
 
-  const handleApply = (presetId: keyof typeof professionPresets) => {
-    const updated = applyProfessionPreset(state, presetId)
-    dispatch({ type: "LOAD_STATE", payload: updated })
+  const handleApply = (presetId: PresetId) => {
+    dispatch({ type: "LOAD_STATE", payload: applyProfessionPreset(state, presetId) })
   }
 
   return (
-    <section className="space-y-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-        Profession Preset
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {Object.keys(professionPresets).map((presetId, index) => (
+    <InspectorSection
+      title="Quick setup"
+      hint="Turn on the fields your kind of work usually needs."
+    >
+      <div className="grid grid-cols-2 gap-1.5">
+        {(Object.keys(professionPresets) as PresetId[]).map((presetId) => (
           <button
             key={presetId}
             type="button"
-            onClick={() => handleApply(presetId as keyof typeof professionPresets)}
-            className="app-option px-3 py-1.5 text-xs"
+            aria-pressed={matchesPreset(state, presetId)}
+            onClick={() => handleApply(presetId)}
+            className="ed-option"
           >
-            <span className="app-kbd">{KEY_LETTERS[index] ?? "•"}</span>
-            {presetLabels[presetId as keyof typeof presetLabels]}
+            {presetLabels[presetId]}
           </button>
         ))}
       </div>
-    </section>
+    </InspectorSection>
   )
 }

@@ -137,7 +137,7 @@ export function EditableNumber({
           }
         }}
         className={cn(
-          "invoice-field inline-flex min-w-[3ch] items-baseline justify-end rounded-sm px-1 -mx-1 text-right font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0778F2]/40",
+          "invoice-field inline-flex min-w-[3ch] items-baseline justify-end rounded-sm px-1 -mx-1 text-right font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/40",
           className
         )}
         aria-label={ariaLabel}
@@ -160,7 +160,7 @@ export function EditableNumber({
       step={step}
       aria-label={ariaLabel}
       className={cn(
-        "invoice-input h-8 w-24 rounded-md bg-white px-1 -mx-1 text-right font-mono text-slate-900 ring-1 ring-[#0778F2] shadow-[0_0_0_3px_rgba(7,120,242,0.14)]",
+        "invoice-input h-8 w-24 rounded-md bg-white px-1 -mx-1 text-right font-mono text-slate-900 ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
         className,
         inputClassName
       )}

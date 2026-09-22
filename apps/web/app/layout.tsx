@@ -58,6 +58,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // The inline script below sets data-js="1" before hydration; that
+      // attribute is intentionally absent from the server HTML.
+      suppressHydrationWarning
       className={`${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${dmSans.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
