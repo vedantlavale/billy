@@ -9,5 +9,8 @@
   "devDependencies": {
     "@billy/typescript-config": "workspace:*",
     "typescript": "^5"
+  },
+  "scripts": {
+    "test": "bun test"
   }
 }

@@ -17,11 +17,11 @@ export function TotalsSection() {
   const taxLabel = state.taxLabel || "Tax"
 
   return (
-    <section data-break-block className="totals-section flex flex-col gap-4 border-t border-slate-200 pt-6">
-      <div className="totals-box ml-auto w-full max-w-xs space-y-3 text-sm text-slate-600">
+    <section data-break-block className="totals-section flex flex-col gap-4 border-t border-[var(--invoice-border)] pt-6">
+      <div className="totals-box ml-auto w-full max-w-xs space-y-3 text-sm text-[var(--invoice-muted)]">
         <div className="total-row flex items-center justify-between">
           <span>Subtotal</span>
-          <span className="font-mono text-slate-800">
+          <span className="font-mono text-[var(--invoice-ink)]">
             {formatCurrency(totals.subtotal, state.currency)}
           </span>
         </div>
@@ -39,9 +39,9 @@ export function TotalsSection() {
                 decimals={2}
                 className="text-sm"
               />
-              <span className="font-mono text-slate-500">%</span>
+              <span className="font-mono text-[var(--invoice-subtle)]">%</span>
             </div>
-            <span className="text-right font-mono text-slate-800">
+            <span className="text-right font-mono text-[var(--invoice-ink)]">
               {formatCurrency(totals.taxAmount, state.currency)}
             </span>
           </div>
@@ -51,7 +51,7 @@ export function TotalsSection() {
             {!state.options.showIGST && (
               <div className="total-row flex items-center justify-between">
                 <span>CGST ({(state.taxRate / 2).toFixed(2)}%)</span>
-                <span className="text-right font-mono text-slate-800">
+                <span className="text-right font-mono text-[var(--invoice-ink)]">
                   {formatCurrency(totals.cgstAmount, state.currency)}
                 </span>
               </div>
@@ -59,7 +59,7 @@ export function TotalsSection() {
             {!state.options.showIGST && (
               <div className="total-row flex items-center justify-between">
                 <span>SGST ({(state.taxRate / 2).toFixed(2)}%)</span>
-                <span className="text-right font-mono text-slate-800">
+                <span className="text-right font-mono text-[var(--invoice-ink)]">
                   {formatCurrency(totals.sgstAmount, state.currency)}
                 </span>
               </div>
@@ -67,7 +67,7 @@ export function TotalsSection() {
             {state.options.showIGST && (
               <div className="total-row flex items-center justify-between">
                 <span>IGST ({state.taxRate.toFixed(2)}%)</span>
-                <span className="text-right font-mono text-slate-800">
+                <span className="text-right font-mono text-[var(--invoice-ink)]">
                   {formatCurrency(totals.igstAmount, state.currency)}
                 </span>
               </div>
@@ -91,13 +91,13 @@ export function TotalsSection() {
               decimals={2}
               className="text-sm"
             />
-            <span className="font-mono text-slate-500">%</span>
+            <span className="font-mono text-[var(--invoice-subtle)]">%</span>
           </div>
-          <span className="text-right font-mono text-slate-800">
+          <span className="text-right font-mono text-[var(--invoice-ink)]">
             {formatCurrency(totals.discountAmount, state.currency)}
           </span>
         </div>
-        <div className="grand-total flex items-center justify-between border-t border-slate-200 pt-3 text-base font-semibold text-slate-900">
+        <div className="grand-total flex items-center justify-between border-t border-[var(--invoice-border)] pt-3 text-base font-semibold text-[var(--invoice-ink)]">
           <span>Total</span>
           <span className="font-mono">
             {formatCurrency(totals.total, state.currency)}

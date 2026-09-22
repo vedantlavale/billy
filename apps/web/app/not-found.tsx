@@ -1,5 +1,7 @@
 import Link from "next/link"
 
+import { Brand } from "@/components/brand"
+
 import { Cta, LandingNav } from "@/components/landing/landing-chrome"
 import { DoodlePaperStack } from "@/components/landing/doodles"
 
@@ -35,14 +37,11 @@ export default function NotFound() {
       </section>
 
       <footer className="lx-footer" style={{ marginTop: 0 }}>
-        <div
-          className="lx-footer-grid"
-          style={{ gridTemplateColumns: "1fr auto", alignItems: "center", paddingTop: 28, paddingBottom: 28 }}
-        >
-          <Link href="/" className="lx-wordmark">
-            billy<i>*</i>
-          </Link>
-          <p className="lx-small">© {new Date().getFullYear()} Billy</p>
+        <div className="lx-footer-inner" style={{ paddingTop: 24, paddingBottom: 24 }}>
+          <div className="lx-footer-bar" style={{ marginTop: 0, paddingTop: 0, borderTop: 0 }}>
+            <Brand size="sm" />
+            <span style={{ marginLeft: "auto" }}>© {new Date().getFullYear()} Billy</span>
+          </div>
         </div>
       </footer>
     </main>

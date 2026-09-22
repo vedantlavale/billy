@@ -25,10 +25,10 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
     if (!stampUrl) return null
     return (
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
           Stamp / Authorised Signatory
         </p>
-        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
+        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg">
           <img src={stampUrl} alt="Stamp" className="h-full w-full object-contain" />
         </div>
       </div>
@@ -59,14 +59,14 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
   return (
     <div className="flex items-end gap-4">
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
           Stamp / Authorised Signatory
         </p>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="group relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-white/70 text-slate-400 transition hover:border-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/70 disabled:cursor-not-allowed disabled:opacity-70"
+          className="group relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/50 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {stampUrl ? (
             <img
@@ -78,22 +78,22 @@ export function StampUpload({ stampUrl, onChange }: StampUploadProps) {
             <ShieldCheckIcon size={28} strokeWidth={1.5} />
           )}
           {uploading ? (
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[rgba(55,53,47,0.6)]">
               <MorphingSquare className="w-5 h-5 [&>div:last-child]:text-white" />
             </span>
           ) : (
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[rgba(55,53,47,0.6)] text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
               {stampUrl ? "Change" : "Upload"}
             </span>
           )}
         </button>
-        {error && <p className="max-w-24 text-[10px] leading-tight text-red-500">{error}</p>}
+        {error && <p className="max-w-24 text-[10px] leading-tight text-[#D92D20]">{error}</p>}
       </div>
       {stampUrl && (
         <button
           type="button"
           onClick={() => onChange(null)}
-          className="mb-1 text-xs text-slate-400 underline transition hover:text-red-500"
+          className="mb-1 text-xs text-[var(--invoice-subtle)] underline transition hover:text-[#D92D20]"
         >
           Remove
         </button>

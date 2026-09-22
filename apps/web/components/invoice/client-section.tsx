@@ -10,11 +10,11 @@ export function ClientSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section data-break-block className="client-section grid gap-4 border-b border-slate-200 pb-4 md:grid-cols-[140px_1fr]">
-      <div className="client-label text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+    <section data-break-block className="client-section grid gap-4 border-b border-[var(--invoice-border)] pb-4 md:grid-cols-[140px_1fr]">
+      <div className="client-label text-xs font-semibold uppercase tracking-[0.25em] text-[var(--invoice-subtle)]">
         Bill To
       </div>
-      <div className="client-details flex flex-col space-y-3 text-sm text-slate-600">
+      <div className="client-details flex flex-col space-y-3 text-sm text-[var(--invoice-muted)]">
         <div>
           <EditableText
             value={state.clientName}
@@ -22,7 +22,7 @@ export function ClientSection() {
               dispatch({ type: "UPDATE_FIELD", field: "clientName", value })
             }
             placeholder="Client name"
-            className="client-name text-base font-semibold text-slate-900"
+            className="client-name text-base font-semibold text-[var(--invoice-ink)]"
           />
         </div>
         <div>
@@ -34,7 +34,7 @@ export function ClientSection() {
             placeholder="Client address"
             multiline
             rows={3}
-            className="text-sm text-slate-600"
+            className="text-sm text-[var(--invoice-muted)]"
           />
         </div>
         <div>
@@ -45,7 +45,7 @@ export function ClientSection() {
             }
             placeholder="Client email"
             inputType="email"
-            className="text-sm text-slate-600"
+            className="text-sm text-[var(--invoice-muted)]"
           />
         </div>
       </div>

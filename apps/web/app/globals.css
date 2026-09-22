@@ -134,6 +134,25 @@
   }
 }
 
+/* Brand lockup (components/brand.tsx) */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #37352f;
+  text-decoration: none;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+}
+.brand-word {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.brand--sm .brand-word { font-size: 19px; }
+.brand--lg .brand-word { font-size: 28px; }
+.brand--lg { gap: 11px; }
+
 
 .invoice-editor {
   color: var(--invoice-ink);
@@ -299,21 +318,39 @@
     0 12px 40px -12px rgba(15, 23, 42, 0.16);
 }
 
+/* Bank details print on one line separated by dots (read-only), so a filled
+   footer stays short enough for a typical invoice to fit one page. */
+.footer-bank > * + *::before {
+  content: "·";
+  margin-right: 0.75rem;
+  color: var(--invoice-subtle);
+}
+
+/* Footer bands assume they sit at the bottom of the sheet. Once an invoice
+   paginates, the footer may start a later page, so the edge-to-edge bleed
+   is dropped and it becomes a padded block inside the page margins. */
+.invoice-canvas[data-multipage="true"] .footer-section {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 6px;
+}
+
 /* Template: Modern Green */
 .invoice-canvas[data-template="modern-green"] {
   border-radius: 8px;
   padding: 0 !important;
 }
 .invoice-canvas[data-template="modern-green"] .invoice-canvas-inner {
-  padding: 40px;
+  padding: 32px 40px 40px;
 }
 .invoice-canvas[data-template="modern-green"] .header-section {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   background-color: var(--invoice-primary);
-  padding: 40px;
-  margin: -40px -40px 24px -40px;
+  padding: 22px 40px;
+  margin: -32px -40px 12px -40px;
   border-bottom: none;
 }
 .invoice-canvas[data-template="modern-green"] .header-title-container {
@@ -337,48 +374,48 @@
   flex-direction: row;
   justify-content: space-between;
   background: white;
-  padding: 16px;
+  padding: 8px 14px;
   border: 1px solid var(--invoice-border);
-  margin-top: 24px;
+  margin-top: 10px;
 }
 .invoice-canvas[data-template="modern-green"] .client-section {
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 8px 12px;
+  gap: 8px;
   background: var(--invoice-primary);
   margin-bottom: -1px; /* collapse border */
 }
 .invoice-canvas[data-template="modern-green"] .meta-section {
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 8px 12px;
+  gap: 8px;
   background: var(--invoice-primary);
 }
 .invoice-canvas[data-template="modern-green"] .client-details,
 .invoice-canvas[data-template="modern-green"] .meta-item {
   background: white;
-  padding: 8px;
+  padding: 4px 8px;
   border: 1px solid var(--invoice-border);
 }
 .invoice-canvas[data-template="modern-green"] .line-items-header {
   background: var(--invoice-primary);
-  padding: 12px;
+  padding: 8px 12px;
   border: 1px solid var(--invoice-border);
   color: var(--invoice-ink);
 }
 .invoice-canvas[data-template="modern-green"] .line-item-row {
   border: 1px solid var(--invoice-border);
   border-top: none;
-  padding: 12px;
+  padding: 10px 12px;
 }
 .invoice-canvas[data-template="modern-green"] .totals-box {
   border: 1px solid var(--invoice-border);
-  padding: 16px;
+  padding: 10px 14px;
 }
 .invoice-canvas[data-template="modern-green"] .footer-section {
   background: var(--invoice-primary);
-  padding: 24px;
-  margin: 24px -40px -40px -40px;
+  padding: 14px 24px;
+  margin: 12px -40px -40px -40px;
 }
 
 /* Template: Minimal Teal */
@@ -540,7 +577,7 @@
 /* Template: Corporate Blue */
 .invoice-canvas[data-template="corporate-blue"] .header-section {
   position: relative;
-  padding-bottom: 48px;
+  padding-bottom: 40px;
   border-bottom: 2px solid var(--invoice-ink);
   margin-bottom: 24px;
 }
@@ -588,7 +625,7 @@
 .invoice-canvas[data-template="corporate-blue"] .footer-section {
   background: var(--invoice-primary);
   color: white;
-  padding: 20px 40px;
+  padding: 16px 40px;
   margin: 24px -40px -40px -40px;
   border-top: none;
 }
@@ -617,6 +654,283 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+/* Template: Studio — dark masthead, oversized name, amber rule */
+.invoice-canvas[data-template="studio"] {
+  border-radius: 6px;
+  padding: 0 !important;
+}
+.invoice-canvas[data-template="studio"] .invoice-canvas-inner {
+  padding: 0 44px 44px;
+}
+.invoice-canvas[data-template="studio"] .header-section {
+  margin: 0 -44px 20px;
+  padding: 30px 44px 24px;
+  background: var(--invoice-primary);
+  border-bottom: 6px solid var(--invoice-accent);
+}
+.invoice-canvas[data-template="studio"] .header-section,
+.invoice-canvas[data-template="studio"] .header-section .invoice-field,
+.invoice-canvas[data-template="studio"] .header-section p,
+.invoice-canvas[data-template="studio"] .header-section span,
+.invoice-canvas[data-template="studio"] .header-section h1 {
+  color: #ffffff !important;
+}
+.invoice-canvas[data-template="studio"] .header-section .invoice-field:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+.invoice-canvas[data-template="studio"] .company-name {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.invoice-canvas[data-template="studio"] .company-tagline {
+  color: var(--invoice-accent) !important;
+  letter-spacing: 0.12em;
+}
+.invoice-canvas[data-template="studio"] .header-contact {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+.invoice-canvas[data-template="studio"] .client-section,
+.invoice-canvas[data-template="studio"] .meta-section {
+  border-bottom: 2px solid var(--invoice-ink);
+}
+.invoice-canvas[data-template="studio"] .client-label,
+.invoice-canvas[data-template="studio"] .meta-label,
+.invoice-canvas[data-template="studio"] .footer-label,
+.invoice-canvas[data-template="studio"] .line-items-header {
+  color: var(--invoice-ink);
+  letter-spacing: 0.08em;
+}
+.invoice-canvas[data-template="studio"] .line-items-header {
+  border-bottom: 2px solid var(--invoice-ink);
+}
+.invoice-canvas[data-template="studio"] .line-item-row {
+  border-bottom: 1px solid var(--invoice-border);
+  border-radius: 0;
+}
+.invoice-canvas[data-template="studio"] .grand-total {
+  border-top: 3px solid var(--invoice-accent);
+  font-size: 1.35rem;
+}
+
+/* Template: Ledger — warm paper, ruled rows, numbered gutter */
+/* The gutter rule is paper, not content: on multi-page invoices the sheets
+   are painted by .invoice-sheet-bg, so each sheet gets its own rule. */
+.invoice-canvas[data-template="ledger"],
+.invoice-paper-stack[data-template="ledger"] .invoice-sheet-bg {
+  background-image: linear-gradient(90deg, transparent 56px, var(--invoice-accent) 56px, var(--invoice-accent) 57px, transparent 57px);
+  border-radius: 2px;
+}
+.invoice-canvas[data-template="ledger"][data-multipage="true"] {
+  background-image: none;
+}
+.invoice-canvas[data-template="ledger"] .invoice-canvas-inner {
+  padding-left: 32px;
+}
+.invoice-canvas[data-template="ledger"] .company-name {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+}
+.invoice-canvas[data-template="ledger"] .company-tagline {
+  color: var(--invoice-accent);
+  text-transform: none;
+  letter-spacing: 0;
+  font-style: italic;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+.invoice-canvas[data-template="ledger"] .header-section,
+.invoice-canvas[data-template="ledger"] .client-section,
+.invoice-canvas[data-template="ledger"] .meta-section {
+  border-bottom: 1px dashed var(--invoice-accent);
+}
+.invoice-canvas[data-template="ledger"] .client-label,
+.invoice-canvas[data-template="ledger"] .meta-label,
+.invoice-canvas[data-template="ledger"] .footer-label,
+.invoice-canvas[data-template="ledger"] .line-items-header {
+  color: var(--invoice-accent);
+}
+.invoice-canvas[data-template="ledger"] .line-items-body {
+  counter-reset: ledger-row;
+}
+.invoice-canvas[data-template="ledger"] .line-item-row {
+  position: relative;
+  border-radius: 0;
+  border-bottom: 1px solid var(--invoice-border);
+  counter-increment: ledger-row;
+}
+.invoice-canvas[data-template="ledger"] .line-item-row::before {
+  content: counter(ledger-row, decimal-leading-zero);
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--invoice-accent);
+}
+.invoice-canvas[data-template="ledger"] .totals-box {
+  padding: 16px;
+  border: 1px solid var(--invoice-accent);
+  outline: 1px solid var(--invoice-accent);
+  outline-offset: 3px;
+  background: var(--invoice-paper);
+}
+.invoice-canvas[data-template="ledger"] .grand-total {
+  border-top: 1px dashed var(--invoice-accent);
+}
+
+/* Template: Receipt — compact, centred, dotted rules */
+.invoice-canvas[data-template="receipt"] {
+  border-radius: 0;
+  padding: 40px 64px !important;
+}
+.invoice-canvas[data-template="receipt"] .invoice-canvas-inner {
+  gap: 0;
+}
+.invoice-canvas[data-template="receipt"] .invoice-canvas-inner > * + * {
+  margin-top: 1rem;
+}
+.invoice-canvas[data-template="receipt"] .header-section {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  border-bottom: 2px dotted var(--invoice-ink);
+  padding-bottom: 14px;
+}
+.invoice-canvas[data-template="receipt"] .header-brand {
+  flex-direction: column;
+  align-items: center;
+}
+.invoice-canvas[data-template="receipt"] .header-company {
+  align-items: center;
+  text-align: center;
+}
+.invoice-canvas[data-template="receipt"] .header-contact {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.invoice-canvas[data-template="receipt"] .header-contact > div + div::before {
+  content: "·";
+  margin-right: 12px;
+  color: var(--invoice-subtle);
+}
+.invoice-canvas[data-template="receipt"] .company-name {
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.invoice-canvas[data-template="receipt"] .company-tagline {
+  font-size: 0.7rem;
+}
+.invoice-canvas[data-template="receipt"] .client-section,
+.invoice-canvas[data-template="receipt"] .meta-section {
+  border-bottom: 1px dotted var(--invoice-subtle);
+  padding-bottom: 12px;
+  gap: 10px;
+}
+.invoice-canvas[data-template="receipt"] .client-label,
+.invoice-canvas[data-template="receipt"] .meta-label,
+.invoice-canvas[data-template="receipt"] .footer-label,
+.invoice-canvas[data-template="receipt"] .line-items-header {
+  color: var(--invoice-primary);
+  letter-spacing: 0.1em;
+}
+.invoice-canvas[data-template="receipt"] .line-items-header {
+  border-bottom: 1px dotted var(--invoice-subtle);
+}
+.invoice-canvas[data-template="receipt"] .line-item-row {
+  border-radius: 0;
+  border-bottom: 1px dotted var(--invoice-border);
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.invoice-canvas[data-template="receipt"] .line-item-row,
+.invoice-canvas[data-template="receipt"] .totals-box {
+  font-family: var(--font-mono);
+}
+.invoice-canvas[data-template="receipt"] .totals-section {
+  border-top: 2px dotted var(--invoice-ink);
+}
+.invoice-canvas[data-template="receipt"] .grand-total {
+  border-top: 2px dotted var(--invoice-ink);
+  color: var(--invoice-primary);
+  font-size: 1.2rem;
+}
+.invoice-canvas[data-template="receipt"] .footer-section {
+  border-top: 2px dotted var(--invoice-ink);
+  text-align: center;
+}
+
+/* Template: Letterhead — navy masthead, gold rule, serif name */
+.invoice-canvas[data-template="letterhead"] {
+  border-radius: 0;
+  padding: 0 !important;
+}
+.invoice-canvas[data-template="letterhead"] .invoice-canvas-inner {
+  padding: 0 48px 48px;
+}
+.invoice-canvas[data-template="letterhead"] .header-section {
+  margin: 0 -48px 24px;
+  padding: 28px 48px 22px;
+  background: var(--invoice-primary);
+  border-bottom: 4px solid var(--invoice-accent);
+  align-items: center;
+}
+.invoice-canvas[data-template="letterhead"] .header-section,
+.invoice-canvas[data-template="letterhead"] .header-section .invoice-field,
+.invoice-canvas[data-template="letterhead"] .header-section p,
+.invoice-canvas[data-template="letterhead"] .header-section span,
+.invoice-canvas[data-template="letterhead"] .header-section h1 {
+  color: #ffffff !important;
+}
+.invoice-canvas[data-template="letterhead"] .header-section .invoice-field:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+.invoice-canvas[data-template="letterhead"] .company-name {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.invoice-canvas[data-template="letterhead"] .company-tagline {
+  color: var(--invoice-accent) !important;
+  letter-spacing: 0.2em;
+}
+.invoice-canvas[data-template="letterhead"] .header-contact {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+.invoice-canvas[data-template="letterhead"] .client-label,
+.invoice-canvas[data-template="letterhead"] .meta-label,
+.invoice-canvas[data-template="letterhead"] .footer-label,
+.invoice-canvas[data-template="letterhead"] .line-items-header {
+  color: var(--invoice-primary);
+}
+.invoice-canvas[data-template="letterhead"] .line-items-header {
+  border-bottom: 2px solid var(--invoice-primary);
+}
+.invoice-canvas[data-template="letterhead"] .line-item-row {
+  border-radius: 0;
+  border-bottom: 1px solid var(--invoice-border);
+}
+.invoice-canvas[data-template="letterhead"] .line-item-row:nth-child(even) {
+  background: var(--invoice-secondary);
+}
+.invoice-canvas[data-template="letterhead"] .grand-total {
+  border-top: 2px solid var(--invoice-accent);
+  color: var(--invoice-primary);
+}
+.invoice-canvas[data-template="letterhead"] .footer-section {
+  border-top: 1px solid var(--invoice-accent);
 }
 
 @media print {

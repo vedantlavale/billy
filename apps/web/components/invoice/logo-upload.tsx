@@ -26,7 +26,7 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
   if (readOnly) {
     return (
       <div className={cn("flex items-center", className)}>
-        <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg">
+        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg">
           {logoUrl ? (
             <img
               src={logoUrl}
@@ -67,8 +67,8 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
         className={cn(
-          "relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-white/70 text-slate-400 transition hover:border-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-70",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/70"
+          "relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border border-dashed border-[var(--invoice-border)] bg-white/70 text-[var(--invoice-subtle)] transition hover:border-[var(--invoice-subtle)] hover:text-[var(--invoice-muted)] disabled:cursor-not-allowed disabled:opacity-70",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/50"
         )}
       >
         {logoUrl ? (
@@ -81,16 +81,16 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
           <ImagePlusIcon size={26} />
         )}
         {uploading ? (
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[rgba(55,53,47,0.6)]">
             <MorphingSquare className="w-5 h-5 [&>div:last-child]:text-white" />
           </span>
         ) : (
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[rgba(55,53,47,0.6)] text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
             {logoUrl ? "Change" : "Upload"}
           </span>
         )}
       </button>
-      {error && <span className="max-w-20 text-[10px] leading-tight text-red-500">{error}</span>}
+      {error && <span className="max-w-20 text-[10px] leading-tight text-[#D92D20]">{error}</span>}
       <input
         ref={inputRef}
         type="file"

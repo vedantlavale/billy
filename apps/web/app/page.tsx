@@ -1,18 +1,67 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 
-import { TEMPLATES } from "@billy/invoice-core"
+import { Brand } from "@/components/brand"
 
-import { Cta, LandingNav, Stat } from "@/components/landing/landing-chrome"
+import { TEMPLATES, formatCurrency } from "@billy/invoice-core"
+
+import { Cta, LandingNav } from "@/components/landing/landing-chrome"
 import { LiveInvoice } from "@/components/landing/live-invoice"
-import { CircleUserIcon, MessageSquareTextIcon, PackageIcon, UsersIcon } from "@/components/icons/rune"
-import { Reveal } from "@/components/landing/reveal"
-import { ExportScene, PrivacyScene, ThemeScene, TypeScene } from "@/components/landing/step-scenes"
 import {
-  DoodleCoin,
+  ArrowLeftRightIcon,
+  CalendarIcon,
+  ChevronUpIcon,
+  CircleCheckIcon,
+  CircleUserIcon,
+  CloudIcon,
+  ColumnsIcon,
+  DollarSignIcon,
+  EyeIcon,
+  FileDownIcon,
+  FileTextIcon,
+  FingerprintIcon,
+  GiftIcon,
+  ImageIcon,
+  IndianRupeeIcon,
+  LaptopIcon,
+  LayersIcon,
+  LayoutGridIcon,
+  LockIcon,
+  MessageSquareTextIcon,
+  PackageIcon,
+  PencilIcon,
+  ReceiptIcon,
+  SearchIcon,
+  SlidersIcon,
+  TagIcon,
+  UndoIcon,
+  UsersIcon,
+  WalletIcon,
+  ZapIcon,
+} from "@/components/icons/rune"
+import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
+import { Tooltip } from "@/components/motion/tooltip"
+import { Reveal } from "@/components/landing/reveal"
+import {
+  BlankPageScene,
+  CurrencyScene,
+  ExportScene,
+  GstScene,
+  MatchScene,
+  PresetScene,
+  PrivacyScene,
+  StampScene,
+  UnlimitedScene,
+  ThemeScene,
+  TypeScene,
+} from "@/components/landing/step-scenes"
+import {
+  DoodleBubble,
+  DoodleFace,
   DoodlePaperPlane,
   DoodlePencilCheck,
-  DoodleSparkles,
+  DoodleReceipt,
+  DoodleStarBubble,
   DoodleUnderlineSquiggle,
 } from "@/components/landing/doodles"
 
@@ -99,16 +148,35 @@ const SCENE_PALETTES = TEMPLATES.filter((t) => ["clean", "modern-green", "minima
   }),
 )
 
+/** The same total in five currencies, formatted exactly as Billy formats them. */
+const CURRENCY_DEMO = ["INR", "USD", "EUR", "GBP", "JPY"].map((code) => ({
+  code,
+  text: formatCurrency(240000, code, code === "JPY" ? 0 : 2),
+}))
+
+/** ₹10,000 at 18% GST, split intra-state (9% + 9%) or inter-state (18%). */
+const GST_DEMO = {
+  subtotal: formatCurrency(10000, "INR"),
+  half: formatCurrency(900, "INR"),
+  full: formatCurrency(1800, "INR"),
+  total: formatCurrency(11800, "INR"),
+}
+
+/** The trust claims under the final CTA, each with the reason it's true. */
+const CLAIMS = [
+  { label: "Free during alpha", why: "Every feature is unlocked. There is no plan to pick and no card to add." },
+  { label: "No account", why: "The editor opens straight away. There is no sign-up, login or email." },
+  { label: "Nothing uploaded", why: "Your draft is saved in this browser's storage. Billy has no server to send it to." },
+]
+
 export default function Home() {
   return (
-    <main className="lx">
+    <main className="lx" id="top">
       <LandingNav />
 
       {/* ═══ HERO — centered promise above the real product ═══ */}
       <section className="lx-hero">
         <div className="lx-hero-copy">
-          <DoodleSparkles className="lx-doodle lx-hero-sparkles" />
-          <DoodleCoin className="lx-doodle lx-hero-coin" />
 
           <Reveal>
             <span className="lx-chip">
@@ -137,7 +205,7 @@ export default function Home() {
           <Reveal delay={180}>
             <div className="lx-hero-actions">
               <Cta label="Create a free invoice" tone="primary" large />
-              <a className="lx-btn lx-btn-ghost lx-btn-lg" href="#how">
+              <a className="lx-btn lx-btn-ghost lx-btn-lg" href="#features">
                 See how it works
               </a>
             </div>
@@ -151,7 +219,7 @@ export default function Home() {
       </section>
 
       {/* ═══ TRADES ═══ */}
-      <section className="lx-trades" id="built-for" aria-labelledby="trades-title">
+      <section className="lx-trades" aria-labelledby="trades-title">
         <Reveal>
           <p className="lx-small" id="trades-title" style={{ fontWeight: 600 }}>
             Made for people who bill by the job
@@ -166,118 +234,168 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ HOW IT WORKS — three steps, each with its own little proof ═══ */}
-      <section className="lx-section" id="how">
-        <Reveal className="lx-section-head">
-          <p className="lx-kicker">How it works</p>
-          <h2 className="lx-h2">Three steps. Nothing to set up.</h2>
-        </Reveal>
-
-        <ol className="lx-steps">
-          <Reveal as="li" className="lx-step">
-            <span className="lx-step-num">1</span>
-            <h3 className="lx-h3">Click anything and type</h3>
-            <p className="lx-body">
-              No forms and no field labels to hunt for. The invoice on screen is the document
-              you edit.
-            </p>
-            <div className="lx-well">
-              <TypeScene />
+      {/* ═══ 1 · AN EDITOR LIKE NO OTHER ═══ */}
+      <section className="lx-section" id="features">
+        <SectionHeader
+          title={<>An invoice editor like <Underlined>no other</Underlined></>}
+          subtitle="Billy makes invoicing feel like writing. No accounts, no forms to fill in. Open it and start typing."
+          art={
+            <div className="lx-art lx-art--chat">
+              <DoodleFace className="lx-art-face" />
+              <DoodleBubble text="So easy!" className="lx-art-bubble" />
             </div>
-          </Reveal>
-
-          <Reveal as="li" delay={80} className="lx-step">
-            <span className="lx-step-num">2</span>
-            <h3 className="lx-h3">Pick a look</h3>
-            <p className="lx-body">
-              Six templates, your logo and your currency. GST fields turn on when you need
-              them.
-            </p>
-            <div className="lx-well">
-              <ThemeScene palettes={SCENE_PALETTES} />
-            </div>
-          </Reveal>
-
-          <Reveal as="li" delay={160} className="lx-step">
-            <span className="lx-step-num">3</span>
-            <h3 className="lx-h3">Download the PDF</h3>
-            <p className="lx-body">
-              What you see is exactly what you get. No print dialog, no watermark, no limit.
-            </p>
-            <div className="lx-well">
-              <ExportScene />
-            </div>
-          </Reveal>
-        </ol>
+          }
+        />
+        <Bento>
+          <BentoCard
+            wide
+            accent
+            icon={GiftIcon}
+            title="Unlimited invoices, completely free"
+            media={<UnlimitedScene />}
+          >
+            No paywall, no watermark and no export limit. Billy is free and open source, and every
+            feature is unlocked during alpha.
+          </BentoCard>
+          <BentoCard icon={PencilIcon} title="Just start typing" media={<TypeScene />}>
+            No forms and no field labels to hunt for. Click any line on the invoice and write, the
+            way you&apos;d edit a document.
+          </BentoCard>
+          <BentoCard icon={LockIcon} title="Private by design" media={<PrivacyScene />} delay={80}>
+            There&apos;s no backend. Your invoices, clients and logo stay in this browser tab, so
+            there&apos;s nothing to breach and nothing to sync.
+          </BentoCard>
+        </Bento>
       </section>
 
-      {/* ═══ PRIVACY — the argument, then the numbers ═══ */}
-      <section className="lx-section">
-        <div className="lx-split">
-          <Reveal className="lx-privacy-head">
-            <p className="lx-kicker">Private by design</p>
-            <h2 className="lx-h2">Your numbers never leave this tab.</h2>
-            <p className="lx-body">
-              Most invoicing tools want an account, a subscription and your client list before
-              they print one page. Billy has no backend at all, so there is nothing to sign up
-              for, nothing to breach and nothing to sync.
-            </p>
-            <div className="lx-privacy-scene">
-              <PrivacyScene />
+      {/* ═══ 2 · MAKE IT YOURS ═══ */}
+      <section className="lx-section" id="yours">
+        <SectionHeader
+          title={<>Make it uniquely <Underlined>yours</Underlined></>}
+          subtitle="Your logo, your colours, your currency. Look established from your very first invoice."
+          art={
+            <div className="lx-art">
+              <DoodleStarBubble className="lx-art-stars" />
+              <DoodlePencilCheck className="lx-art-pencil" />
             </div>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <ul className="lx-facts">
-              <Stat
-                value={0}
-                title="Accounts"
-                caption="No sign-up, login or credit card between you and a finished invoice."
-              />
-              <Stat
-                value={0}
-                title="Servers holding your data"
-                caption="Drafts live in your browser. Export a PDF for anything you need to keep."
-              />
-              <Stat
-                value={60}
-                prefix="~"
-                suffix="s"
-                title="Blank page to PDF"
-                caption="Roughly how long a first invoice takes, start to download."
-              />
-            </ul>
-          </Reveal>
-        </div>
+          }
+        />
+        <Bento>
+          <BentoCard
+            wide
+            split
+            icon={LayoutGridIcon}
+            title="Six templates, one click"
+            media={<ThemeScene palettes={SCENE_PALETTES} />}
+          >
+            From clean and minimal to bold header bands. Switch any time; your content stays put and
+            the PDF follows.
+          </BentoCard>
+          <BentoCard icon={ImageIcon} title="Your logo and seal" media={<StampScene />}>
+            Drop in a logo and a digital stamp or signature. Both are saved with your draft.
+          </BentoCard>
+          <BentoCard icon={DollarSignIcon} title="Any currency" media={<CurrencyScene amounts={CURRENCY_DEMO} />} delay={80}>
+            Ten currencies, each formatted the local way, down to lakh separators for rupees.
+          </BentoCard>
+        </Bento>
       </section>
 
-      {/* ═══ USES ═══ */}
-      <section className="lx-section">
-        <Reveal className="lx-section-head">
-          <p className="lx-kicker">Built for</p>
-          <h2 className="lx-h2">Whatever you make, sell or fix.</h2>
-          <p className="lx-body">
-            Start from a blank invoice, turn on the fields your trade needs, and keep it as a
-            draft to reuse next month.
-          </p>
-        </Reveal>
+      {/* ═══ 3 · BUILT FOR GST ═══ */}
+      <section className="lx-section" id="gst">
+        <SectionHeader
+          title={<>Built for <Underlined>GST</Underlined></>}
+          subtitle="CGST, SGST, IGST, GSTIN and HSN/SAC: everything an Indian tax invoice needs, one switch away."
+          art={<DoodleReceipt className="lx-art-receipt" />}
+        />
+        <Bento>
+          <BentoCard
+            wide
+            icon={IndianRupeeIcon}
+            title="Same state or other state? One switch."
+            media={<GstScene lines={GST_DEMO} />}
+          >
+            Pick where your client is and Billy splits the tax correctly, with CGST and SGST for the
+            same state or IGST for another. The total never moves.
+          </BentoCard>
+        </Bento>
+      </section>
 
-        <div className="lx-uses">
-          {USES.map((use, i) => {
-            const Icon = use.icon
-            return (
-              <Reveal key={use.title} delay={i * 60} className="lx-use">
-                <Icon className="lx-use-icon" size={28} strokeWidth={1.75} />
-                <h3 className="lx-h3">{use.title}</h3>
-                <ul className="lx-use-list">
-                  {use.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </Reveal>
-            )
-          })}
-        </div>
+      {/* ═══ 4 · SEND ═══ */}
+      <section className="lx-section" id="send">
+        <SectionHeader
+          title={<>Ready to send in <Underlined>one click</Underlined></>}
+          subtitle="A real, print-ready PDF, generated right in your browser."
+          art={<DoodlePaperPlane className="lx-art-plane" />}
+        />
+        <Bento>
+          <BentoCard icon={FileDownIcon} title="A real PDF, not a print dialog" media={<ExportScene />}>
+            Download a crisp A4 PDF with no watermark and no limit on how many you make.
+          </BentoCard>
+          <BentoCard icon={EyeIcon} title="Exactly what you see" media={<MatchScene />} delay={80}>
+            Preview shows the exact file you&apos;ll get. What&apos;s on screen is what&apos;s in
+            the PDF.
+          </BentoCard>
+        </Bento>
+      </section>
+
+      {/* ═══ EVERYTHING AN INVOICE NEEDS — scannable tiles, no prose ═══ */}
+      <section className="lx-section" id="everything">
+        <SectionHeader
+          title={<><Underlined>Everything</Underlined> an invoice needs</>}
+          subtitle="All of it built in, none of it behind a paywall."
+        />
+        <FeatureTiles
+          items={[
+            { icon: CloudIcon, label: "Autosave" },
+            { icon: UndoIcon, label: "Undo & redo" },
+            { icon: SearchIcon, label: "⌘K commands" },
+            { icon: ZapIcon, label: "Keyboard shortcuts" },
+            { icon: LayersIcon, label: "Multi-page" },
+            { icon: LaptopIcon, label: "Works offline" },
+            { icon: CalendarIcon, label: "Payment terms" },
+            { icon: DollarSignIcon, label: "10 currencies" },
+            { icon: WalletIcon, label: "Bank details" },
+            { icon: TagIcon, label: "PO numbers" },
+            { icon: ReceiptIcon, label: "Tax & discount" },
+            { icon: FileTextIcon, label: "Notes & terms" },
+            { icon: SlidersIcon, label: "Quick presets" },
+            { icon: FingerprintIcon, label: "GSTIN" },
+            { icon: ColumnsIcon, label: "HSN / SAC codes" },
+            { icon: ArrowLeftRightIcon, label: "Reverse charge" },
+          ]}
+        />
+      </section>
+
+      {/* ═══ 5 · DESIGNED FOR YOU ═══ */}
+      <section className="lx-section" id="built-for">
+        <SectionHeader
+          title={<>Designed for <Underlined>you</Underlined></>}
+          subtitle="Start from a blank invoice or a preset that already fits your trade."
+        />
+        <Reveal className="lx-card lx-card--wide lx-uses-card">
+          <div className="lx-uses-scene" aria-hidden>
+            <PresetScene />
+          </div>
+          <div className="lx-uses">
+            {USES.map((use) => {
+              const UseIcon = use.icon
+              return (
+                <div key={use.title} className="lx-use">
+                  <UseIcon className="lx-use-icon" size={24} strokeWidth={1.75} />
+                  <h3 className="lx-card-title">{use.title}</h3>
+                  <ul className="lx-use-list">
+                    {use.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })}
+          </div>
+          <div className="lx-uses-cta">
+            <Cta label="Open the editor" tone="primary" />
+          </div>
+        </Reveal>
       </section>
 
       {/* ═══ FAQ ═══ */}
@@ -306,59 +424,94 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ CLOSING ═══ */}
-      <section className="lx-closing">
-        <Reveal className="lx-closing-inner">
-          <DoodlePaperPlane className="lx-doodle lx-closing-plane" />
-          <DoodlePencilCheck className="lx-doodle lx-closing-check" />
-          <h2 className="lx-h2">Your next invoice is a blank page away.</h2>
-          <p className="lx-body">Free during alpha. No account. Nothing uploaded.</p>
-          <Cta label="Create a free invoice" tone="primary" large />
-        </Reveal>
-      </section>
-
-      {/* ═══ FOOTER ═══ */}
-      <footer className="lx-footer">
-        <div className="lx-footer-grid">
-          <div className="lx-footer-col">
-            <Link href="/" className="lx-wordmark">
-              billy<i>*</i>
-            </Link>
-            <p className="lx-small" style={{ maxWidth: "30ch" }}>
-              A free, open-source invoice editor that runs entirely in your browser.
-            </p>
-            <p className="lx-small">© {new Date().getFullYear()} Billy</p>
+      {/* ═══ FINAL CTA ═══ */}
+      <section className="lx-final">
+        <Reveal className="lx-final-inner">
+          <div className="lx-final-art" aria-hidden>
+            <BlankPageScene />
           </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Product</span>
-            <a className="lx-footer-link" href="#how">
-              How it works
-            </a>
-            <a className="lx-footer-link" href="#built-for">
-              Built for
-            </a>
-            <Link className="lx-footer-link" href="/editor">
-              Create an invoice
-            </Link>
-          </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Help</span>
-            <a className="lx-footer-link" href="#faq">
-              Questions
-            </a>
-          </div>
-
-          <div className="lx-footer-col">
-            <span className="lx-footer-head">Project</span>
+          <h2 className="lx-h2">Your next invoice is a blank page away</h2>
+          <p className="lx-lead">It takes about a minute, and you don&apos;t even need an account.</p>
+          <div className="lx-hero-actions">
+            <Cta label="Create a free invoice" tone="primary" large />
             <a
-              className="lx-footer-link"
+              className="lx-btn lx-btn-ghost lx-btn-lg"
               href="https://github.com/vedantlavale/billy"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Source on GitHub
+              View the source
+            </a>
+          </div>
+          <ul className="lx-claims" aria-label="Why you can trust this">
+            {CLAIMS.map((c) => (
+              <li key={c.label}>
+                <Tooltip content={c.why} className="lx-claim">
+                  <CircleCheckIcon size={14} />
+                  {c.label}
+                </Tooltip>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </section>
+
+      {/* ═══ FOOTER — a distinct muted band ═══ */}
+      <footer className="lx-footer">
+        <div className="lx-footer-inner">
+          <div className="lx-footer-grid">
+            <div className="lx-footer-brand">
+              <Brand size="lg" />
+              <p className="lx-body">
+                A free, open-source invoice editor that runs entirely in your browser.
+              </p>
+              <p className="lx-small lx-footer-privacy">
+                <LockIcon size={14} />
+                Your drafts stay on this device. There is no server to send them to.
+              </p>
+            </div>
+
+            <div className="lx-footer-col">
+              <span className="lx-footer-head">Product</span>
+              <Link className="lx-footer-link" href="/editor">
+                Open the editor
+              </Link>
+              <a className="lx-footer-link" href="#features">
+                Features
+              </a>
+              <a className="lx-footer-link" href="#built-for">
+                Built for
+              </a>
+              <a className="lx-footer-link" href="#faq">
+                Questions
+              </a>
+            </div>
+
+            <div className="lx-footer-col">
+              <span className="lx-footer-head">Open source</span>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy" target="_blank" rel="noreferrer noopener">
+                GitHub
+              </a>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues/new" target="_blank" rel="noreferrer noopener">
+                Report a bug
+              </a>
+              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues" target="_blank" rel="noreferrer noopener">
+                Issues
+              </a>
+            </div>
+          </div>
+
+          <div className="lx-footer-bar">
+            <span>© {new Date().getFullYear()} Billy</span>
+            <span>
+              Built by{" "}
+              <a className="lx-link" href="https://vedantworks.com" target="_blank" rel="noreferrer noopener">
+                vedantworks
+              </a>
+            </span>
+            <a className="lx-footer-top" href="#top" aria-label="Back to top">
+              <ChevronUpIcon size={16} />
+              Top
             </a>
           </div>
         </div>
