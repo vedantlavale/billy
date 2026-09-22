@@ -65,6 +65,42 @@ export const TEMPLATES: Template[] = [
     cssFontFamily: THEME_TOKENS["mono-elegant"].cssFontFamily,
     colors: THEME_TOKENS["mono-elegant"].colors,
   },
+  {
+    id: "studio",
+    name: "Studio",
+    description: "Bold dark header, oversized name, amber accents.",
+    pro: false,
+    fontFamily: "'DM Sans', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS.studio.cssFontFamily,
+    colors: THEME_TOKENS.studio.colors,
+  },
+  {
+    id: "ledger",
+    name: "Ledger",
+    description: "Warm paper, ruled rows and a numbered gutter, like a bound ledger.",
+    pro: false,
+    fontFamily: "'Source Sans 3', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS.ledger.cssFontFamily,
+    colors: THEME_TOKENS.ledger.colors,
+  },
+  {
+    id: "receipt",
+    name: "Receipt",
+    description: "Compact and centred with dotted rules, for short invoices.",
+    pro: false,
+    fontFamily: "'Inter', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS.receipt.cssFontFamily,
+    colors: THEME_TOKENS.receipt.colors,
+  },
+  {
+    id: "letterhead",
+    name: "Letterhead",
+    description: "Formal navy masthead with a gold rule, serif company name.",
+    pro: false,
+    fontFamily: "'Inter', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS.letterhead.cssFontFamily,
+    colors: THEME_TOKENS.letterhead.colors,
+  },
 ]
 
 export function getTemplate(id: string): Template {

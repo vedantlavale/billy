@@ -165,6 +165,7 @@ export const InvoicePage = React.forwardRef<
   return (
     <div
       className="invoice-paper-stack"
+      data-template={state.templateId}
       style={{ position: "relative", width: PAGE_W, height: stackHeight, ...style }}
     >
       {multiPage &&

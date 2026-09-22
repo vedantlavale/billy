@@ -88,7 +88,7 @@ function Summary() {
 /** A tiny abstract drawing of the template, coloured with its own palette. */
 function TemplateThumb({ template }: { template: Template }) {
   const c = template.colors
-  const band = template.id === "modern-green" || template.id === "corporate-blue"
+  const band = ["modern-green", "corporate-blue", "studio", "letterhead"].includes(template.id)
   return (
     <span className="ed-template-thumb block" style={{ backgroundColor: c.paper }} aria-hidden>
       {band && (

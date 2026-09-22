@@ -20,7 +20,7 @@ export function LineItemsTable() {
     <section className="line-items-section space-y-4">
       <div
         data-break-block
-        className={`line-items-header grid gap-3 border-b border-slate-200 pb-3 text-xs font-semibold uppercase text-slate-400 ${
+        className={`line-items-header grid gap-3 border-b border-[var(--invoice-border)] pb-3 text-xs font-semibold uppercase text-[var(--invoice-subtle)] ${
           showHSN
             ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr]"
             : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr]"
@@ -45,7 +45,7 @@ export function LineItemsTable() {
                   ? showHSN
                     ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr]"
                     : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr]"
-                  : `transition hover:border-slate-200 hover:bg-slate-50/70 focus-within:border-slate-300 focus-within:bg-white ${
+                  : `transition hover:border-[var(--invoice-border)] hover:bg-[rgba(0,112,215,0.04)] focus-within:border-[var(--invoice-border)] focus-within:bg-white ${
                       showHSN
                         ? "grid-cols-[2fr_0.8fr_0.6fr_0.8fr_0.8fr_auto]"
                         : "grid-cols-[2fr_0.6fr_0.8fr_0.8fr_auto]"
@@ -63,7 +63,7 @@ export function LineItemsTable() {
                   })
                 }
                 placeholder="Service or item description"
-                className="text-sm text-slate-800"
+                className="text-sm text-[var(--invoice-ink)]"
               />
               {showHSN && (
                 <EditableText
@@ -77,7 +77,7 @@ export function LineItemsTable() {
                     })
                   }
                   placeholder="HSN/SAC"
-                  className="text-sm text-slate-700"
+                  className="text-sm text-[var(--invoice-muted)]"
                 />
               )}
               <EditableNumber
@@ -110,7 +110,7 @@ export function LineItemsTable() {
                 currency={state.currency}
                 className="justify-end text-sm"
               />
-              <span className="text-right font-mono text-sm text-slate-700">
+              <span className="text-right font-mono text-sm text-[var(--invoice-muted)]">
                 {formatCurrency(amount, state.currency)}
               </span>
               {!readOnly && (
@@ -121,7 +121,7 @@ export function LineItemsTable() {
                   onClick={() =>
                     dispatch({ type: "REMOVE_LINE_ITEM", id: item.id })
                   }
-                  className="text-slate-400 opacity-0 transition hover:text-[#D92D20] group-hover:opacity-100 focus-visible:opacity-100"
+                  className="text-[var(--invoice-subtle)] opacity-0 transition hover:text-[#D92D20] group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Remove line item"
                 >
                   <TrashIcon size={16} />

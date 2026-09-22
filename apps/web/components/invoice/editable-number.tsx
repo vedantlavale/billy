@@ -160,7 +160,7 @@ export function EditableNumber({
       step={step}
       aria-label={ariaLabel}
       className={cn(
-        "invoice-input h-8 w-24 rounded-md bg-white px-1 -mx-1 text-right font-mono text-slate-900 ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
+        "invoice-input h-8 w-24 rounded-md bg-white px-1 -mx-1 text-right font-mono text-[var(--invoice-ink)] ring-1 ring-[#0070D7] shadow-[0_0_0_3px_rgba(0,112,215,0.14)]",
         className,
         inputClassName
       )}

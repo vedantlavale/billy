@@ -11,7 +11,7 @@ export function HeaderSection() {
   const dispatch = useInvoiceDispatch()
 
   return (
-    <section data-break-block className="header-section flex flex-col gap-6 border-b border-slate-200 pb-4 md:flex-row md:items-start md:justify-between">
+    <section data-break-block className="header-section flex flex-col gap-6 border-b border-[var(--invoice-border)] pb-4 md:flex-row md:items-start md:justify-between">
       <div className="header-brand flex items-center gap-5">
         <div className="header-title-container hidden">
           <h1 className="header-title text-4xl font-bold tracking-widest text-[var(--invoice-ink)]">INVOICE</h1>
@@ -28,7 +28,7 @@ export function HeaderSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "businessName", value })
               }
               placeholder="Your company"
-              className="company-name text-2xl font-semibold text-slate-900"
+              className="company-name text-2xl font-semibold text-[var(--invoice-ink)]"
               displayAs="h1"
             />
           </div>
@@ -39,12 +39,12 @@ export function HeaderSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "businessTagline", value })
               }
               placeholder="Company tagline"
-              className="company-tagline text-sm uppercase tracking-[0.2em] text-slate-500"
+              className="company-tagline text-sm uppercase tracking-[0.2em] text-[var(--invoice-subtle)]"
             />
           </div>
         </div>
       </div>
-      <div className="header-contact flex flex-col space-y-3 text-sm text-slate-600 md:text-right">
+      <div className="header-contact flex flex-col space-y-3 text-sm text-[var(--invoice-muted)] md:text-right">
         <div>
           <EditableText
             value={state.businessAddress}
@@ -54,7 +54,7 @@ export function HeaderSection() {
             placeholder="Business address"
             multiline
             rows={3}
-            className="text-sm text-slate-600"
+            className="text-sm text-[var(--invoice-muted)]"
           />
         </div>
         <div>
@@ -65,7 +65,7 @@ export function HeaderSection() {
             }
             placeholder="Email"
             inputType="email"
-            className="text-sm text-slate-600"
+            className="text-sm text-[var(--invoice-muted)]"
           />
         </div>
         <div>
@@ -76,7 +76,7 @@ export function HeaderSection() {
             }
             placeholder="Phone"
             inputType="tel"
-            className="text-sm text-slate-600"
+            className="text-sm text-[var(--invoice-muted)]"
           />
         </div>
         {state.options.showGSTIN && (
@@ -87,7 +87,7 @@ export function HeaderSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "gstin", value })
               }
               placeholder="GSTIN"
-              className="text-sm text-slate-600"
+              className="text-sm text-[var(--invoice-muted)]"
             />
           </div>
         )}
