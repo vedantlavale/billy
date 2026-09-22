@@ -55,9 +55,21 @@ function track(
   }
 }
 
-function Scene({ label, children, svgRef }: { label: string; children: ReactNode; svgRef: React.Ref<SVGSVGElement> }) {
+function Scene({
+  label,
+  children,
+  svgRef,
+  viewBox = "0 0 280 140",
+  wide,
+}: {
+  label: string
+  children: ReactNode
+  svgRef: React.Ref<SVGSVGElement>
+  viewBox?: string
+  wide?: boolean
+}) {
   return (
-    <svg ref={svgRef} viewBox="0 0 280 140" className="lx-scene" role="img" aria-label={label}>
+    <svg ref={svgRef} viewBox={viewBox} className={wide ? "lx-scene lx-scene--wide" : "lx-scene"} role="img" aria-label={label}>
       {children}
     </svg>
   )
@@ -534,5 +546,202 @@ export function PrivacyScene() {
         <path d="M230 97 L242 85" stroke={INK} strokeWidth="1.5" strokeLinecap="round" />
       </motion.g>
     </svg>
+  )
+}
+
+/* ── Any currency ────────────────────────────────────────────────────────
+   The same total rolls through currencies, formatted exactly the way Billy
+   formats them (passed in from invoice-core, so it can't drift). */
+
+export function CurrencyScene({ amounts }: { amounts: { code: string; text: string }[] }) {
+  const { ref, live } = useLive()
+  const N = amounts.length
+  const T = N * 1.5
+  const ROW = 34
+  // Hold each amount, then roll up; the strip repeats the first amount at the
+  // end so the loop restarts without a visible jump.
+  const times: number[] = []
+  const ys: number[] = []
+  for (let i = 0; i < N; i++) {
+    times.push(i / N, (i + 0.72) / N)
+    ys.push(-i * ROW, -i * ROW)
+  }
+  times.push(1)
+  ys.push(-N * ROW)
+  const chipW = 40
+  const chipsX = 140 - (N * chipW + (N - 1) * 6) / 2
+  const ringX: number[] = []
+  for (let i = 0; i < N; i++) ringX.push(chipsX + i * (chipW + 6), chipsX + i * (chipW + 6))
+  ringX.push(chipsX)
+
+  return (
+    <Scene svgRef={ref} label={`One invoice total shown in ${amounts.map((a) => a.code).join(", ")}`}>
+      <rect x="40" y="14" width="200" height="72" rx="10" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+      <text x="58" y="36" fontSize="10" fontWeight="600" fill={INK}>Total due</text>
+      <defs>
+        <clipPath id="lx-currency-clip">
+          <rect x="52" y="42" width="176" height={ROW} />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#lx-currency-clip)">
+        <motion.g {...track(live, { y: ys }, times, T, 0)}>
+          {[...amounts, amounts[0]].map((a, i) => (
+            <text key={i} x="58" y={68 + i * ROW} fontSize="22" fontWeight="700" fill={INK}>
+              {a.text}
+            </text>
+          ))}
+        </motion.g>
+      </g>
+      {amounts.map((a, i) => (
+        <g key={a.code}>
+          <rect x={chipsX + i * (chipW + 6)} y="100" width={chipW} height="22" rx="11" fill={MUTED} />
+          <text x={chipsX + i * (chipW + 6) + chipW / 2} y="115" fontSize="9" fontWeight="700" fill={INK} textAnchor="middle">
+            {a.code}
+          </text>
+        </g>
+      ))}
+      <motion.rect y="99" width={chipW + 2} height="24" rx="12" fill="none" stroke={BLUE} strokeWidth="1.75"
+        {...track(live, { x: ringX.map((x) => x - 1) }, times, T, 0)} />
+    </Scene>
+  )
+}
+
+/* ── Logo & stamp ────────────────────────────────────────────────────────
+   A logo drops into the header slot, then the seal presses onto the page. */
+
+export function StampScene() {
+  const { ref, live } = useLive()
+  const T = 5.2
+  const REST = 4
+  return (
+    <Scene svgRef={ref} label="A logo drops onto the invoice header and a seal is stamped at the bottom">
+      <rect x="60" y="10" width="160" height="122" rx="6" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+      <circle cx="84" cy="34" r="12" fill="none" stroke={LINE} strokeWidth="1.5" strokeDasharray="3 3" />
+      <motion.g {...track(live, { y: [-26, -26, 3, 0, 0, -26], opacity: [0, 0, 1, 1, 1, 0], scale: [1, 1, 1.06, 1, 1, 1] }, [0, 0.08, 0.2, 0.26, 0.9, 1], T, REST)}>
+        <circle cx="84" cy="34" r="12" fill={INK} />
+        <path d="M78 38 L84 28 L90 38 Z" fill="#ffffff" />
+      </motion.g>
+      <rect x="104" y="28" width="56" height="6" rx="2" fill={INK} opacity="0.85" />
+      <rect x="104" y="39" width="36" height="4" rx="2" fill={INK} opacity="0.35" />
+      {[60, 72, 84].map((y) => (
+        <rect key={y} x="72" y={y} width="136" height="1.5" fill={LINE} />
+      ))}
+      <rect x="72" y="100" width="56" height="4" rx="2" fill={INK} opacity="0.35" />
+      <rect x="72" y="110" width="40" height="4" rx="2" fill={INK} opacity="0.2" />
+      {/* Ink bloom where the seal lands */}
+      <motion.circle cx="186" cy="106" fill={BLUE}
+        {...track(live, { r: [0, 0, 0, 30, 30], opacity: [0, 0, 0.18, 0, 0] }, [0, 0.46, 0.5, 0.62, 1], T, REST, "easeOut")} />
+      <motion.g
+        {...track(
+          live,
+          { scale: [1.6, 1.6, 1.6, 0.92, 1, 1, 1.6], opacity: [0, 0, 0.5, 1, 1, 0, 0], rotate: [-4, -4, -4, -12, -12, -12, -4] },
+          [0, 0.34, 0.4, 0.5, 0.56, 0.9, 1],
+          T,
+          REST,
+        )}
+      >
+        <circle cx="186" cy="106" r="20" fill="none" stroke={BLUE} strokeWidth="2.5" />
+        <circle cx="186" cy="106" r="14.5" fill="none" stroke={BLUE} strokeWidth="1.25" strokeDasharray="2.5 3" />
+        <path d="M179 106.5 l5 5 l9 -10" fill="none" stroke={BLUE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </motion.g>
+    </Scene>
+  )
+}
+
+/* ── Built for GST ───────────────────────────────────────────────────────
+   One switch moves the same ₹10,000 invoice between intra-state (CGST +
+   SGST) and inter-state (IGST); the lines swap and the total doesn't move. */
+
+export function GstScene({
+  lines,
+}: {
+  lines: { subtotal: string; half: string; full: string; total: string }
+}) {
+  const { ref, live } = useLive()
+  const T = 6
+  const SW = 0.42 // switch to IGST
+  const BACK = 0.9 // switch back
+  const REST = 1
+  const intra = { opacity: [1, 1, 0, 0, 1], y: [0, 0, -8, -8, 0] }
+  const inter = { opacity: [0, 0, 1, 1, 0], y: [8, 8, 0, 0, 8] }
+  const swapTimes = [0, SW, SW + 0.06, BACK, 1]
+
+  return (
+    <Scene svgRef={ref} viewBox="0 0 560 170" wide label="Switching between same-state and other-state GST changes CGST and SGST to IGST while the total stays the same">
+      {/* The switch */}
+      <text x="24" y="44" fontSize="11" fontWeight="600" fill={INK}>Where is your client?</text>
+      <rect x="24" y="56" width="200" height="36" rx="10" fill={MUTED} />
+      <motion.rect y="60" width="94" height="28" rx="7" fill="#ffffff" stroke={LINE}
+        {...track(live, { x: [28, 28, 126, 126, 28] }, swapTimes, T, REST)} />
+      <text x="75" y="78" fontSize="11" fontWeight="700" fill={INK} textAnchor="middle">Same state</text>
+      <text x="173" y="78" fontSize="11" fontWeight="700" fill={INK} textAnchor="middle">Other state</text>
+      <text x="24" y="118" fontSize="10" fill={INK}>Tax rate 18% · GST</text>
+
+      {/* The totals */}
+      <rect x="276" y="18" width="260" height="136" rx="10" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+      <text x="296" y="46" fontSize="11" fill={INK}>Subtotal</text>
+      <text x="516" y="46" fontSize="11" fontWeight="600" fill={INK} textAnchor="end">{lines.subtotal}</text>
+
+      <motion.g {...track(live, intra, swapTimes, T, REST)}>
+        <text x="296" y="70" fontSize="11" fill={INK}>CGST 9%</text>
+        <text x="516" y="70" fontSize="11" fontWeight="600" fill={INK} textAnchor="end">{lines.half}</text>
+        <text x="296" y="92" fontSize="11" fill={INK}>SGST 9%</text>
+        <text x="516" y="92" fontSize="11" fontWeight="600" fill={INK} textAnchor="end">{lines.half}</text>
+      </motion.g>
+      <motion.g {...track(live, inter, swapTimes, T, REST)}>
+        <text x="296" y="81" fontSize="11" fill={BLUE} fontWeight="600">IGST 18%</text>
+        <text x="516" y="81" fontSize="11" fontWeight="700" fill={BLUE} textAnchor="end">{lines.full}</text>
+      </motion.g>
+
+      <path d="M296 110 H516" stroke={LINE} strokeWidth="1.5" />
+      <text x="296" y="136" fontSize="12" fontWeight="700" fill={INK}>Total</text>
+      <text x="516" y="136" fontSize="16" fontWeight="700" fill={INK} textAnchor="end">{lines.total}</text>
+
+      {/* Pointer flips the switch both ways */}
+      <motion.g
+        {...track(
+          live,
+          { x: [214, 214, 180, 180, 180, 90, 90, 214], y: [150, 150, 80, 80, 80, 80, 80, 150], opacity: [0, 1, 1, 1, 1, 1, 1, 0], scale: [1, 1, 1, 0.84, 1, 1, 0.84, 1] },
+          [0, 0.06, SW - 0.04, SW, SW + 0.03, BACK - 0.04, BACK, 1],
+          T,
+          REST,
+        )}
+      >
+        <path d="M0 0 L0 16 L4.5 12 L7.5 19 L10 18 L7 11 L12.5 11 Z" fill="#ffffff" stroke={INK} strokeWidth="1.5" strokeLinejoin="round" />
+      </motion.g>
+    </Scene>
+  )
+}
+
+/* ── Exactly what you see ────────────────────────────────────────────────
+   The editor page and the downloaded PDF side by side; a scan line sweeps
+   both and ticks them off as identical. */
+
+export function MatchScene() {
+  const { ref, live } = useLive()
+  const T = 4
+  const doc = (x: number, label: string) => (
+    <g>
+      <rect x={x} y="16" width="96" height="112" rx="5" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+      <rect x={x + 10} y="28" width="36" height="6" rx="2" fill={INK} opacity="0.85" />
+      {[46, 56, 66, 76].map((y) => (
+        <rect key={y} x={x + 10} y={y} width="76" height="1.5" fill={LINE} />
+      ))}
+      <rect x={x + 54} y="102" width="32" height="8" rx="2" fill={BLUE} />
+      <text x={x + 48} y="142" fontSize="9" fontWeight="600" fill={INK} textAnchor="middle">{label}</text>
+    </g>
+  )
+  return (
+    <Scene svgRef={ref} label="The editor view and the PDF are scanned side by side and match exactly">
+      {doc(28, "In the editor")}
+      {doc(156, "In the PDF")}
+      <text x="140" y="76" fontSize="16" fontWeight="700" fill={INK} textAnchor="middle">=</text>
+      <motion.rect x="24" width="232" height="2" rx="1" fill={BLUE}
+        {...track(live, { y: [18, 18, 124, 124, 18], opacity: [0, 0.9, 0.9, 0, 0] }, [0, 0.05, 0.6, 0.66, 1], T, 3, "easeInOut")} />
+      <motion.g {...track(live, { scale: [0, 0, 1.2, 1, 1, 0], opacity: [0, 0, 1, 1, 1, 0] }, [0, 0.6, 0.66, 0.7, 0.94, 1], T, 3)}>
+        <circle cx="140" cy="100" r="10" fill={BLUE} />
+        <path d="M135.5 100 l3 3 l6 -6.5" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </motion.g>
+    </Scene>
   )
 }
