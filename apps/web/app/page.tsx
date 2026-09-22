@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 
+import { Brand } from "@/components/brand"
+
 import { TEMPLATES, formatCurrency } from "@billy/invoice-core"
 
 import { Cta, LandingNav } from "@/components/landing/landing-chrome"
@@ -459,9 +461,7 @@ export default function Home() {
         <div className="lx-footer-inner">
           <div className="lx-footer-grid">
             <div className="lx-footer-brand">
-              <Link href="/" className="lx-wordmark">
-                billy<i>*</i>
-              </Link>
+              <Brand size="lg" />
               <p className="lx-body">
                 A free, open-source invoice editor that runs entirely in your browser.
               </p>

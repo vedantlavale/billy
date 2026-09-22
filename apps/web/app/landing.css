@@ -217,21 +217,6 @@
   padding: 0 var(--lx-gutter);
 }
 
-.lx-wordmark {
-  display: inline-flex;
-  align-items: baseline;
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: 28px;
-  line-height: 1;
-  color: var(--lx-ink);
-  text-decoration: none;
-}
-
-.lx-wordmark i {
-  font-style: normal;
-  color: var(--lx-blue);
-}
-
 .lx-nav-links {
   display: flex;
   align-items: center;
@@ -1271,10 +1256,6 @@
   align-items: flex-start;
   gap: 14px;
   max-width: 36ch;
-}
-
-.lx-footer-brand .lx-wordmark {
-  font-size: 34px;
 }
 
 .lx-footer-privacy {
