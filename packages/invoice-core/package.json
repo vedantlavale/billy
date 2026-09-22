@@ -1,0 +1,13 @@
+{
+  "name": "@billy/invoice-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@billy/typescript-config": "workspace:*",
+    "typescript": "^5"
+  }
+}

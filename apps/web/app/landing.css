@@ -1,0 +1,1316 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BILLY — LANDING SYSTEM  (namespace: .lx-)
+   ───────────────────────────────────────────────────────────────────────────
+   Reference lock
+     Primary   Tirtus — deep-navy gradient panels inset on a white page,
+               stacked and alternating with open white sections; oversized
+               NORMAL-weight headlines; a two-tone opacity ramp across a
+               headline clause; huge stat numerals; tiny uppercase eyebrow
+               labels set in the margin; small pill buttons.
+     Borrowed  BloomFi — the mixed-width bento row where one card is light
+               and its neighbours are dark; the hero as an inset rounded
+               panel rather than a full-bleed band.
+     Rejected  BloomFi's lavender/violet palette (indigo is the standard
+               AI-design tell, and averaging it into Tirtus's navy would
+               collapse both). Photoreal 3D renders — we cannot produce them
+               honestly, so the real invoice document carries the media role.
+               Hand-drawn doodles — neither reference has line art.
+
+   Roles, fixed
+     --lx-blue      CTA fills + active emphasis ONLY. Never a surface, never
+                    body text, never a border.
+     dark panels    Rhythm and atmosphere. The gradient is decorative; it
+                    never becomes a control or a card surface.
+     white page     The canvas. Light sections are NOT cards — they are open
+                    content on the page, so they carry no fill or shadow.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lx {
+  /* ── Surface ─────────────────────────────────────────────────────────── */
+  --lx-page: #ffffff;
+  --lx-navy: #070b16;
+
+  /* ── Ink on light. Cool near-black to sit with the navy panels; the old
+        warm #37352f belonged to the abandoned warm-paper direction. ────── */
+  --lx-ink: #101219;
+  --lx-ink-2: rgba(16, 18, 25, 0.56);
+  --lx-ink-3: rgba(16, 18, 25, 0.42);
+  --lx-line: rgba(16, 18, 25, 0.1);
+  --lx-line-2: rgba(16, 18, 25, 0.16);
+
+  /* ── Ink on dark ─────────────────────────────────────────────────────── */
+  --lx-on-dark: #ffffff;
+  --lx-on-dark-2: rgba(255, 255, 255, 0.56);
+  --lx-on-dark-3: rgba(255, 255, 255, 0.38);
+  --lx-dark-line: rgba(255, 255, 255, 0.12);
+  --lx-dark-fill: rgba(255, 255, 255, 0.06);
+
+  /* ── The one chroma ──────────────────────────────────────────────────── */
+  --lx-blue: #0070d7;
+  --lx-blue-deep: #005fb8;
+
+  /* ── Shape ───────────────────────────────────────────────────────────── */
+  --lx-panel-r: 32px;
+  --lx-card-r: 18px;
+  --lx-gutter: clamp(14px, 1.8vw, 24px);
+  --lx-pad: clamp(24px, 4.4vw, 76px);
+  --lx-max: 1240px;
+
+  /* ── Motion (motion.md token set) ────────────────────────────────────── */
+  --lx-fast: 120ms;
+  --lx-base: 200ms;
+  --lx-slow: 320ms;
+  --lx-reveal: 620ms;
+  --lx-out: cubic-bezier(0, 0, 0.2, 1);
+  --lx-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --lx-emph: cubic-bezier(0.2, 0, 0, 1);
+
+  background: var(--lx-page);
+  color: var(--lx-ink);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+.lx *,
+.lx *::before,
+.lx *::after {
+  box-sizing: border-box;
+}
+
+.lx ::selection {
+  background: rgba(0, 112, 215, 0.2);
+}
+
+.lx :focus-visible {
+  outline: 2px solid var(--lx-blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ═══ TYPE ═══════════════════════════════════════════════════════════════
+   Tirtus sets very large headlines at NORMAL weight — the scale does the
+   work, not the weight. Inter is loaded as a variable font, so 420/450 are
+   real weights here, not synthesised. ═════════════════════════════════════ */
+
+.lx-display {
+  font-size: clamp(38px, 6.6vw, 82px);
+  font-weight: 420;
+  line-height: 1.015;
+  letter-spacing: -0.038em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lx-h2 {
+  font-size: clamp(29px, 3.9vw, 54px);
+  font-weight: 420;
+  line-height: 1.06;
+  letter-spacing: -0.032em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lx-h3 {
+  font-size: clamp(20px, 1.7vw, 25px);
+  font-weight: 450;
+  line-height: 1.22;
+  letter-spacing: -0.021em;
+  margin: 0;
+}
+
+/* The big two-column statement block (Tirtus "For over 19 years…"). */
+.lx-statement {
+  font-size: clamp(21px, 2.5vw, 35px);
+  font-weight: 420;
+  line-height: 1.3;
+  letter-spacing: -0.022em;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.lx-body {
+  font-size: 16px;
+  line-height: 1.62;
+  font-weight: 400;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.lx-small {
+  font-size: 14px;
+  line-height: 1.55;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Tiny uppercase margin label that tags each panel. ALL-CAPS always tracked. */
+.lx-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--lx-ink-3);
+  margin: 0;
+}
+
+.lx-panel--dark .lx-eyebrow {
+  color: var(--lx-on-dark-3);
+}
+
+/* Tirtus's signature: one clause of the headline held back at low opacity so
+   the sentence resolves into its emphasis. An opacity ramp across a whole
+   clause — deliberately NOT a one-word serif/italic/colour swap. */
+.lx-dim {
+  color: var(--lx-ink-2);
+}
+
+.lx-panel--dark .lx-dim {
+  color: var(--lx-on-dark-2);
+}
+
+/* ═══ LAYOUT ═════════════════════════════════════════════════════════════ */
+
+.lx-shell {
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: 0 var(--lx-gutter);
+}
+
+/* Open white section — not a card: no fill, no border, no shadow. */
+.lx-section {
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 148px) var(--lx-gutter);
+}
+
+.lx-section--tight {
+  padding-top: clamp(40px, 5vw, 72px);
+  padding-bottom: clamp(40px, 5vw, 72px);
+}
+
+/* The inset rounded panel — the structural signature of both references. */
+.lx-panel {
+  position: relative;
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  border-radius: var(--lx-panel-r);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.lx-panel--dark {
+  background: var(--lx-navy);
+  color: var(--lx-on-dark);
+}
+
+/* Atmosphere. Tirtus's hero is a gradient mesh, not a photograph, so a
+   code-native radial stack is faithful here rather than a fake for imagery. */
+.lx-panel--dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 8% -10%, rgba(164, 178, 235, 0.5) 0%, rgba(164, 178, 235, 0) 58%),
+    radial-gradient(90% 70% at 78% 6%, rgba(0, 112, 215, 0.52) 0%, rgba(0, 112, 215, 0) 62%),
+    radial-gradient(130% 120% at 50% 112%, rgba(11, 22, 58, 0.9) 0%, rgba(7, 11, 22, 0) 70%),
+    linear-gradient(168deg, #16204a 0%, #0a1024 46%, #070b16 100%);
+}
+
+/* Fine grain so the gradient reads as atmosphere instead of a flat CSS blend. */
+.lx-panel--dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+.lx-panel-body {
+  position: relative;
+  z-index: 1;
+  padding: var(--lx-pad);
+}
+
+/* Asymmetric two-column text block — big statement left, small note right. */
+.lx-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 96px);
+  align-items: start;
+}
+
+.lx-split--even {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.lx-split--label {
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 72px);
+}
+
+@media (max-width: 900px) {
+  .lx-split,
+  .lx-split--even,
+  .lx-split--label {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+.lx-rule {
+  height: 1px;
+  background: var(--lx-line);
+  border: 0;
+  margin: clamp(36px, 5vw, 72px) 0;
+}
+
+.lx-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* ═══ NAV ════════════════════════════════════════════════════════════════ */
+
+.lx-nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--lx-base) var(--lx-out),
+    background-color var(--lx-base) var(--lx-out);
+}
+
+/* Set by the scroll listener — the bar only earns a hairline once it floats
+   over content, which is the point of a sticky bar. */
+.lx-nav[data-stuck="true"] {
+  border-bottom-color: var(--lx-line);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.lx-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: 14px var(--lx-gutter);
+}
+
+.lx-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--lx-ink);
+  text-decoration: none;
+}
+
+.lx-wordmark i {
+  font-style: normal;
+  color: var(--lx-blue);
+}
+
+.lx-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lx-nav-link {
+  font-size: 14px;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  color: var(--lx-ink-2);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: color var(--lx-fast) var(--lx-out),
+    background-color var(--lx-fast) var(--lx-out);
+}
+
+.lx-nav-link:hover {
+  color: var(--lx-ink);
+  background: rgba(16, 18, 25, 0.05);
+}
+
+@media (max-width: 720px) {
+  .lx-nav-links .lx-nav-link {
+    display: none;
+  }
+}
+
+/* ═══ BUTTONS — small pills, both references ═════════════════════════════ */
+
+.lx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--lx-fast) var(--lx-out),
+    color var(--lx-fast) var(--lx-out),
+    border-color var(--lx-fast) var(--lx-out),
+    transform var(--lx-fast) var(--lx-out);
+}
+
+.lx-btn:active {
+  transform: scale(0.975);
+}
+
+.lx-btn-primary {
+  background: var(--lx-blue);
+  color: #fff;
+}
+
+.lx-btn-primary:hover {
+  background: var(--lx-blue-deep);
+}
+
+.lx-btn-ghost {
+  background: transparent;
+  color: var(--lx-ink);
+  border: 1px solid var(--lx-line-2);
+}
+
+.lx-btn-ghost:hover {
+  border-color: var(--lx-ink);
+}
+
+.lx-btn-onDark {
+  background: var(--lx-dark-fill);
+  color: var(--lx-on-dark);
+  border: 1px solid var(--lx-dark-line);
+}
+
+.lx-btn-onDark:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.lx-btn-lg {
+  height: 48px;
+  padding: 0 24px;
+  font-size: 15px;
+}
+
+/* The arrow nudges on hover — Level-1 feedback, 120ms. */
+.lx-btn .lx-arrow {
+  transition: transform var(--lx-fast) var(--lx-out);
+}
+
+.lx-btn:hover .lx-arrow {
+  transform: translateX(3px);
+}
+
+/* Small status pill (Tirtus's "Sustainable Future" chip). */
+.lx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  background: var(--lx-dark-fill);
+  border: 1px solid var(--lx-dark-line);
+  color: var(--lx-on-dark-2);
+  backdrop-filter: blur(6px);
+}
+
+.lx-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #35d07f;
+  box-shadow: 0 0 0 3px rgba(53, 208, 127, 0.22);
+}
+
+.lx-chip--light {
+  background: rgba(16, 18, 25, 0.04);
+  border-color: var(--lx-line);
+  color: var(--lx-ink-2);
+}
+
+/* ═══ HERO ═══════════════════════════════════════════════════════════════ */
+
+.lx-hero {
+  padding-top: var(--lx-gutter);
+}
+
+.lx-hero-panel {
+  min-height: min(84vh, 780px);
+  display: flex;
+  flex-direction: column;
+}
+
+.lx-hero-body {
+  position: relative;
+  z-index: 1;
+  padding: clamp(28px, 4vw, 52px) var(--lx-pad) 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lx-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(48px, 9vw, 116px);
+}
+
+.lx-hero-copy {
+  max-width: 17.5ch;
+}
+
+.lx-hero-display {
+  max-width: 20ch;
+}
+
+.lx-hero-sub {
+  max-width: 46ch;
+  margin-top: 26px;
+  color: var(--lx-on-dark-2);
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.6;
+}
+
+.lx-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.lx-hero-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: auto;
+  padding-top: clamp(32px, 5vw, 56px);
+}
+
+/* Tirtus's glassy orb, overlapping the headline. Decorative only. */
+.lx-orb {
+  position: absolute;
+  width: clamp(76px, 9vw, 122px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  right: clamp(24px, 12vw, 190px);
+  top: clamp(150px, 26vw, 290px);
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(214, 224, 255, 0.5) 26%, rgba(46, 64, 130, 0.5) 62%, rgba(9, 14, 32, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 24px 70px rgba(4, 8, 22, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  animation: lx-float 9s var(--lx-inout) infinite;
+}
+
+@keyframes lx-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@media (max-width: 860px) {
+  .lx-orb {
+    display: none;
+  }
+}
+
+/* ═══ LIVE INVOICE — the hero's media role ═══════════════════════════════
+   Both references are image-led. We can't honestly produce their 3D renders,
+   so the real product surface carries the slot instead: an actual invoice,
+   oversized, cropped by the panel edge the way Tirtus crops its media. It
+   types a line item in and recalculates, which is literally the product
+   promise ("totals update with every keystroke"). ══════════════════════════ */
+
+.lx-invoice-wrap {
+  position: relative;
+  z-index: 1;
+  margin: 0 var(--lx-pad);
+  /* Meets the panel's bottom edge. The card's square bottom corners carry
+     the "document continues" read; cropping further hid the total, which is
+     the whole point of the typing run. */
+  margin-bottom: -18px;
+  perspective: 1600px;
+}
+
+.lx-invoice {
+  --lx-tilt: 0deg;
+  --lx-pan: 0px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  background: #fff;
+  color: var(--lx-ink);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.4), 0 40px 90px -20px rgba(3, 7, 20, 0.7),
+    0 0 0 1px rgba(10, 16, 36, 0.4);
+  transform: rotateX(var(--lx-tilt)) translateX(var(--lx-pan));
+  transform-origin: 50% 100%;
+  transition: transform 420ms var(--lx-out);
+  text-align: left;
+  overflow: hidden;
+}
+
+.lx-invoice-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(16, 18, 25, 0.08);
+  background: #f7f8fa;
+}
+
+.lx-invoice-bar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(16, 18, 25, 0.14);
+}
+
+.lx-invoice-bar span {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lx-ink-3);
+  font-weight: 500;
+}
+
+.lx-invoice-doc {
+  padding: clamp(22px, 3.4vw, 40px);
+}
+
+.lx-inv-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lx-inv-co {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.lx-inv-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(16, 18, 25, 0.08);
+}
+
+.lx-inv-k {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lx-ink-3);
+  margin-bottom: 5px;
+}
+
+.lx-inv-v {
+  font-size: 13.5px;
+  font-weight: 450;
+}
+
+.lx-inv-table {
+  margin-top: 24px;
+  font-size: 13px;
+}
+
+.lx-inv-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.5fr) 48px 80px 86px;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(16, 18, 25, 0.07);
+  align-items: baseline;
+}
+
+.lx-inv-row > :nth-child(n + 2) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lx-inv-row--head {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lx-ink-3);
+  padding-bottom: 9px;
+}
+
+/* The row being typed gets a live caret + a faint blue wash. Blue here is
+   "active emphasis", which is the role it already owns. */
+.lx-inv-row[data-live="true"] {
+  background: rgba(0, 112, 215, 0.045);
+  box-shadow: inset 2px 0 0 var(--lx-blue);
+}
+
+.lx-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  vertical-align: -0.16em;
+  margin-left: 1px;
+  background: var(--lx-blue);
+  animation: lx-blink 1.05s steps(1, end) infinite;
+}
+
+@keyframes lx-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.lx-inv-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.lx-inv-total b {
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Total flashes once when it recalculates — feedback, 1 change = 1 signal. */
+.lx-inv-total b[data-bumped="true"] {
+  animation: lx-bump var(--lx-slow) var(--lx-emph);
+}
+
+@keyframes lx-bump {
+  0% {
+    color: var(--lx-blue);
+    transform: translateY(-2px);
+  }
+  100% {
+    color: inherit;
+    transform: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .lx-inv-row {
+    grid-template-columns: minmax(0, 2fr) 60px 78px;
+  }
+  .lx-inv-row > :nth-child(3) {
+    display: none;
+  }
+  .lx-inv-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ═══ MARQUEE — continuous motion, kills the "static" read ═══════════════ */
+
+.lx-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(46px, 6vw, 74px) 0;
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+.lx-marquee-track {
+  display: flex;
+  width: max-content;
+  /* No gap: each copy must be exactly half the track for -50% to loop
+     without a visible jump. Spacing lives on the items instead. */
+  gap: 0;
+  animation: lx-scroll 42s linear infinite;
+}
+
+.lx-marquee:hover .lx-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes lx-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.lx-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 52px;
+  padding-right: 52px;
+  font-size: clamp(17px, 1.7vw, 23px);
+  font-weight: 420;
+  letter-spacing: -0.02em;
+  color: var(--lx-ink-2);
+  white-space: nowrap;
+}
+
+/* Each trade gets its own separator dot. Blue is doing "active emphasis"
+   here, the role it already owns — it is not a surface or a border. */
+.lx-marquee-item span {
+  display: inline-flex;
+  align-items: center;
+  gap: 52px;
+}
+
+.lx-marquee-item span::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--lx-blue);
+  flex: none;
+}
+
+/* ═══ BENTO — borrowed from BloomFi: mixed widths, mixed light/dark ══════ */
+
+.lx-bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.lx-bento > * {
+  grid-column: span 2;
+}
+
+.lx-bento > .lx-tile--wide {
+  grid-column: span 4;
+}
+
+.lx-bento > .lx-tile--full {
+  grid-column: span 6;
+  min-height: 0;
+}
+
+@media (max-width: 1000px) {
+  .lx-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lx-bento > * {
+    grid-column: span 1;
+  }
+  .lx-bento > .lx-tile--wide,
+  .lx-bento > .lx-tile--full {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .lx-bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lx-bento > *,
+  .lx-bento > .lx-tile--wide,
+  .lx-bento > .lx-tile--full {
+    grid-column: span 1;
+  }
+}
+
+/* A tile IS a card: it is the container for a real unit of content and it
+   responds to hover. Light sections elsewhere are deliberately not cards. */
+.lx-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 218px;
+  padding: 26px;
+  border-radius: var(--lx-card-r);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--lx-line);
+  background: #fff;
+  transition: border-color var(--lx-base) var(--lx-out),
+    transform var(--lx-base) var(--lx-out);
+}
+
+.lx-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--lx-line-2);
+}
+
+.lx-tile--dark {
+  background: var(--lx-navy);
+  border-color: transparent;
+  color: var(--lx-on-dark);
+}
+
+.lx-tile--dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(90% 80% at 12% 0%, rgba(0, 112, 215, 0.44) 0%, rgba(0, 112, 215, 0) 62%),
+    linear-gradient(170deg, #121b40 0%, #080d1d 72%);
+}
+
+.lx-tile--dark:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.lx-tile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.lx-tile-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--lx-blue);
+  margin-bottom: 8px;
+}
+
+.lx-tile--dark .lx-tile-icon {
+  color: #7fb6f2;
+}
+
+.lx-tile-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--lx-ink-2);
+  margin: 0;
+  max-width: 42ch;
+}
+
+.lx-tile--dark .lx-tile-desc {
+  color: var(--lx-on-dark-2);
+}
+
+.lx-tile-foot {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+/* The wide tile's media slot. BloomFi fills its wide card with a 3D render;
+   rather than fake one, this is a code-native primitive of the thing the
+   tile actually describes — an invoice line mid-edit, with the same caret as
+   the hero. Decorative and aria-hidden. */
+.lx-tile-demo {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--lx-line);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 112, 215, 0.08);
+  font-size: 13.5px;
+  max-width: 340px;
+}
+
+.lx-tile-demo span:first-child {
+  color: var(--lx-ink);
+}
+
+.lx-tile-demo b {
+  margin-left: auto;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--lx-ink);
+}
+
+/* Must come after .lx-tile — same specificity, so source order decides which
+   flex-direction wins. The closing tile lays its copy and CTA out in a row. */
+.lx-tile--full {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.lx-tile--full .lx-tile-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 62ch;
+}
+
+@media (max-width: 620px) {
+  .lx-tile--full {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ═══ STATS — Tirtus's huge numerals + circular arrow buttons ════════════ */
+
+.lx-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(48px, 8vw, 104px);
+}
+
+@media (max-width: 760px) {
+  .lx-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.lx-stat {
+  padding: 26px clamp(18px, 3vw, 40px);
+  border-left: 1px solid var(--lx-dark-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lx-stat:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+@media (max-width: 760px) {
+  .lx-stat {
+    border-left: 0;
+    border-top: 1px solid var(--lx-dark-line);
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .lx-stat:first-child {
+    border-top: 0;
+  }
+}
+
+.lx-stat-n {
+  font-size: clamp(40px, 5.6vw, 76px);
+  font-weight: 420;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lx-stat-k {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--lx-on-dark-2);
+  max-width: 26ch;
+}
+
+.lx-stat-round {
+  margin-top: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--lx-dark-line);
+  background: var(--lx-dark-fill);
+  color: var(--lx-on-dark-2);
+}
+
+/* ═══ USE CASES ══════════════════════════════════════════════════════════ */
+
+.lx-uses {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: clamp(32px, 5vw, 60px);
+}
+
+@media (max-width: 760px) {
+  .lx-uses {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.lx-use {
+  padding: 24px;
+  border-radius: var(--lx-card-r);
+  border: 1px solid var(--lx-line);
+  transition: border-color var(--lx-base) var(--lx-out),
+    transform var(--lx-base) var(--lx-out);
+}
+
+.lx-use:hover {
+  transform: translateY(-3px);
+  border-color: var(--lx-line-2);
+}
+
+.lx-use-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.lx-use-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--lx-ink-2);
+  padding-left: 15px;
+  position: relative;
+}
+
+.lx-use-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.58em;
+  width: 5px;
+  height: 1px;
+  background: var(--lx-ink-3);
+}
+
+/* ═══ FAQ — hairline rows, no card ══════════════════════════════════════ */
+
+.lx-faq {
+  border-top: 1px solid var(--lx-line);
+}
+
+.lx-faq details {
+  border-bottom: 1px solid var(--lx-line);
+}
+
+.lx-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 2px;
+  cursor: pointer;
+  list-style: none;
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 450;
+  letter-spacing: -0.018em;
+  transition: color var(--lx-fast) var(--lx-out);
+}
+
+.lx-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.lx-faq summary:hover {
+  color: var(--lx-blue);
+}
+
+.lx-faq-sign {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--lx-ink-3);
+  transition: transform var(--lx-base) var(--lx-inout),
+    color var(--lx-base) var(--lx-out);
+}
+
+.lx-faq-sign::before,
+.lx-faq-sign::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: currentColor;
+}
+
+.lx-faq-sign::before {
+  width: 100%;
+  height: 1.5px;
+}
+
+.lx-faq-sign::after {
+  width: 1.5px;
+  height: 100%;
+  transition: transform var(--lx-base) var(--lx-inout);
+}
+
+.lx-faq details[open] .lx-faq-sign {
+  color: var(--lx-blue);
+  transform: rotate(90deg);
+}
+
+.lx-faq details[open] .lx-faq-sign::after {
+  transform: scaleY(0);
+}
+
+.lx-faq-a {
+  padding: 0 60px 24px 2px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--lx-ink-2);
+  max-width: 76ch;
+}
+
+/* details can't transition height; animate the content instead. */
+.lx-faq details[open] .lx-faq-a {
+  animation: lx-unfold var(--lx-slow) var(--lx-out);
+}
+
+@keyframes lx-unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ═══ FOOTER ═════════════════════════════════════════════════════════════ */
+
+.lx-footer {
+  border-top: 1px solid var(--lx-line);
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+.lx-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: 36px;
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) var(--lx-gutter) 40px;
+}
+
+@media (max-width: 860px) {
+  .lx-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lx-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: flex-start;
+}
+
+.lx-footer-head {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--lx-ink-3);
+  margin-bottom: 3px;
+}
+
+.lx-footer-link {
+  font-size: 14px;
+  color: var(--lx-ink-2);
+  text-decoration: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color var(--lx-fast) var(--lx-out);
+}
+
+.lx-footer-link:hover {
+  color: var(--lx-ink);
+}
+
+/* ═══ SCROLL REVEAL ═════════════════════════════════════════════════════
+   Level-3 hierarchy cue: each block resolves as it enters. Fires once. The
+   no-js / no-IO fallback is the visible state, never the hidden one. ══════ */
+
+.lx-reveal {
+  transition: opacity var(--lx-reveal) var(--lx-out),
+    transform var(--lx-reveal) var(--lx-out);
+  transition-delay: var(--lx-delay, 0ms);
+}
+
+/* The hidden state is opt-in: it applies only once the inline flag in
+   app/layout.tsx confirms scripting is live. No JS, or a failed hydration,
+   and the content simply renders — never stranded at opacity 0. */
+:root[data-js="1"] .lx-reveal:not([data-shown="true"]) {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  will-change: opacity, transform;
+}
+
+/* ═══ REDUCED MOTION ════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .lx {
+    --lx-fast: 0ms;
+    --lx-base: 0ms;
+    --lx-slow: 0ms;
+    --lx-reveal: 0ms;
+  }
+
+  /* Parallax and loops go away entirely; reveals resolve to plain visible. */
+  .lx-orb,
+  .lx-marquee-track,
+  .lx-caret,
+  .lx-inv-total b[data-bumped="true"],
+  .lx-faq details[open] .lx-faq-a {
+    animation: none !important;
+  }
+
+  .lx-invoice {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .lx-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .lx-btn:active {
+    transform: none;
+  }
+}
