@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 
+import { HeroAnnotations } from "./hero-annotations"
 import { prefersReducedMotion, useInView } from "./reveal"
 
 /**
@@ -160,7 +161,7 @@ export function LiveInvoice() {
 
             {/* The row being written. aria-live keeps screen readers informed
                 of the value that lands, without narrating every keystroke. */}
-            <div className="lx-inv-row" data-live={typing ? "true" : undefined}>
+            <div className="lx-inv-row" data-live={typing ? "true" : undefined} data-annotate="row">
               <span>
                 {desc}
                 {phase === "desc" && <span className="lx-caret" aria-hidden="true" />}
@@ -179,12 +180,13 @@ export function LiveInvoice() {
 
           <div className="lx-inv-total">
             <span>Total due</span>
-            <b data-bumped={bumped ? "true" : undefined} aria-live="polite">
+            <b data-bumped={bumped ? "true" : undefined} aria-live="polite" data-annotate="total">
               {money(total)}
             </b>
           </div>
         </div>
       </div>
+      <HeroAnnotations typing={typing} />
     </div>
   )
 }

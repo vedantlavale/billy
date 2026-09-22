@@ -369,13 +369,7 @@
   animation-play-state: paused;
 }
 
-:root[data-js="1"] .lx-draw-view:not([data-drawn]) .lx-draw [data-draw] {
-  animation-play-state: paused;
-}
 
-.lx-draw-view {
-  display: block;
-}
 
 @keyframes lx-draw {
   to {
@@ -476,53 +470,112 @@
   text-align: left;
 }
 
-.lx-note {
+/* Annotation layer over the product shot: measured pins + side labels or
+   a legend (see components/landing/hero-annotations.tsx). */
+.lx-annotations {
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 170px;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.35;
+  inset: 0;
   pointer-events: none;
 }
 
-.lx-note svg {
-  width: 84px;
-  color: var(--lx-ink);
+.lx-note {
+  position: absolute;
+  width: 168px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.lx-annotation-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
   overflow: visible;
+  fill: none;
+  stroke: var(--lx-ink);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.lx-note--left {
-  left: -196px;
-  top: 348px;
-  align-items: flex-end;
-  text-align: right;
+.lx-pin {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--lx-blue);
+  background: #ffffff;
+  color: var(--lx-blue);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 2px 6px -2px rgba(0, 112, 215, 0.35);
 }
 
-.lx-note--left svg {
-  transform: rotate(28deg);
+.lx-pin[data-side="left"] {
+  left: 0;
+  translate: -50% -50%;
 }
 
-.lx-note--right {
-  right: -196px;
-  bottom: 44px;
-  align-items: flex-start;
+.lx-pin[data-side="right"] {
+  right: 0;
+  translate: 50% -50%;
 }
 
-.lx-note--right svg {
-  transform: scaleX(-1) rotate(24deg);
+.lx-pin-pulse {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  border: 1.5px solid var(--lx-blue);
+  animation: lx-pulse 1.2s var(--lx-out) infinite;
 }
 
-@media (max-width: 1320px) {
-  .lx-note {
-    display: none;
-  }
+@keyframes lx-pulse {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(1.9); opacity: 0; }
+}
+
+.lx-pin--inline {
+  position: static;
+  display: inline-grid;
+  translate: none;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  box-shadow: none;
+}
+
+.lx-legend {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lx-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .lx-invoice-wrap {
   position: relative;
+}
+
+/* Room for the under-frame legend when the side labels don't fit. */
+.lx-stage {
+  margin-bottom: 44px;
 }
 
 .lx-invoice {
@@ -828,12 +881,16 @@
   max-width: 40ch;
 }
 
-.lx-privacy-stamp {
-  position: static;
-  display: block;
-  width: 92px;
+.lx-privacy-scene {
+  max-width: 400px;
   margin-top: 36px;
-  transform: rotate(-8deg);
+  padding: 16px;
+  border-radius: var(--lx-r-lg);
+  background: var(--lx-muted);
+}
+
+.lx-scene--wide {
+  max-width: none;
 }
 
 @media (max-width: 560px) {
@@ -1114,6 +1171,101 @@
   color: var(--lx-blue);
 }
 
+/* ═══ MICRO-INTERACTIONS (#15) ══════════════════════════════════════════
+   Small, purposeful motion: hover feedback on things you can scan or click,
+   and a little life in the decorative doodles. All of it is removed under
+   prefers-reduced-motion (see the end of this file). ═══════════════════ */
+
+.lx-hero-sparkles path {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lx-twinkle 2.8s var(--lx-inout) infinite;
+}
+
+.lx-hero-sparkles path + path {
+  animation-delay: 1.1s;
+}
+
+@keyframes lx-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  45% { transform: scale(0.72) rotate(12deg); opacity: 0.55; }
+}
+
+.lx-hero-coin {
+  animation: lx-coin 5s var(--lx-inout) infinite;
+}
+
+@keyframes lx-coin {
+  0%, 70%, 100% { transform: rotate(10deg) rotateY(0deg); }
+  82% { transform: rotate(10deg) rotateY(180deg); }
+  94% { transform: rotate(10deg) rotateY(360deg); }
+}
+
+.lx-closing-plane {
+  animation: lx-glide 6s var(--lx-inout) infinite;
+}
+
+.lx-closing-plane path:last-child {
+  animation: lx-trail 1.6s linear infinite;
+}
+
+@keyframes lx-glide {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-10px, 6px) rotate(-4deg); }
+}
+
+@keyframes lx-trail {
+  to { stroke-dashoffset: -20; }
+}
+
+.lx-trades-list .lx-chip {
+  transition: transform var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
+}
+
+.lx-trades-list .lx-chip:hover {
+  transform: translateY(-2px);
+  background: #e9eaec;
+}
+
+.lx-step .lx-step-num {
+  transition: background-color var(--lx-base) var(--lx-out), color var(--lx-base) var(--lx-out);
+}
+
+.lx-step:hover .lx-step-num {
+  background: var(--lx-ink);
+  color: #ffffff;
+}
+
+.lx-well {
+  transition: box-shadow var(--lx-base) var(--lx-out);
+}
+
+.lx-step:hover .lx-well {
+  box-shadow: inset 0 0 0 1px var(--lx-line);
+}
+
+.lx-use-icon {
+  transform-origin: 50% 80%;
+}
+
+.lx-use:hover .lx-use-icon {
+  animation: lx-wiggle 480ms var(--lx-inout);
+}
+
+@keyframes lx-wiggle {
+  25% { transform: rotate(-9deg); }
+  60% { transform: rotate(7deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.lx-btn-primary {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 1px 2px rgba(0, 112, 215, 0.25);
+}
+
+.lx-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
 /* ═══ SCROLL REVEAL ═════════════════════════════════════════════════════
    Fires once. The no-js / no-IO fallback is the visible state. ══════════ */
 
@@ -1140,6 +1292,12 @@
   }
 
   .lx-caret,
+  .lx-pin-pulse,
+  .lx-hero-sparkles path,
+  .lx-hero-coin,
+  .lx-closing-plane,
+  .lx-closing-plane path,
+  .lx-use:hover .lx-use-icon,
   .lx-inv-total b[data-bumped="true"],
   .lx-faq details[open] .lx-faq-a {
     animation: none !important;

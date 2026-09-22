@@ -5,16 +5,13 @@ import { TEMPLATES } from "@billy/invoice-core"
 
 import { Cta, LandingNav, Stat } from "@/components/landing/landing-chrome"
 import { LiveInvoice } from "@/components/landing/live-invoice"
-import { DrawOnView } from "@/components/landing/draw-on-view"
 import { Reveal } from "@/components/landing/reveal"
-import { ExportScene, ThemeScene, TypeScene } from "@/components/landing/step-scenes"
+import { ExportScene, PrivacyScene, ThemeScene, TypeScene } from "@/components/landing/step-scenes"
 import {
-  DoodleArcArrow,
   DoodleCoin,
   DoodlePaperPlane,
   DoodlePencilCheck,
   DoodleSparkles,
-  DoodleStamp,
   DoodleUnderlineSquiggle,
   IconBriefcase,
   IconBulb,
@@ -105,8 +102,6 @@ const SCENE_PALETTES = TEMPLATES.filter((t) => ["clean", "modern-green", "minima
   }),
 )
 
-const drawDelay = (ms: number) => ({ "--lx-draw-delay": `${ms}ms` }) as React.CSSProperties
-
 export default function Home() {
   return (
     <main className="lx">
@@ -154,14 +149,6 @@ export default function Home() {
         </div>
 
         <Reveal delay={240} className="lx-stage">
-          <p className="lx-note lx-note--left" aria-hidden="true">
-            Click a line and type
-            <DoodleArcArrow className="lx-draw" style={drawDelay(1200)} />
-          </p>
-          <p className="lx-note lx-note--right" aria-hidden="true">
-            Totals update themselves
-            <DoodleArcArrow className="lx-draw" style={drawDelay(1500)} />
-          </p>
           <LiveInvoice />
         </Reveal>
       </section>
@@ -238,9 +225,9 @@ export default function Home() {
               they print one page. Billy has no backend at all, so there is nothing to sign up
               for, nothing to breach and nothing to sync.
             </p>
-            <DrawOnView>
-              <DoodleStamp className="lx-doodle lx-privacy-stamp lx-draw" />
-            </DrawOnView>
+            <div className="lx-privacy-scene">
+              <PrivacyScene />
+            </div>
           </Reveal>
 
           <Reveal delay={80}>
