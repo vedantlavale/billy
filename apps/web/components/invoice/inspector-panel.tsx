@@ -45,11 +45,23 @@ function dueLabel(iso: string) {
   return `${-days} day${days === -1 ? "" : "s"} overdue`
 }
 
+const noopSubscribe = () => () => {}
+
+/**
+ * /editor is statically prerendered, so anything that depends on the
+ * visitor's locale or today's date must wait until after hydration or React
+ * throws a text mismatch (#11). Until then the summary shows the ISO date.
+ */
+function useHydrated() {
+  return React.useSyncExternalStore(noopSubscribe, () => true, () => false)
+}
+
 function Summary() {
   const state = useInvoiceState()
+  const hydrated = useHydrated()
   const totals = React.useMemo(() => calculateTotals(state), [state])
   const itemCount = state.lineItems.length
-  const due = dueLabel(state.dueDate)
+  const due = hydrated ? dueLabel(state.dueDate) : null
 
   return (
     <section className="ed-section">
@@ -63,7 +75,7 @@ function Summary() {
           <dt>Billed to</dt>
           <dd className="truncate text-right font-semibold">{state.clientName || "—"}</dd>
           <dt>Due date</dt>
-          <dd className="text-right font-semibold">{formatDueDate(state.dueDate)}</dd>
+          <dd className="text-right font-semibold">{hydrated ? formatDueDate(state.dueDate) : state.dueDate}</dd>
           <dt>Line items</dt>
           <dd className="text-right font-semibold">{itemCount}</dd>
         </dl>
