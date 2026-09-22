@@ -2,15 +2,16 @@
 
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import { InspectorSection, SwitchRow } from "@/components/invoice/editor-ui"
+import { RadioGroup, RadioGroupItem } from "@/components/motion/radio"
 import type { InvoiceData } from "@billy/invoice-core"
 
 type Options = InvoiceData["options"]
 type TaxMode = "standard" | "intra" | "inter"
 
 const TAX_MODES: { id: TaxMode; label: string; description: string }[] = [
-  { id: "standard", label: "Single tax", description: "One tax line" },
-  { id: "intra", label: "CGST + SGST", description: "Same state" },
-  { id: "inter", label: "IGST", description: "Other state" },
+  { id: "standard", label: "Single tax", description: "One tax line, e.g. VAT or sales tax" },
+  { id: "intra", label: "CGST + SGST", description: "GST, supplier and client in the same state" },
+  { id: "inter", label: "IGST", description: "GST, client in another state" },
 ]
 
 function taxModeOf(options: Options): TaxMode {
@@ -71,20 +72,21 @@ export function OptionsPanel() {
       </InspectorSection>
 
       <InspectorSection title="Tax" hint="The rate is edited on the invoice itself.">
-        <div className="grid grid-cols-3 gap-1.5" role="group" aria-label="Tax type">
+        <RadioGroup
+          value={taxMode}
+          onValueChange={(value) => setTaxMode(value as TaxMode)}
+          aria-label="Tax type"
+          className="gap-3"
+        >
           {TAX_MODES.map((mode) => (
-            <button
+            <RadioGroupItem
               key={mode.id}
-              type="button"
-              aria-pressed={taxMode === mode.id}
-              onClick={() => setTaxMode(mode.id)}
-              className="ed-option flex-col !items-start !gap-0 !px-2.5"
-            >
-              <span className="text-[13px] font-semibold leading-5">{mode.label}</span>
-              <span className="text-xs font-normal leading-4">{mode.description}</span>
-            </button>
+              value={mode.id}
+              label={mode.label}
+              description={mode.description}
+            />
           ))}
-        </div>
+        </RadioGroup>
 
         <div className="mt-3 space-y-0.5">
           <SwitchRow

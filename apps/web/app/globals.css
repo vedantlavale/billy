@@ -902,38 +902,6 @@
   .ed-btn--ghost:hover { background-color: var(--ed-muted); }
   .ed-btn--icon { width: 36px; padding: 0; }
 
-  /* Segmented Edit / Preview switch */
-  .ed-segment {
-    display: inline-flex;
-    height: 36px;
-    align-items: center;
-    gap: 2px;
-    border-radius: 8px;
-    background-color: var(--ed-muted);
-    padding: 3px;
-  }
-  .ed-segment-item {
-    display: inline-flex;
-    height: 30px;
-    align-items: center;
-    gap: 6px;
-    border-radius: 6px;
-    padding: 0 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.15s ease, box-shadow 0.15s ease;
-  }
-  .ed-segment-item:hover { background-color: rgba(255, 255, 255, 0.6); }
-  .ed-segment-item[aria-pressed="true"] {
-    background-color: #ffffff;
-    box-shadow: var(--ed-shadow), 0 0 0 1px var(--ed-line);
-  }
-  .ed-segment-item:focus-visible {
-    outline: 2px solid var(--ed-blue);
-    outline-offset: 1px;
-  }
-
   .ed-chip {
     display: inline-flex;
     height: 24px;
@@ -1074,36 +1042,7 @@
     transition: background-color 0.15s ease;
   }
   .ed-switch-row:hover { background-color: var(--ed-muted); }
-  .ed-switch-row:focus-visible {
-    outline: 2px solid var(--ed-blue);
-    outline-offset: 0;
-  }
-  .ed-switch-row:disabled { cursor: not-allowed; opacity: 0.5; }
-  .ed-switch {
-    position: relative;
-    display: inline-block;
-    width: 32px;
-    height: 18px;
-    flex-shrink: 0;
-    border-radius: 9999px;
-    background-color: #D1D5DB;
-    transition: background-color 0.15s ease;
-  }
-  .ed-switch::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 14px;
-    height: 14px;
-    border-radius: 9999px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 2px rgba(55, 53, 47, 0.25);
-    transition: transform 0.15s ease;
-  }
-  .ed-switch[data-on="true"] { background-color: var(--ed-blue); }
-  .ed-switch[data-on="true"]::after { transform: translateX(14px); }
-
+  .ed-switch-row[data-disabled] { cursor: not-allowed; opacity: 0.5; }
   /* Desk + floating zoom bar */
   .ed-desk {
     position: relative;

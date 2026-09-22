@@ -2,6 +2,8 @@
 
 import * as React from "react"
 
+import { Switch } from "@/components/motion/switch"
+
 /**
  * Small building blocks for the editor chrome (inspector, top bar). Styling
  * lives in globals.css under `.ed-*` so the whole chrome follows root
@@ -38,6 +40,10 @@ export function InspectorSection({
   )
 }
 
+/**
+ * A labelled row with the animated beUI switch on the right. The whole row is
+ * a <label> for the switch, so clicking the text toggles it too.
+ */
 export function SwitchRow({
   label,
   description,
@@ -51,23 +57,26 @@ export function SwitchRow({
   onChange: (value: boolean) => void
   disabled?: boolean
 }) {
+  const id = React.useId()
+  const descriptionId = `${id}-description`
   return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      disabled={disabled}
-      onClick={() => onChange(!checked)}
-      className="ed-switch-row"
-    >
+    <label htmlFor={id} className="ed-switch-row" data-disabled={disabled || undefined}>
       <span className="min-w-0">
         <span className="block">{label}</span>
         {description && (
-          <span className="block text-xs font-normal leading-4">{description}</span>
+          <span id={descriptionId} className="block text-xs font-normal leading-4">
+            {description}
+          </span>
         )}
       </span>
-      <span className="ed-switch" data-on={checked} aria-hidden />
-    </button>
+      <Switch
+        id={id}
+        checked={checked}
+        onCheckedChange={onChange}
+        disabled={disabled}
+        ariaDescribedBy={description ? descriptionId : undefined}
+      />
+    </label>
   )
 }
 
