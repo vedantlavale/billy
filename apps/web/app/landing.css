@@ -440,26 +440,6 @@
   line-height: 20px;
 }
 
-.lx-hero-sparkles {
-  left: -4%;
-  top: 22%;
-  width: 56px;
-  transform: rotate(-12deg);
-}
-
-.lx-hero-coin {
-  right: -3%;
-  top: 38%;
-  width: 52px;
-  transform: rotate(10deg);
-}
-
-@media (max-width: 900px) {
-  .lx-hero-sparkles,
-  .lx-hero-coin {
-    display: none;
-  }
-}
 
 /* ═══ PRODUCT SHOT — live invoice in a browser frame, with annotations ═══ */
 
@@ -822,16 +802,11 @@
 .lx-art { position: absolute; inset: 0; }
 .lx-art svg { position: absolute; }
 .lx-art-face { width: 96px; left: 18px; bottom: 0; transform: rotate(-6deg); }
-.lx-art-bubble { width: 112px; right: 0; top: 0; color: var(--lx-blue); animation: lx-bob 4s var(--lx-inout) infinite; }
-.lx-art-stars { width: 136px; left: 0; top: 10px; animation: lx-bob 5s var(--lx-inout) infinite; }
+.lx-art-bubble { width: 112px; right: 0; top: 0; color: var(--lx-blue); }
+.lx-art-stars { width: 136px; left: 0; top: 10px; }
 .lx-art-pencil { width: 104px; right: 0; bottom: 0; }
 .lx-art-receipt { position: absolute; width: 104px; right: 40px; bottom: 0; transform: rotate(8deg); }
-.lx-art-plane { position: absolute; width: 170px; right: 0; bottom: 6px; animation: lx-glide 6s var(--lx-inout) infinite; }
-
-@keyframes lx-bob {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -6px; }
-}
+.lx-art-plane { position: absolute; width: 170px; right: 0; bottom: 6px; }
 
 /* Bento */
 .lx-bento {
@@ -853,14 +828,15 @@
   overflow: hidden;
   border: 1px solid var(--lx-line);
   border-radius: 10px;
-  background: linear-gradient(180deg, #ffffff 55%, #fbfbfc 100%);
+  background: #ffffff;
   padding: 28px 32px 0;
+  box-shadow: 0 1px 2px rgba(55, 53, 47, 0.04);
   transition: border-color var(--lx-base) var(--lx-out), box-shadow var(--lx-base) var(--lx-out);
 }
 
 .lx-card:hover {
-  border-color: #d6d9de;
-  box-shadow: 0 16px 36px -28px rgba(55, 53, 47, 0.35);
+  border-color: #cfd3d9;
+  box-shadow: 0 1px 2px rgba(55, 53, 47, 0.04), 0 18px 40px -30px rgba(55, 53, 47, 0.35);
 }
 
 .lx-card--wide {
@@ -999,44 +975,7 @@
   color: #ffffff;
 }
 
-.lx-art-coin { position: absolute; width: 96px; right: 50px; bottom: 6px; animation: lx-coin 5s var(--lx-inout) infinite; }
 
-/* Confetti strokes (hero + final CTA) */
-.lx-confetti {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.lx-confetti span {
-  position: absolute;
-  height: 2.5px;
-  border-radius: 2px;
-  background: #d1d5db;
-  animation: lx-sway 5s var(--lx-inout) infinite;
-}
-
-.lx-confetti span[data-tone="blue"] { background: var(--lx-blue); height: 3px; }
-.lx-confetti span[data-tone="ink"] { background: var(--lx-ink); }
-
-@keyframes lx-sway {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 5px; }
-}
-
-@media (max-width: 760px) {
-  .lx-confetti { display: none; }
-}
-
-/* Hero speech bubbles */
-.lx-hero-bubbles { position: absolute; inset: 0; pointer-events: none; }
-.lx-hero-bubble { position: absolute; width: 108px; color: var(--lx-ink); animation: lx-bob 4.5s var(--lx-inout) infinite; }
-.lx-hero-bubble--l { left: 2%; top: 300px; transform: rotate(-8deg); }
-.lx-hero-bubble--r { right: 2%; top: 150px; color: var(--lx-blue); transform: rotate(6deg); animation-delay: 1.2s; }
-
-@media (max-width: 1180px) {
-  .lx-hero-bubbles { display: none; }
-}
 
 /* ═══ USES — four open columns ═══════════════════════════════════════════ */
 
@@ -1120,6 +1059,50 @@
   padding-top: 24px;
   border-top: 1px solid var(--lx-line);
 }
+
+.lx-uses-card {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-areas:
+    "uses scene"
+    "cta cta";
+  gap: 32px;
+  align-items: center;
+}
+
+.lx-uses-card .lx-uses {
+  grid-area: uses;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lx-uses-scene {
+  grid-area: scene;
+  display: flex;
+  justify-content: center;
+}
+
+.lx-uses-card .lx-uses-cta {
+  grid-area: cta;
+  margin-top: 0;
+}
+
+@media (max-width: 860px) {
+  .lx-uses-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "scene"
+      "uses"
+      "cta";
+  }
+}
+
+.lx-final-art {
+  width: 320px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.lx-final-art .lx-scene { max-width: 320px; }
 
 /* ═══ FAQ — heading column + hairline rows ══════════════════════════════ */
 
@@ -1254,18 +1237,6 @@
 .lx-final-inner .lx-h2 { max-width: 20ch; font-size: clamp(30px, 3.6vw, 40px); }
 .lx-final-inner .lx-btn { margin-top: 12px; }
 
-.lx-final-art {
-  position: relative;
-  width: 260px;
-  height: 170px;
-  margin-bottom: 8px;
-  color: var(--lx-ink);
-}
-
-.lx-final-art svg { position: absolute; }
-.lx-final-stack { width: 150px; left: 56px; bottom: 0; }
-.lx-final-face { width: 78px; right: 0; top: 6px; transform: rotate(10deg); }
-.lx-final-sparkles { width: 52px; left: 0; top: 10px; color: var(--lx-blue); }
 
 /* ═══ FOOTER ═════════════════════════════════════════════════════════════ */
 
@@ -1317,76 +1288,17 @@
   color: var(--lx-blue);
 }
 
-/* ═══ MICRO-INTERACTIONS (#15) ══════════════════════════════════════════
-   Small, purposeful motion: hover feedback on things you can scan or click,
-   and a little life in the decorative doodles. All of it is removed under
-   prefers-reduced-motion (see the end of this file). ═══════════════════ */
-
-.lx-hero-sparkles path {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: lx-twinkle 2.8s var(--lx-inout) infinite;
-}
-
-.lx-hero-sparkles path + path {
-  animation-delay: 1.1s;
-}
-
-@keyframes lx-twinkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  45% { transform: scale(0.72) rotate(12deg); opacity: 0.55; }
-}
-
-.lx-hero-coin {
-  animation: lx-coin 5s var(--lx-inout) infinite;
-}
-
-@keyframes lx-coin {
-  0%, 70%, 100% { transform: rotate(10deg) rotateY(0deg); }
-  82% { transform: rotate(10deg) rotateY(180deg); }
-  94% { transform: rotate(10deg) rotateY(360deg); }
-}
-
-.lx-art-plane path:last-child {
-  animation: lx-trail 1.6s linear infinite;
-}
-
-.lx-final-sparkles path {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: lx-twinkle 2.8s var(--lx-inout) infinite;
-}
-
-@keyframes lx-glide {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-10px, 6px) rotate(-4deg); }
-}
-
-@keyframes lx-trail {
-  to { stroke-dashoffset: -20; }
-}
+/* ═══ MICRO-INTERACTIONS ════════════════════════════════════════════════
+   Only feedback motion: things respond when you hover or press them. The
+   decorative doodles are still; the product scenes carry the movement. ══ */
 
 .lx-trades-list .lx-chip {
   transition: transform var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
 }
 
 .lx-trades-list .lx-chip:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   background: #e9eaec;
-}
-
-.lx-use-icon {
-  transform-origin: 50% 80%;
-}
-
-.lx-use:hover .lx-use-icon {
-  animation: lx-wiggle 480ms var(--lx-inout);
-}
-
-@keyframes lx-wiggle {
-  25% { transform: rotate(-9deg); }
-  60% { transform: rotate(7deg); }
-  100% { transform: rotate(0deg); }
 }
 
 .lx-btn-primary {
@@ -1424,17 +1336,6 @@
 
   .lx-caret,
   .lx-pin-pulse,
-  .lx-hero-sparkles path,
-  .lx-art-coin,
-  .lx-hero-coin,
-  .lx-art-plane,
-  .lx-art-plane path,
-  .lx-art-bubble,
-  .lx-art-stars,
-  .lx-hero-bubble,
-  .lx-confetti span,
-  .lx-final-sparkles path,
-  .lx-use:hover .lx-use-icon,
   .lx-inv-total b[data-bumped="true"],
   .lx-faq details[open] .lx-faq-a {
     animation: none !important;

@@ -745,3 +745,153 @@ export function MatchScene() {
     </Scene>
   )
 }
+
+/* ── Unlimited invoices ──────────────────────────────────────────────────
+   PDFs keep landing on the pile and the counter keeps climbing; the badge
+   never says "upgrade". */
+
+export function UnlimitedScene() {
+  const { ref, live } = useLive()
+  const T = 6
+  const N = 5
+  const sheet = (i: number) => {
+    const t0 = (i / N) * 0.8
+    return (
+      <motion.g
+        key={i}
+        {...track(
+          live,
+          { y: [-40, -40, 0, 0, 0], opacity: [0, 0, 1, 1, 1], rotate: [-6, -6, -2 + i * 1.2, -2 + i * 1.2, -2 + i * 1.2] },
+          [0, t0, t0 + 0.08, 0.98, 1],
+          T,
+          3,
+        )}
+      >
+        <rect x={40 + i * 6} y={30 - i * 4} width="64" height="82" rx="4" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+        <rect x={50 + i * 6} y={42 - i * 4} width="26" height="5" rx="1.5" fill={INK} opacity="0.8" />
+        {[56, 66, 76].map((y) => (
+          <rect key={y} x={50 + i * 6} y={y - i * 4} width="44" height="1.5" fill={LINE} />
+        ))}
+        <rect x={70 + i * 6} y={94 - i * 4} width="24" height="7" rx="2" fill={BLUE} />
+      </motion.g>
+    )
+  }
+  const counts = ["1", "2", "3", "4", "5"]
+  return (
+    <Scene svgRef={ref} label="Invoices keep being added to a pile while the counter climbs; there is no limit">
+      {Array.from({ length: N }, (_, i) => sheet(i))}
+      <text x="176" y="52" fontSize="11" fontWeight="600" fill={INK}>Invoices this month</text>
+      <defs>
+        <clipPath id="lx-count-clip">
+          <rect x="172" y="58" width="100" height="36" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#lx-count-clip)">
+        <motion.g
+          {...track(
+            live,
+            { y: [0, ...counts.flatMap((_, i) => [-i * 36, -i * 36])] },
+            [0, ...counts.flatMap((_, i) => [(i / N) * 0.8 + 0.06, i === N - 1 ? 1 : ((i + 1) / N) * 0.8])],
+            T,
+            counts.length * 2,
+          )}
+        >
+          {counts.map((c, i) => (
+            <text key={c} x="176" y={86 + i * 36} fontSize="30" fontWeight="700" fill={INK}>
+              {c}
+            </text>
+          ))}
+        </motion.g>
+      </g>
+      <rect x="176" y="100" width="88" height="22" rx="11" fill={BLUE} opacity="0.1" />
+      <text x="220" y="115" fontSize="10" fontWeight="700" fill={BLUE} textAnchor="middle">No limit · Free</text>
+    </Scene>
+  )
+}
+
+/* ── Quick presets ───────────────────────────────────────────────────────
+   Picking "GST vendor" flips the right fields on, one after another. */
+
+export function PresetScene() {
+  const { ref, live } = useLive()
+  const T = 6
+  const C = 0.22
+  const rows = ["GSTIN", "HSN / SAC", "CGST + SGST", "Bank details"]
+  const presets = ["Freelancer", "GST vendor", "Agency"]
+  return (
+    <Scene svgRef={ref} label="Choosing the GST vendor preset switches on GSTIN, HSN/SAC, CGST + SGST and bank details">
+      <text x="20" y="26" fontSize="10" fontWeight="600" fill={INK}>Quick setup</text>
+      {presets.map((p, i) => (
+        <g key={p}>
+          <motion.rect
+            x="20"
+            y={36 + i * 30}
+            width="104"
+            height="24"
+            rx="7"
+            fill="#ffffff"
+            strokeWidth="1.5"
+            {...track(live, i === 1 ? { stroke: [LINE, LINE, BLUE, BLUE, LINE], fill: ["#ffffff", "#ffffff", "#eef5fd", "#eef5fd", "#ffffff"] } : { stroke: [LINE, LINE, LINE, LINE, LINE] }, [0, C, C + 0.04, 0.92, 1], T, 3)}
+          />
+          <text x="34" y={52 + i * 30} fontSize="10.5" fontWeight="600" fill={INK}>{p}</text>
+        </g>
+      ))}
+      {rows.map((r, i) => {
+        const on = C + 0.1 + i * 0.08
+        return (
+          <g key={r}>
+            <text x="150" y={52 + i * 24} fontSize="10.5" fill={INK}>{r}</text>
+            <rect x="228" y={40 + i * 24} width="32" height="18" rx="9" fill="#d1d5db" />
+            <motion.rect x="228" y={40 + i * 24} width="32" height="18" rx="9" fill={BLUE}
+              {...track(live, { opacity: [0, 0, 1, 1, 0] }, [0, on, on + 0.03, 0.92, 1], T, 3)} />
+            <motion.circle cy={49 + i * 24} r="7" fill="#ffffff"
+              {...track(live, { cx: [237, 237, 251, 251, 237] }, [0, on, on + 0.05, 0.92, 1], T, 3)} />
+          </g>
+        )
+      })}
+      <Ripple live={live} cx={72} cy={78} at={C} T={T} />
+      <Pointer live={live} T={T} rest={0}
+        times={[0, 0.05, C - 0.03, C, C + 0.04, 0.4, 1]}
+        x={[140, 140, 72, 72, 72, 140, 140]}
+        y={[130, 130, 78, 78, 78, 130, 130]}
+        press={[1, 1, 1, 0.84, 1, 1, 1]} />
+    </Scene>
+  )
+}
+
+/* ── A blank page away ───────────────────────────────────────────────────
+   The final CTA's promise, shown: an empty sheet, a caret, a few lines
+   typed in, and the total appears. */
+
+export function BlankPageScene() {
+  const { ref, live } = useLive()
+  const T = 5.5
+  const lines = [
+    { y: 46, w: 84, at: 0.12 },
+    { y: 62, w: 120, at: 0.3 },
+    { y: 78, w: 100, at: 0.48 },
+  ]
+  return (
+    <Scene svgRef={ref} viewBox="0 0 280 150" label="A blank invoice page fills in line by line and a total appears">
+      <rect x="70" y="14" width="140" height="122" rx="6" fill="#ffffff" stroke={LINE} strokeWidth="1.5" />
+      {lines.map((l, i) => (
+        <g key={i}>
+          <defs>
+            <clipPath id={`lx-blank-${i}`}>
+              <motion.rect x="86" y={l.y - 6} height="12"
+                {...track(live, { width: [0, 0, l.w, l.w, 0] }, [0, l.at, l.at + 0.12, 0.94, 1], T, 3, "linear")} />
+            </clipPath>
+          </defs>
+          <rect x="86" y={l.y - 3} width={l.w} height="5" rx="2" fill={INK} opacity={i === 0 ? 0.85 : 0.35} clipPath={`url(#lx-blank-${i})`} />
+        </g>
+      ))}
+      <motion.rect width="1.5" height="14" fill={BLUE}
+        {...track(live, { x: [86, 86, 170, 86, 206, 86, 186, 186, 86], y: [39, 39, 39, 55, 55, 71, 71, 71, 39], opacity: [1, 1, 1, 1, 1, 1, 1, 0, 0] }, [0, 0.12, 0.24, 0.3, 0.42, 0.48, 0.6, 0.66, 1], T, 7, "linear")} />
+      <motion.g {...track(live, { opacity: [0, 0, 1, 1, 0], y: [4, 4, 0, 0, 0] }, [0, 0.68, 0.74, 0.94, 1], T, 3)}>
+        <path d="M86 100 H194" stroke={LINE} strokeWidth="1.5" />
+        <text x="86" y="120" fontSize="10" fontWeight="600" fill={INK}>Total</text>
+        <text x="194" y="121" fontSize="14" fontWeight="700" fill={INK} textAnchor="end">₹12,400.00</text>
+      </motion.g>
+    </Scene>
+  )
+}

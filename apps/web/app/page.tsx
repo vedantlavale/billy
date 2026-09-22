@@ -35,28 +35,27 @@ import {
   WalletIcon,
   ZapIcon,
 } from "@/components/icons/rune"
-import { Bento, BentoCard, Confetti, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
+import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
 import { Reveal } from "@/components/landing/reveal"
 import {
+  BlankPageScene,
   CurrencyScene,
   ExportScene,
   GstScene,
   MatchScene,
+  PresetScene,
   PrivacyScene,
   StampScene,
+  UnlimitedScene,
   ThemeScene,
   TypeScene,
 } from "@/components/landing/step-scenes"
 import {
   DoodleBubble,
-  DoodleCoin,
   DoodleFace,
-  DoodleLandscape,
   DoodlePaperPlane,
-  DoodlePaperStack,
   DoodlePencilCheck,
   DoodleReceipt,
-  DoodleSparkles,
   DoodleStarBubble,
   DoodleUnderlineSquiggle,
 } from "@/components/landing/doodles"
@@ -165,14 +164,7 @@ export default function Home() {
 
       {/* ═══ HERO — centered promise above the real product ═══ */}
       <section className="lx-hero">
-        <Confetti />
-        <div className="lx-hero-bubbles" aria-hidden>
-          <DoodleBubble text="Paid!" className="lx-hero-bubble lx-hero-bubble--l" />
-          <DoodleBubble text="Net 30" tail="right" className="lx-hero-bubble lx-hero-bubble--r" />
-        </div>
         <div className="lx-hero-copy">
-          <DoodleSparkles className="lx-doodle lx-hero-sparkles" />
-          <DoodleCoin className="lx-doodle lx-hero-coin" />
 
           <Reveal>
             <span className="lx-chip">
@@ -248,7 +240,7 @@ export default function Home() {
             accent
             icon={GiftIcon}
             title="Unlimited invoices, completely free"
-            media={<DoodleLandscape className="lx-landscape" />}
+            media={<UnlimitedScene />}
           >
             No paywall, no watermark and no export limit. Billy is free and open source, and every
             feature is unlocked during alpha.
@@ -339,7 +331,6 @@ export default function Home() {
         <SectionHeader
           title={<><Underlined>Everything</Underlined> an invoice needs</>}
           subtitle="All of it built in, none of it behind a paywall."
-          art={<DoodleCoin className="lx-art-coin" />}
         />
         <FeatureTiles
           items={[
@@ -370,6 +361,9 @@ export default function Home() {
           subtitle="Start from a blank invoice or a preset that already fits your trade."
         />
         <Reveal className="lx-card lx-card--wide lx-uses-card">
+          <div className="lx-uses-scene" aria-hidden>
+            <PresetScene />
+          </div>
           <div className="lx-uses">
             {USES.map((use) => {
               const UseIcon = use.icon
@@ -420,12 +414,9 @@ export default function Home() {
 
       {/* ═══ FINAL CTA ═══ */}
       <section className="lx-final">
-        <Confetti />
         <Reveal className="lx-final-inner">
           <div className="lx-final-art" aria-hidden>
-            <DoodlePaperStack className="lx-final-stack" />
-            <DoodleFace className="lx-final-face" />
-            <DoodleSparkles className="lx-final-sparkles" />
+            <BlankPageScene />
           </div>
           <h2 className="lx-h2">Your next invoice is a blank page away</h2>
           <p className="lx-lead">It takes about a minute, and you don&apos;t even need an account.</p>

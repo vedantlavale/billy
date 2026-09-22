@@ -101,34 +101,3 @@ export function FeatureTiles({ items }: { items: { icon: Icon; label: string }[]
     </ul>
   )
 }
-
-/**
- * Scattered confetti strokes around a hero/CTA. Positions are percentages of
- * the parent so the scatter scales with the layout; pieces hide on phones.
- */
-const PIECES: { x: number; y: number; r: number; w: number; tone: "soft" | "blue" | "ink" }[] = [
-  { x: 3, y: 18, r: 40, w: 30, tone: "soft" },
-  { x: 9, y: 62, r: -28, w: 44, tone: "soft" },
-  { x: 5, y: 86, r: 70, w: 22, tone: "blue" },
-  { x: 16, y: 38, r: 32, w: 18, tone: "blue" },
-  { x: 91, y: 14, r: -38, w: 24, tone: "blue" },
-  { x: 95, y: 44, r: 18, w: 40, tone: "soft" },
-  { x: 86, y: 74, r: -60, w: 20, tone: "blue" },
-  { x: 93, y: 90, r: 30, w: 34, tone: "soft" },
-  { x: 80, y: 28, r: 64, w: 14, tone: "ink" },
-  { x: 22, y: 90, r: -12, w: 28, tone: "soft" },
-]
-
-export function Confetti() {
-  return (
-    <div className="lx-confetti" aria-hidden>
-      {PIECES.map((p, i) => (
-        <span
-          key={i}
-          data-tone={p.tone}
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.w, rotate: `${p.r}deg`, animationDelay: `${i * 0.4}s` }}
-        />
-      ))}
-    </div>
-  )
-}
