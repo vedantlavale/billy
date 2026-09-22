@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Check, MousePointerClick, X } from "lucide-react"
 import posthog from "posthog-js"
 
 import {
@@ -23,6 +22,7 @@ import {
   formatCurrency,
   type Template,
 } from "@billy/invoice-core"
+import { CheckIcon, PointerIcon, XIcon } from "@/components/icons/rune"
 
 function formatDueDate(iso: string) {
   const date = new Date(`${iso}T00:00:00`)
@@ -136,7 +136,7 @@ function TemplateGallery() {
               <span className="flex items-center justify-between gap-1 px-0.5">
                 <span className="truncate text-[13px] font-semibold leading-5">{template.name}</span>
                 {selected ? (
-                  <Check size={14} strokeWidth={2.5} className="shrink-0 !text-[#0070D7]" aria-hidden />
+                  <CheckIcon size={14} strokeWidth={2.5} className="shrink-0 !text-[#0070D7]" aria-hidden />
                 ) : (
                   template.pro && <span className="ed-chip !h-5 !px-2 !text-[10px]">Pro</span>
                 )}
@@ -238,7 +238,7 @@ export function InspectorPanel({
             aria-label="Close settings"
             className="ed-btn ed-btn--ghost ed-btn--icon"
           >
-            <X size={16} />
+            <XIcon size={16} />
           </button>
         </div>
       )}
@@ -251,7 +251,7 @@ export function InspectorPanel({
         <OptionsPanel />
         <section className="ed-section">
           <p className="flex items-start gap-2 text-xs leading-4">
-            <MousePointerClick size={14} className="mt-px shrink-0" aria-hidden />
+            <PointerIcon size={14} className="mt-px shrink-0" aria-hidden />
             Everything else, from names and dates to line items and rates, is edited by clicking
             it on the invoice.
           </p>

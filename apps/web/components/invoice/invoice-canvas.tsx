@@ -1,12 +1,12 @@
 'use client'
 
 import * as React from "react"
-import { Eye, Minus, MousePointerClick, Plus, X } from "lucide-react"
 
 import { InvoicePage } from "@/components/invoice/invoice-page"
 import { RenderModeProvider } from "@/components/invoice/render-mode"
 import type { EditorMode } from "@/components/invoice/toolbar"
 import { Kbd, useModKey } from "@/components/invoice/editor-ui"
+import { EyeIcon, MinusIcon, PlusIcon, PointerIcon, XIcon } from "@/components/icons/rune"
 
 export const invoiceCanvasId = "invoice-canvas"
 
@@ -94,7 +94,7 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
         <div className="flex min-h-full w-max min-w-full flex-col items-center gap-4 px-4 pb-24 pt-6 sm:px-8 sm:pt-8">
           {mode === "edit" && hintVisible && (
             <div className="ed-hint ed-chrome">
-              <MousePointerClick size={16} aria-hidden />
+              <PointerIcon size={16} aria-hidden />
               <span>
                 Click any text to edit it. <Kbd>{mod}K</Kbd> for commands.
               </span>
@@ -104,13 +104,13 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
                 className="ed-btn ed-btn--ghost ed-btn--icon !h-7 !w-7"
                 aria-label="Dismiss tip"
               >
-                <X size={14} aria-hidden />
+                <XIcon size={14} aria-hidden />
               </button>
             </div>
           )}
           {mode === "preview" && (
             <div className="ed-hint ed-chrome !pr-3">
-              <Eye size={16} aria-hidden />
+              <EyeIcon size={16} aria-hidden />
               <span>Preview: this is exactly what the PDF will look like.</span>
             </div>
           )}
@@ -146,7 +146,7 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
             disabled={scale <= ZOOM_STEPS[0] + 0.001}
             aria-label="Zoom out"
           >
-            <Minus size={14} aria-hidden />
+            <MinusIcon size={14} aria-hidden />
           </button>
           <button
             type="button"
@@ -163,7 +163,7 @@ export function InvoiceCanvas({ mode }: { mode: EditorMode }) {
             disabled={scale >= ZOOM_STEPS[ZOOM_STEPS.length - 1] - 0.001}
             aria-label="Zoom in"
           >
-            <Plus size={14} aria-hidden />
+            <PlusIcon size={14} aria-hidden />
           </button>
           <span className="mx-1 h-4 w-px bg-[#E5E7EB]" aria-hidden />
           <button

@@ -1,14 +1,13 @@
 'use client'
 
 import * as React from "react"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { ImageUpload01Icon } from "@hugeicons/core-free-icons"
 
 import { cn } from "@/lib/utils"
 import { MorphingSquare } from "@/components/ui/morphing-square"
 import { useReadOnly } from "@/components/invoice/render-mode"
 import { uploadInvoiceAsset } from "@/lib/storage"
 import posthog from "posthog-js"
+import { ImagePlusIcon } from "@/components/icons/rune"
 
 export interface LogoUploadProps {
   logoUrl: string | null
@@ -79,7 +78,7 @@ export function LogoUpload({ logoUrl, onChange, className }: LogoUploadProps) {
             className="h-full w-full object-contain"
           />
         ) : (
-          <HugeiconsIcon icon={ImageUpload01Icon} size={26} />
+          <ImagePlusIcon size={26} />
         )}
         {uploading ? (
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-slate-900/60">

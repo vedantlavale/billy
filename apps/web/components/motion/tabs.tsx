@@ -9,7 +9,6 @@
  * use blue as the active emphasis. Behaviour is unchanged.
  */
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cancelFrame, frame, motion, MotionConfig, useReducedMotion, type Transition } from "motion/react";
 import {
   createContext,
@@ -24,6 +23,7 @@ import {
 } from "react";
 import { EASE_OUT } from "@/lib/ease";
 import { cn } from "@/lib/utils";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons/rune";
 
 type Variant = "pill" | "underline" | "segment";
 
@@ -233,7 +233,7 @@ export function TabsList({
     <div ref={rootRef} className={cn("relative isolate flex w-full max-w-full min-w-0 items-center", edges.overflow && surfaceClass, wrapperClassName)}>
       {edges.overflow && (
         <button type="button" aria-label="Scroll tabs left" aria-controls={viewportId} disabled={!edges.left} onClick={() => scroll(-1)} className={cn(controlClass, "left-0 rounded-l-full")}>
-          <ChevronLeft size={20} aria-hidden="true" />
+          <ChevronLeftIcon size={20} aria-hidden="true" />
         </button>
       )}
       <motion.div
@@ -260,7 +260,7 @@ export function TabsList({
       )}
       {edges.overflow && (
         <button type="button" aria-label="Scroll tabs right" aria-controls={viewportId} disabled={!edges.right} onClick={() => scroll(1)} className={cn(controlClass, "right-0 rounded-r-full")}>
-          <ChevronRight size={20} aria-hidden="true" />
+          <ChevronRightIcon size={20} aria-hidden="true" />
         </button>
       )}
     </div>

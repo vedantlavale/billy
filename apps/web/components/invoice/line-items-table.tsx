@@ -1,8 +1,6 @@
 'use client'
 
 import * as React from "react"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { AddInvoiceIcon, Delete02Icon } from "@hugeicons/core-free-icons"
 
 import { EditableNumber } from "@/components/invoice/editable-number"
 import { EditableText } from "@/components/invoice/editable-text"
@@ -10,6 +8,7 @@ import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoic
 import { useReadOnly } from "@/components/invoice/render-mode"
 import { calculateLineItemAmount, formatCurrency } from "@billy/invoice-core"
 import { Button } from "@/components/ui/button"
+import { PlusIcon, TrashIcon } from "@/components/icons/rune"
 
 export function LineItemsTable() {
   const state = useInvoiceState()
@@ -125,7 +124,7 @@ export function LineItemsTable() {
                   className="text-slate-400 opacity-0 transition hover:text-[#D92D20] group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Remove line item"
                 >
-                  <HugeiconsIcon icon={Delete02Icon} size={16} />
+                  <TrashIcon size={16} />
                 </Button>
               )}
             </div>
@@ -140,7 +139,7 @@ export function LineItemsTable() {
           className="flex w-full items-center justify-center gap-2 rounded-[7px] border border-dashed border-[#D1D5DB] py-2.5 text-sm font-medium text-[#37352f] transition-colors hover:border-[#0070D7] hover:bg-[#0070D7]/[0.04] hover:text-[#0070D7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070D7]"
           style={{ fontFamily: "var(--font-inter), Inter, sans-serif" }}
         >
-          <HugeiconsIcon icon={AddInvoiceIcon} size={16} />
+          <PlusIcon size={16} />
           Add line item
         </button>
       )}

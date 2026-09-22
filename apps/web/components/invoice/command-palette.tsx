@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { Search } from "lucide-react"
 
 import { Kbd } from "@/components/invoice/editor-ui"
+import { SearchIcon } from "@/components/icons/rune"
 
 export interface Command {
   id: string
@@ -121,7 +121,7 @@ export function CommandPalette({
             transition={{ duration: reduce ? 0 : 0.16, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="ed-palette-search">
-              <Search size={16} aria-hidden />
+              <SearchIcon size={16} aria-hidden />
               <input
                 autoFocus
                 value={query}
