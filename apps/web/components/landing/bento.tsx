@@ -92,8 +92,8 @@ export function FeatureTiles({ items }: { items: { icon: Icon; label: string }[]
     <ul className="lx-tiles">
       {items.map(({ icon: IconCmp, label }, i) => (
         <Reveal as="li" key={label} delay={(i % 4) * 50} className="lx-tile">
-          <span className="lx-tile-icon">
-            <IconCmp size={18} />
+  <span className="lx-tile-icon">
+            <IconCmp size={21} strokeWidth={1.6} />
           </span>
           {label}
         </Reveal>
