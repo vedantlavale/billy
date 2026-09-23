@@ -11,8 +11,10 @@ People edit an invoice like a document and export a PDF that matches the screen
 exactly. There are no accounts, no server and no database. The draft lives in
 `localStorage`, logos and stamps are embedded as data URLs, and the only
 third-party call is PostHog analytics. It ships as a Next.js static export
-(`out/`) on Cloudflare Pages. It is a Turborepo on Bun workspaces: Next.js 16
-(App Router), React 19, Tailwind v4 and TypeScript.
+(`apps/web/out/`) served by Cloudflare Workers static assets — `wrangler.jsonc`
+at the root is an assets-only Worker, and `launch-alpha` is the branch that
+deploys. It is a Turborepo on Bun workspaces: Next.js 16 (App Router),
+React 19, Tailwind v4 and TypeScript.
 
 ```
 browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-to-image + jsPDF) → localStorage
