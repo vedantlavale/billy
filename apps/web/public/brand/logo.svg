@@ -1,28 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 32" width="126" height="32" role="img" aria-label="Billy">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 126 32" width="126" height="32" role="img" aria-label="Billy">
+  <svg x="0" y="0" width="32" height="32" viewBox="0 0 100 100">
   <defs>
-    <linearGradient id="b-tile" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#2E93EE"/>
-      <stop offset="0.52" stop-color="#0070D7"/>
-      <stop offset="1" stop-color="#0A4A97"/>
+    <linearGradient id="billy-sky" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2F6BFF"/>
+      <stop offset="0.6" stop-color="#3C8DFF"/>
+      <stop offset="1" stop-color="#6FD0FF"/>
     </linearGradient>
-    <linearGradient id="b-gloss" x1="0" y1="0" x2="0" y2="10.88" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.26"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="b-rim" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
-      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.14"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.24"/>
-    </linearGradient>
-    <linearGradient id="b-glyph" x1="0" y1="5" x2="0" y2="27" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.88"/>
-    </linearGradient>
+    <clipPath id="billy-tile"><rect width="100" height="100" rx="23"/></clipPath>
   </defs>
-  <rect width="32" height="32" rx="8.4" fill="url(#b-tile)"/>
-  <path fill="url(#b-gloss)" d="M0 8.4A8.4 8.4 0 0 1 8.4 0H23.6A8.4 8.4 0 0 1 32 8.4V9.4C24 12.6 8 12.6 0 9.4Z"/>
-  <rect x="0.6" y="0.6" width="30.8" height="30.8" rx="7.9" fill="none" stroke="url(#b-rim)" stroke-width="1.2"/>
-  <rect x="7.8" y="5.6" width="4.2" height="20.8" rx="2.1" fill="url(#b-glyph)"/>
-  <path fill="url(#b-glyph)" fill-rule="evenodd" d="M24.4 19.2A7.2 7.2 0 1 1 10 19.2A7.2 7.2 0 1 1 24.4 19.2ZM20.2 19.2A3 3 0 1 1 14.2 19.2A3 3 0 1 1 20.2 19.2Z"/>
+  <g clip-path="url(#billy-tile)">
+    <rect width="100" height="100" fill="url(#billy-sky)"/>
+    <path fill="#fff" opacity=".1" d="M62-5C76 15 70 32 90 46S96 80 110 92V-5Z"/>
+    <path fill="#fff" opacity=".12" d="M77-5C86 15 83 32 99 46S103 72 112 82V-5Z"/>
+    <g transform="rotate(-6 50 56)">
+      <path fill="#EEF4FF" stroke="#EEF4FF" stroke-width="2" stroke-linejoin="round" d="M25 22A7 7 0 0 1 32 15H68A7 7 0 0 1 75 22V84L70 77.5L65 84L60 77.5L55 84L50 77.5L45 84L40 77.5L35 84L30 77.5L25 84Z"/>
+      <ellipse cx="40.5" cy="42" rx="5.2" ry="8" fill="#2563EB"/>
+      <ellipse cx="59.5" cy="42" rx="5.2" ry="8" fill="#2563EB"/>
+      <path stroke="#EEF4FF" stroke-width="1.7" stroke-linecap="round" d="M38.6 37.2l2.4 2M57.6 37.2l2.4 2"/>
+      <path stroke="#B9CFF5" stroke-width="4" stroke-linecap="round" d="M36 62H64M36 71H54"/>
+    </g>
+  </g>
+  <rect x=".5" y=".5" width="99" height="99" rx="22.5" fill="none" stroke="#fff" stroke-opacity=".3"/>
+  </svg>
   <text x="41" y="25.5" font-family="Geist, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="27" font-weight="800" letter-spacing="-1.1" fill="#37352f">billy</text>
 </svg>
