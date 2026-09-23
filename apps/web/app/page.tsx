@@ -11,7 +11,6 @@ import {
   ArrowLeftRightIcon,
   CalendarIcon,
   ChevronUpIcon,
-  CircleCheckIcon,
   CircleUserIcon,
   CloudIcon,
   ColumnsIcon,
@@ -40,7 +39,6 @@ import {
   ZapIcon,
 } from "@/components/icons/rune"
 import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
-import { Tooltip } from "@/components/motion/tooltip"
 import { Reveal } from "@/components/landing/reveal"
 import {
   BlankPageScene,
@@ -162,13 +160,6 @@ const GST_DEMO = {
   total: formatCurrency(11800, "INR"),
 }
 
-/** The trust claims under the final CTA, each with the reason it's true. */
-const CLAIMS = [
-  { label: "Free during alpha", why: "Every feature is unlocked. There is no plan to pick and no card to add." },
-  { label: "No account", why: "The editor opens straight away. There is no sign-up, login or email." },
-  { label: "Nothing uploaded", why: "Your draft is saved in this browser's storage. Billy has no server to send it to." },
-]
-
 export default function Home() {
   return (
     <main className="lx" id="top">
@@ -218,20 +209,32 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ TRADES ═══ */}
+      {/* ═══ TRADES — an index, not a pill cloud: the band gives the page its
+           first break from white, and numbering makes ten names scannable ═══ */}
       <section className="lx-trades" aria-labelledby="trades-title">
-        <Reveal>
-          <p className="lx-small" id="trades-title" style={{ fontWeight: 600 }}>
-            Made for people who bill by the job
-          </p>
-          <ul className="lx-trades-list">
-            {TRADES.map((trade) => (
-              <li key={trade} className="lx-chip">
-                {trade}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+        <div className="lx-trades-inner">
+          <Reveal className="lx-trades-head">
+            <p className="lx-kicker">Who it&apos;s for</p>
+            <h2 className="lx-h2" id="trades-title">
+              Made for people who bill by the job
+            </h2>
+            <p className="lx-body">
+              Ten trades, one blank invoice. Switch on the fields yours needs and leave the
+              rest out of the way.
+            </p>
+          </Reveal>
+
+          <Reveal delay={80} className="lx-trades-index">
+            <ol>
+              {TRADES.map((trade, i) => (
+                <li key={trade}>
+                  <span className="lx-trades-n">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="lx-trades-name">{trade}</span>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
       </section>
 
       {/* ═══ 1 · AN EDITOR LIKE NO OTHER ═══ */}
@@ -443,16 +446,6 @@ export default function Home() {
               View the source
             </a>
           </div>
-          <ul className="lx-claims" aria-label="Why you can trust this">
-            {CLAIMS.map((c) => (
-              <li key={c.label}>
-                <Tooltip content={c.why} className="lx-claim">
-                  <CircleCheckIcon size={14} />
-                  {c.label}
-                </Tooltip>
-              </li>
-            ))}
-          </ul>
         </Reveal>
       </section>
 

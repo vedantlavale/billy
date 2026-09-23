@@ -723,21 +723,75 @@
 /* ═══ TRADES ═════════════════════════════════════════════════════════════ */
 
 .lx-trades {
-  max-width: var(--lx-max);
-  margin: 0 auto;
-  padding: clamp(56px, 7vw, 88px) var(--lx-gutter) 0;
-  text-align: center;
+  margin-top: clamp(56px, 7vw, 88px);
+  border-top: 1px solid var(--lx-line);
+  border-bottom: 1px solid var(--lx-line);
+  /* A blue wash, not the footer's neutral grey: the band has to read as part
+     of the page rather than as a second footer. */
+  background: var(--lx-blue-wash);
 }
 
-.lx-trades-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  max-width: 760px;
-  margin: 16px auto 0;
+.lx-trades-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: clamp(24px, 5vw, 72px);
+  max-width: var(--lx-max);
+  margin: 0 auto;
+  padding: clamp(44px, 6vw, 72px) var(--lx-gutter);
+}
+
+.lx-trades-head .lx-h2 {
+  font-size: clamp(25px, 2.8vw, 33px);
+  margin: 8px 0 10px;
+}
+
+.lx-trades-head .lx-body {
+  max-width: 36ch;
+}
+
+.lx-trades-index ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(16px, 3vw, 40px);
+  margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.lx-trades-index li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 11px 10px;
+  border-bottom: 1px solid rgba(0, 112, 215, 0.14);
+  border-radius: var(--lx-r-md);
+}
+
+.lx-trades-n {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--lx-blue);
+  opacity: 0.55;
+}
+
+.lx-trades-name {
+  font-size: clamp(15px, 1.5vw, 17px);
+  font-weight: 600;
+  color: var(--lx-ink);
+}
+
+@media (max-width: 860px) {
+  .lx-trades-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .lx-trades-index ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* ═══ SECTION MODULE (#21) — header · bento · mini-features ══════════════
@@ -1328,39 +1382,6 @@
   border-color: var(--lx-ink);
 }
 
-/* Final CTA claims + tooltip */
-.lx-claims {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.lx-claim {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 30px;
-  padding: 0 12px 0 10px;
-  border: 1px solid var(--lx-line);
-  border-radius: 9999px;
-  background: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: help;
-}
-
-.lx-claim svg { color: var(--lx-blue); }
-
-.lx-claim:hover,
-.lx-claim:focus-visible {
-  border-color: var(--lx-blue);
-  outline: none;
-}
-
 .lx-tooltip {
   display: block;
   max-width: min(280px, calc(100vw - 16px));
@@ -1381,13 +1402,26 @@
    Only feedback motion: things respond when you hover or press them. The
    decorative doodles are still; the product scenes carry the movement. ══ */
 
-.lx-trades-list .lx-chip {
-  transition: transform var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
+.lx-trades-index li {
+  transition: background-color var(--lx-fast) var(--lx-out);
 }
 
-.lx-trades-list .lx-chip:hover {
-  transform: translateY(-1px);
-  background: #e9eaec;
+.lx-trades-index li:hover {
+  background: #ffffff;
+}
+
+.lx-trades-n,
+.lx-trades-name {
+  transition: color var(--lx-fast) var(--lx-out), opacity var(--lx-fast) var(--lx-out),
+    transform var(--lx-fast) var(--lx-out);
+}
+
+.lx-trades-index li:hover .lx-trades-n {
+  opacity: 1;
+}
+
+.lx-trades-index li:hover .lx-trades-name {
+  transform: translateX(2px);
 }
 
 .lx-btn-primary {
