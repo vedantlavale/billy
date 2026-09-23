@@ -1,0 +1,19 @@
+# Billy is a Turborepo: the Next.js app lives in apps/web and builds to a fully
+# static export. Netlify builds from the repo root, so the commands run turbo
+# from here and publish the exported directory. Headers mirror
+# apps/web/public/_headers (which only Cloudflare Pages reads).
+
+[build]
+  command = "bun install && bun run build"
+  publish = "apps/web/out"
+
+[build.environment]
+  BUN_VERSION = "1.3.14"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
