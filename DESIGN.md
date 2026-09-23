@@ -14,67 +14,67 @@ colors:
   muted: "#F3F4F6"
 typography:
   headline-display:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 64px
     fontWeight: 700
     lineHeight: 64px
     letterSpacing: -0.02em
   headline-lg:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 49px
     fontWeight: 700
     lineHeight: 59px
     letterSpacing: 0px
   headline-md:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 38px
     fontWeight: 700
     lineHeight: 46px
     letterSpacing: 0px
   headline-sm:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 29px
     fontWeight: 600
     lineHeight: 35px
     letterSpacing: 0px
   body-lg:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 22px
     fontWeight: 500
     lineHeight: 33px
     letterSpacing: 0px
   body-md:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 16px
     fontWeight: 400
     lineHeight: 24px
     letterSpacing: 0px
   body-sm:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 14px
     fontWeight: 400
     lineHeight: 20px
     letterSpacing: 0px
   label-lg:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 16px
     fontWeight: 600
     lineHeight: 24px
     letterSpacing: 0px
   label-md:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 14px
     fontWeight: 600
     lineHeight: 20px
     letterSpacing: 0px
   label-sm:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 12px
     fontWeight: 600
     lineHeight: 16px
     letterSpacing: 0px
   caption:
-    fontFamily: Inter
+    fontFamily: Geist
     fontSize: 12px
     fontWeight: 500
     lineHeight: 16px
@@ -152,7 +152,7 @@ Tally feels lightweight, friendly, and extremely approachable, with a playful ed
 
 ## Typography
 
-Inter is the sole typographic voice, giving the interface a modern and highly readable SaaS feel. Headlines are bold and compact, with `headline-display` at 64px using tight negative tracking to create a strong hero statement. Body text is medium-weight in larger contexts and regular-weight in standard UI contexts, preserving clarity while keeping the page airy.
+Geist is the sole typographic voice for the interface, giving it a modern and highly readable feel. It covers the landing page, the editor chrome and the wordmark. Invoice templates are deliberately outside this rule: each picks its own family, because the document is the user's, not ours. Headlines are bold and compact, with `headline-display` at 64px using tight negative tracking to create a strong hero statement. Body text is medium-weight in larger contexts and regular-weight in standard UI contexts, preserving clarity while keeping the page airy.
 
 Labels and buttons rely on `label-md` and `label-sm`, which are semibold and compact for control surfaces. The source imagery shows no uppercase system labels, so keep case natural and avoid forced all-caps treatments. The hierarchy should remain simple: large bold headlines, medium body copy, and restrained utility labels.
 
@@ -187,7 +187,7 @@ Chips and tags should be compact, rounded, and low contrast, using muted backgro
 ## Do's and Don'ts
 
 - Do keep the interface airy, centered, and whitespace-rich.
-- Do use Inter across all typography scales for consistency.
+- Do use Geist across all interface typography scales for consistency.
 - Do reserve blue for primary actions, links, and active emphasis.
 - Do prefer subtle borders and soft shadows over heavy depth effects.
 - Do keep buttons compact, semibold, and around 40px tall.

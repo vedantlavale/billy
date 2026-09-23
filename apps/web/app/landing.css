@@ -57,7 +57,7 @@
 
   background: var(--lx-page);
   color: var(--lx-ink);
-  font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-geist), Geist, ui-sans-serif, system-ui, sans-serif;
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
@@ -1389,7 +1389,7 @@
   border-radius: 8px;
   background: var(--lx-ink);
   color: #ffffff;
-  font-family: var(--font-inter), Inter, sans-serif;
+  font-family: var(--font-geist), Geist, ui-sans-serif, system-ui, sans-serif;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.45;

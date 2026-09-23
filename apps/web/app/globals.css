@@ -127,7 +127,10 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    /* Geist is the interface face. Templates keep their own families: they
+       resolve through --invoice-font, and --font-sans still means Source Sans
+       to the Clean template. */
+    font-family: var(--font-geist), Geist, ui-sans-serif, system-ui, sans-serif;
   }
   ::selection {
     background-color: rgba(0, 112, 215, 0.18);
@@ -141,7 +144,7 @@
   gap: 9px;
   color: #37352f;
   text-decoration: none;
-  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-family: var(--font-geist), Geist, ui-sans-serif, system-ui, sans-serif;
 }
 .brand-word {
   font-size: 22px;
@@ -1181,7 +1184,7 @@
     --ed-blue-wash: rgba(0, 112, 215, 0.08);
     --ed-error: #D92D20;
     --ed-shadow: 0 1px 2px rgba(55, 53, 47, 0.06);
-    font-family: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-geist), Geist, ui-sans-serif, system-ui, sans-serif;
     letter-spacing: 0;
     background-color: var(--ed-muted);
   }

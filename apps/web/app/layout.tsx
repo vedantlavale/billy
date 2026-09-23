@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Source_Sans_3, Montserrat, Outfit, Inter, Instrument_Serif, DM_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Source_Sans_3, Montserrat, Outfit, Inter, Instrument_Serif, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -37,6 +37,11 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+});
+
 const geistMono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
@@ -67,7 +72,7 @@ export default function RootLayout({
       // The inline script below sets data-js="1" before hydration; that
       // attribute is intentionally absent from the server HTML.
       suppressHydrationWarning
-      className={`${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${dmSans.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geist.variable} ${sourceSans.variable} ${montserrat.variable} ${outfit.variable} ${inter.variable} ${dmSans.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {/*
