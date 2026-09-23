@@ -15,5 +15,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  // migrate-images-to-storage.ts is a dead Supabase leftover (see AGENTS.md):
+  // it imports a package the workspace no longer depends on, which fails the
+  // app build on a clean install. download-fonts.ts stays type-checked.
+  "exclude": ["node_modules", "scripts/migrate-images-to-storage.ts"]
 }
