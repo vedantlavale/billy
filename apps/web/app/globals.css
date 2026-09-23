@@ -1520,40 +1520,60 @@
   }
 
   /* Command palette (⌘K) */
+  .ed-palette-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(55, 53, 47, 0.18);
+    /* The invoice behind drops out of focus while the palette is open.
+       One filter function, not two: the CSS minifier joins a two-function
+       value into `blur(8px)saturate(...)` and the declaration is dropped. */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
   .ed-palette {
     position: fixed;
     left: 50%;
-    top: 14vh;
+    top: 13vh;
     z-index: 51;
     display: flex;
-    width: min(560px, calc(100vw - 32px));
-    max-height: min(480px, 72vh);
+    width: min(600px, calc(100vw - 32px));
+    max-height: min(520px, 74vh);
     flex-direction: column;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--ed-line);
     background-color: #ffffff;
-    box-shadow: 0 1px 2px rgba(55, 53, 47, 0.06), 0 24px 60px -20px rgba(55, 53, 47, 0.35);
+    box-shadow: 0 1px 2px rgba(55, 53, 47, 0.06), 0 32px 70px -24px rgba(55, 53, 47, 0.4);
     translate: -50% 0;
   }
   .ed-palette-search {
     display: flex;
     align-items: center;
-    gap: 10px;
-    height: 52px;
+    gap: 11px;
+    height: 58px;
     flex-shrink: 0;
     border-bottom: 1px solid var(--ed-line);
-    padding: 0 12px 0 16px;
+    padding: 0 14px 0 18px;
   }
+  .ed-palette-search > svg { color: rgba(55, 53, 47, 0.45); }
   .ed-palette-search input {
     flex: 1;
     min-width: 0;
     border: 0;
     background: transparent;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
+    letter-spacing: -0.01em;
     color: var(--ed-ink);
     outline: none;
+  }
+  .ed-palette-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(55, 53, 47, 0.45);
+    font-variant-numeric: tabular-nums;
   }
   .ed-palette-search input::placeholder { color: rgba(55, 53, 47, 0.5); }
   .ed-palette-list {
@@ -1563,26 +1583,56 @@
     padding: 6px;
   }
   .ed-palette-group {
-    padding: 10px 10px 4px;
-    font-size: 12px;
+    padding: 12px 10px 5px;
+    font-size: 11px;
     font-weight: 600;
     line-height: 16px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(55, 53, 47, 0.45);
   }
   .ed-palette-item {
     display: flex;
-    height: 38px;
+    height: 40px;
     align-items: center;
-    gap: 10px;
-    border-radius: 7px;
+    gap: 11px;
+    border-radius: 9px;
     padding: 0 10px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
   }
+  /* Every row reserves the same leading slot, so labels stay on one axis
+     whether the command has an icon, a template palette or neither. */
+  .ed-palette-icon {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    flex: none;
+    place-items: center;
+    border-radius: 6px;
+    color: var(--ed-ink);
+  }
   .ed-palette-item[aria-selected="true"] {
     background-color: var(--ed-blue-wash);
     box-shadow: inset 2px 0 0 var(--ed-blue);
   }
+  .ed-palette-item[aria-selected="true"] .ed-palette-icon { color: var(--ed-blue); }
+  .ed-palette-enter {
+    font-size: 12px;
+    line-height: 1;
+    color: var(--ed-blue);
+  }
+  /* A template's own three colours, so the look is visible before you run it. */
+  .ed-palette-swatch {
+    display: flex;
+    width: 18px;
+    height: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(55, 53, 47, 0.16);
+    border-radius: 5px;
+  }
+  .ed-palette-swatch > span { flex: 1; }
   .ed-palette-hint {
     font-size: 12px;
     font-weight: 600;
@@ -1598,8 +1648,9 @@
     flex-shrink: 0;
     border-top: 1px solid var(--ed-line);
     background-color: #fafafa;
-    padding: 8px 14px;
+    padding: 9px 16px;
     font-size: 12px;
+    color: rgba(55, 53, 47, 0.6);
   }
   .ed-palette-foot span { display: inline-flex; align-items: center; gap: 4px; }
 

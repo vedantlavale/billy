@@ -14,11 +14,22 @@ export interface Command {
   keywords?: string
   /** Current value shown at the right, e.g. "On" for a toggle. */
   hint?: string
+  /** Leading glyph. Templates pass their own palette instead of an icon. */
+  icon?: React.ReactNode
   /** Keyboard shortcut shown at the right, e.g. ["⌘", "P"]. */
   shortcut?: string[]
   /** Keep the palette open after running (for toggles you may flip in a row). */
   keepOpen?: boolean
   run: () => void
+}
+
+/** Stand-in glyph so rows without an icon still line up on the same grid. */
+function DotIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden focusable="false">
+      <circle cx="12" cy="12" r="3.2" fill="currentColor" opacity="0.35" />
+    </svg>
+  )
 }
 
 function matches(command: Command, query: string) {
@@ -101,7 +112,7 @@ export function CommandPalette({
         <>
           <motion.div
             key="backdrop"
-            className="fixed inset-0 z-50 bg-[#37352f]/25"
+            className="ed-palette-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -115,10 +126,14 @@ export function CommandPalette({
             aria-modal="true"
             aria-label="Command palette"
             className="ed-palette ed-chrome"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -10, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, scale: 0.99 }}
-            transition={{ duration: reduce ? 0 : 0.16, ease: [0.16, 1, 0.3, 1] }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.985 }}
+            transition={
+              reduce
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 460, damping: 34, mass: 0.7, opacity: { duration: 0.12 } }
+            }
           >
             <div className="ed-palette-search">
               <SearchIcon size={16} aria-hidden />
@@ -138,6 +153,9 @@ export function CommandPalette({
                 aria-autocomplete="list"
                 spellCheck={false}
               />
+              <span className="ed-palette-count" aria-hidden>
+                {results.length}
+              </span>
               <Kbd>Esc</Kbd>
             </div>
 
@@ -161,12 +179,20 @@ export function CommandPalette({
                       onMouseMove={() => index !== activeIndex && setActive(index)}
                       onClick={() => run(command)}
                     >
+                      <span className="ed-palette-icon" aria-hidden>
+                        {command.icon ?? <DotIcon />}
+                      </span>
                       <span className="truncate">{command.label}</span>
                       <span className="ml-auto flex shrink-0 items-center gap-1.5">
                         {command.hint && <span className="ed-palette-hint">{command.hint}</span>}
                         {command.shortcut?.map((key) => (
                           <Kbd key={key}>{key}</Kbd>
                         ))}
+                        {index === activeIndex && (
+                          <span className="ed-palette-enter" aria-hidden>
+                            ↵
+                          </span>
+                        )}
                       </span>
                     </div>
                   </React.Fragment>
