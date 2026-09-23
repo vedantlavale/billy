@@ -94,3 +94,42 @@ export function useModKey() {
     () => "Ctrl",
   )
 }
+
+function readFlag(key: string, fallback: boolean) {
+  try {
+    const stored = localStorage.getItem(key)
+    return stored === null ? fallback : stored === "1"
+  } catch {
+    return fallback
+  }
+}
+
+/**
+ * A boolean kept in localStorage — used for the rails' open/closed state.
+ *
+ * /editor is statically prerendered, so the server and the first client
+ * render must agree. Both use `fallback`; the stored value is adopted after
+ * hydration, the same way the canvas hint does it (#11). Reading
+ * localStorage during render brings the mismatch straight back.
+ *
+ * Deliberately its own key, never part of `billy_invoice_data`: this is a
+ * preference about the chrome, not invoice data.
+ */
+export function usePersistedFlag(key: string, fallback: boolean) {
+  const stored = React.useSyncExternalStore(
+    noopSubscribe,
+    () => readFlag(key, fallback),
+    () => fallback,
+  )
+  const [override, setOverride] = React.useState<boolean | null>(null)
+  const set = React.useCallback(
+    (next: boolean) => {
+      setOverride(next)
+      try {
+        localStorage.setItem(key, next ? "1" : "0")
+      } catch {}
+    },
+    [key],
+  )
+  return [override ?? stored, set] as const
+}

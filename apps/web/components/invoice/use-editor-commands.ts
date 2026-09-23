@@ -33,12 +33,20 @@ export function useEditorCommands({
   setMode,
   onExport,
   onNew,
+  templatesOpen,
+  onToggleTemplates,
+  setupOpen,
+  onToggleSetup,
 }: {
   mod: string
   mode: EditorMode
   setMode: (mode: EditorMode) => void
   onExport: () => void
   onNew: () => void
+  templatesOpen: boolean
+  onToggleTemplates: () => void
+  setupOpen: boolean
+  onToggleSetup: () => void
 }): Command[] {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
@@ -72,6 +80,22 @@ export function useEditorCommands({
         run: () => setMode(mode === "edit" ? "preview" : "edit"),
       },
       { id: "new", group: "Invoice", label: "New invoice", keywords: "reset clear fresh next number", run: onNew },
+      {
+        id: "rail-templates",
+        group: "Panels",
+        label: templatesOpen ? "Hide the templates panel" : "Show the templates panel",
+        keywords: "sidebar rail panel theme design",
+        hint: templatesOpen ? "Shown" : "Hidden",
+        run: onToggleTemplates,
+      },
+      {
+        id: "rail-setup",
+        group: "Panels",
+        label: setupOpen ? "Hide the setup panel" : "Show the setup panel",
+        keywords: "sidebar rail panel settings options",
+        hint: setupOpen ? "Shown" : "Hidden",
+        run: onToggleSetup,
+      },
       { id: "undo", group: "History", label: canUndo ? "Undo" : "Undo (nothing to undo)", shortcut: [mod, "Z"], run: () => dispatch({ type: "UNDO" }) },
       { id: "redo", group: "History", label: canRedo ? "Redo" : "Redo (nothing to redo)", shortcut: ["⇧", mod, "Z"], run: () => dispatch({ type: "REDO" }) },
       ...PAYMENT_TERMS.map((t) => ({
@@ -123,5 +147,19 @@ export function useEditorCommands({
       })),
     ]
     return commands
-  }, [state, dispatch, canUndo, canRedo, mod, mode, setMode, onExport, onNew])
+  }, [
+    state,
+    dispatch,
+    canUndo,
+    canRedo,
+    mod,
+    mode,
+    setMode,
+    onExport,
+    onNew,
+    templatesOpen,
+    onToggleTemplates,
+    setupOpen,
+    onToggleSetup,
+  ])
 }

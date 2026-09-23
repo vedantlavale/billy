@@ -1264,14 +1264,72 @@
     white-space: nowrap;
   }
 
-  /* Inspector (left rail) */
+  /* Inspector rails. Templates sits left, setup right, each collapsible.
+     Widths are set so both can be open at 1440 and still leave the desk
+     enough room to show the A4 page at 100%. */
   .ed-inspector {
     display: flex;
-    width: 340px;
+    width: 300px;
     flex-shrink: 0;
     flex-direction: column;
     border-right: 1px solid var(--ed-line);
     background-color: #ffffff;
+  }
+  .ed-inspector[data-side="left"] {
+    width: 260px;
+  }
+  .ed-inspector[data-side="right"] {
+    border-right: 0;
+    border-left: 1px solid var(--ed-line);
+  }
+
+  .ed-rail-head {
+    display: flex;
+    height: 44px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid var(--ed-line);
+    padding: 0 8px 0 16px;
+  }
+  .ed-rail-title {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+  }
+
+  /* Collapsed: a slim strip on the same edge, so the way back in stays
+     where the rail was rather than moving to the top bar. */
+  .ed-rail-strip {
+    display: flex;
+    width: 44px;
+    flex-shrink: 0;
+    justify-content: center;
+    background-color: #ffffff;
+  }
+  .ed-rail-strip[data-side="left"] { border-right: 1px solid var(--ed-line); }
+  .ed-rail-strip[data-side="right"] { border-left: 1px solid var(--ed-line); }
+  .ed-rail-tab {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0;
+    color: var(--ed-ink);
+    cursor: pointer;
+    flex-direction: column;
+  }
+  .ed-rail-tab:hover { background-color: var(--ed-muted); }
+  .ed-rail-tab-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    writing-mode: vertical-rl;
   }
   .ed-inspector-scroll {
     flex: 1;

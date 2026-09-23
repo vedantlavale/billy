@@ -22,7 +22,15 @@ import {
   formatCurrency,
   type Template,
 } from "@billy/invoice-core"
-import { CheckIcon, PointerIcon, XIcon } from "@/components/icons/rune"
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  LayoutGridIcon,
+  PointerIcon,
+  SlidersIcon,
+  XIcon,
+} from "@/components/icons/rune"
 
 function formatDueDate(iso: string) {
   const date = new Date(`${iso}T00:00:00`)
@@ -109,7 +117,7 @@ function TemplateThumb({ template }: { template: Template }) {
   )
 }
 
-function TemplateGallery() {
+function TemplateGrid() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
 
@@ -119,33 +127,31 @@ function TemplateGallery() {
   }
 
   return (
-    <InspectorSection title="Template">
-      <div className="grid grid-cols-2 gap-2">
-        {TEMPLATES.map((template) => {
-          const selected = state.templateId === template.id
-          return (
-            <button
-              key={template.id}
-              type="button"
-              aria-pressed={selected}
-              title={template.description}
-              onClick={() => select(template)}
-              className="ed-template"
-            >
-              <TemplateThumb template={template} />
-              <span className="flex items-center justify-between gap-1 px-0.5">
-                <span className="truncate text-[13px] font-semibold leading-5">{template.name}</span>
-                {selected ? (
-                  <CheckIcon size={14} strokeWidth={2.5} className="shrink-0 !text-[#0070D7]" aria-hidden />
-                ) : (
-                  template.pro && <span className="ed-chip !h-5 !px-2 !text-[10px]">Pro</span>
-                )}
-              </span>
-            </button>
-          )
-        })}
-      </div>
-    </InspectorSection>
+    <div className="grid grid-cols-2 gap-2">
+      {TEMPLATES.map((template) => {
+        const selected = state.templateId === template.id
+        return (
+          <button
+            key={template.id}
+            type="button"
+            aria-pressed={selected}
+            title={template.description}
+            onClick={() => select(template)}
+            className="ed-template"
+          >
+            <TemplateThumb template={template} />
+            <span className="flex items-center justify-between gap-1 px-0.5">
+              <span className="truncate text-[13px] font-semibold leading-5">{template.name}</span>
+              {selected ? (
+                <CheckIcon size={14} strokeWidth={2.5} className="shrink-0 !text-[#0070D7]" aria-hidden />
+              ) : (
+                template.pro && <span className="ed-chip !h-5 !px-2 !text-[10px]">Pro</span>
+              )}
+            </span>
+          </button>
+        )
+      })}
+    </div>
   )
 }
 
@@ -200,38 +206,151 @@ function PaymentTerms() {
   )
 }
 
+/** Everything that isn't the template gallery: totals, terms, options. */
+function SetupSections() {
+  return (
+    <>
+      <Summary />
+      <PaymentTerms />
+      <CurrencyField />
+      <ProfessionPreset />
+      <OptionsPanel />
+      <section className="ed-section">
+        <p className="flex items-start gap-2 text-xs leading-4">
+          <PointerIcon size={14} className="mt-px shrink-0" aria-hidden />
+          Everything else, from names and dates to line items and rates, is edited by clicking
+          it on the invoice.
+        </p>
+      </section>
+    </>
+  )
+}
+
 /**
- * Persistent settings rail beside the invoice. On large screens it is always
- * visible; below `lg` it becomes a slide-over drawer opened from the top bar.
+ * One rail. Collapsed it becomes a slim strip on the same edge rather than
+ * disappearing, so the way back in stays where the rail was.
  */
-export function InspectorPanel({
-  variant,
-  onClose,
+function Rail({
+  side,
+  title,
+  icon,
+  collapsed,
+  onToggle,
+  children,
 }: {
-  variant: "rail" | "drawer"
-  onClose?: () => void
+  side: "left" | "right"
+  title: string
+  icon: React.ReactNode
+  collapsed: boolean
+  onToggle: (next: boolean) => void
+  children: React.ReactNode
 }) {
+  if (collapsed) {
+    return (
+      <div className="ed-rail-strip hidden lg:flex" data-side={side}>
+        <button
+          type="button"
+          onClick={() => onToggle(false)}
+          className="ed-rail-tab"
+          title={`Show ${title.toLowerCase()}`}
+          aria-label={`Show ${title.toLowerCase()}`}
+          aria-expanded={false}
+        >
+          {icon}
+          <span className="ed-rail-tab-label">{title}</span>
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <aside className="ed-inspector ed-chrome hidden lg:flex" data-side={side} aria-label={title}>
+      <div className="ed-rail-head">
+        <h2 className="ed-rail-title">
+          {icon}
+          {title}
+        </h2>
+        <button
+          type="button"
+          onClick={() => onToggle(true)}
+          className="ed-btn ed-btn--ghost ed-btn--icon"
+          title={`Hide ${title.toLowerCase()}`}
+          aria-label={`Hide ${title.toLowerCase()}`}
+          aria-expanded
+        >
+          {side === "left" ? <ChevronLeftIcon size={16} /> : <ChevronRightIcon size={16} />}
+        </button>
+      </div>
+      <div className="ed-inspector-scroll">{children}</div>
+    </aside>
+  )
+}
+
+export function TemplateRail({
+  collapsed,
+  onToggle,
+}: {
+  collapsed: boolean
+  onToggle: (next: boolean) => void
+}) {
+  return (
+    <Rail
+      side="left"
+      title="Templates"
+      icon={<LayoutGridIcon size={15} aria-hidden />}
+      collapsed={collapsed}
+      onToggle={onToggle}
+    >
+      <section className="ed-section">
+        <TemplateGrid />
+      </section>
+    </Rail>
+  )
+}
+
+export function SetupRail({
+  collapsed,
+  onToggle,
+}: {
+  collapsed: boolean
+  onToggle: (next: boolean) => void
+}) {
+  return (
+    <Rail
+      side="right"
+      title="Setup"
+      icon={<SlidersIcon size={15} aria-hidden />}
+      collapsed={collapsed}
+      onToggle={onToggle}
+    >
+      <SetupSections />
+    </Rail>
+  )
+}
+
+/**
+ * Below `lg` there is no room for rails, so both panes stack in one
+ * slide-over opened from the top bar. The template gallery lives here too —
+ * it is the only way to reach it on a narrow screen.
+ */
+export function InspectorDrawer({ onClose }: { onClose: () => void }) {
   React.useEffect(() => {
-    if (variant !== "drawer" || !onClose) return
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose()
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [variant, onClose])
+  }, [onClose])
 
-  const panel = (
-    <aside
-      aria-label="Invoice settings"
-      className={`ed-inspector ed-chrome ${
-        variant === "drawer"
-          ? "fixed inset-y-0 left-0 z-50 max-w-[92vw] shadow-[8px_0_30px_-12px_rgba(55,53,47,0.25)] animate-in slide-in-from-left-4 fade-in duration-200"
-          : "hidden lg:flex"
-      }`}
-    >
-      {variant === "drawer" && (
-        <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-[#E5E7EB] px-6">
-          <h2 className="text-base font-semibold">Invoice settings</h2>
+  return (
+    <>
+      <div className="ed-backdrop animate-in fade-in duration-200" onClick={onClose} aria-hidden />
+      <aside
+        aria-label="Invoice settings"
+        className="ed-inspector ed-chrome fixed inset-y-0 left-0 z-50 flex max-w-[92vw] shadow-[8px_0_30px_-12px_rgba(55,53,47,0.25)] animate-in slide-in-from-left-4 fade-in duration-200"
+      >
+        <div className="ed-rail-head">
+          <h2 className="ed-rail-title">Invoice settings</h2>
           <button
             type="button"
             onClick={onClose}
@@ -241,31 +360,13 @@ export function InspectorPanel({
             <XIcon size={16} />
           </button>
         </div>
-      )}
-      <div className="ed-inspector-scroll">
-        <Summary />
-        <PaymentTerms />
-        <TemplateGallery />
-        <CurrencyField />
-        <ProfessionPreset />
-        <OptionsPanel />
-        <section className="ed-section">
-          <p className="flex items-start gap-2 text-xs leading-4">
-            <PointerIcon size={14} className="mt-px shrink-0" aria-hidden />
-            Everything else, from names and dates to line items and rates, is edited by clicking
-            it on the invoice.
-          </p>
-        </section>
-      </div>
-    </aside>
-  )
-
-  if (variant === "rail") return panel
-
-  return (
-    <>
-      <div className="ed-backdrop animate-in fade-in duration-200" onClick={onClose} aria-hidden />
-      {panel}
+        <div className="ed-inspector-scroll">
+          <SetupSections />
+          <InspectorSection title="Template">
+            <TemplateGrid />
+          </InspectorSection>
+        </div>
+      </aside>
     </>
   )
 }

@@ -10,8 +10,8 @@ import {
   useInvoiceState,
 } from "@/components/invoice/invoice-context"
 import { CommandPalette } from "@/components/invoice/command-palette"
-import { useModKey } from "@/components/invoice/editor-ui"
-import { InspectorPanel } from "@/components/invoice/inspector-panel"
+import { useModKey, usePersistedFlag } from "@/components/invoice/editor-ui"
+import { InspectorDrawer, SetupRail, TemplateRail } from "@/components/invoice/inspector-panel"
 import { useEditorCommands } from "@/components/invoice/use-editor-commands"
 import { Toolbar, type EditorMode } from "@/components/invoice/toolbar"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
@@ -32,6 +32,10 @@ function EditorWorkspace() {
 
   const [mode, setMode] = React.useState<EditorMode>("edit")
   const [settingsOpen, setSettingsOpen] = React.useState(false)
+  // Two rails, each remembered per browser. Templates starts closed: you pick
+  // one once, while setup is worked on throughout.
+  const [templatesOpen, setTemplatesOpen] = usePersistedFlag("billy_editor_rail_templates", false)
+  const [setupOpen, setSetupOpen] = usePersistedFlag("billy_editor_rail_setup", true)
   const [confirmNew, setConfirmNew] = React.useState(false)
   const [exporting, setExporting] = React.useState(false)
 
@@ -90,6 +94,10 @@ function EditorWorkspace() {
     setMode,
     onExport: () => void handleExport(),
     onNew: openNewConfirm,
+    templatesOpen,
+    onToggleTemplates: () => setTemplatesOpen(!templatesOpen),
+    setupOpen,
+    onToggleSetup: () => setSetupOpen(!setupOpen),
   })
 
   React.useEffect(() => {
@@ -159,11 +167,12 @@ function EditorWorkspace() {
       />
 
       <div className="flex min-h-0 flex-1">
-        <InspectorPanel variant="rail" />
+        <TemplateRail collapsed={!templatesOpen} onToggle={(next) => setTemplatesOpen(!next)} />
         <InvoiceCanvas mode={mode} />
+        <SetupRail collapsed={!setupOpen} onToggle={(next) => setSetupOpen(!next)} />
       </div>
 
-      {settingsOpen && <InspectorPanel variant="drawer" onClose={closeSettings} />}
+      {settingsOpen && <InspectorDrawer onClose={closeSettings} />}
 
       <CommandPalette open={paletteOpen} onClose={closePalette} commands={commands} />
 
