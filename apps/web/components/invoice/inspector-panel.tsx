@@ -139,14 +139,21 @@ function TemplateGrid() {
             onClick={() => select(template)}
             className="ed-template"
           >
-            <TemplateThumb template={template} />
-            <span className="flex items-center justify-between gap-1 px-0.5">
-              <span className="truncate text-[13px] font-semibold leading-5">{template.name}</span>
+            <span className="relative block">
+              <TemplateThumb template={template} />
+              {/* The badge sits on the thumbnail so the name gets the whole
+                  cell width — at this rail width it was truncating to
+                  "Corporate …" and "Mono Eleg…". */}
               {selected ? (
-                <CheckIcon size={14} strokeWidth={2.5} className="shrink-0 !text-[#0070D7]" aria-hidden />
+                <span className="ed-template-badge" aria-hidden>
+                  <CheckIcon size={11} strokeWidth={3} />
+                </span>
               ) : (
-                template.pro && <span className="ed-chip !h-5 !px-2 !text-[10px]">Pro</span>
+                template.pro && <span className="ed-template-pro">Pro</span>
               )}
+            </span>
+            <span className="block truncate px-0.5 text-[12px] font-semibold leading-4">
+              {template.name}
             </span>
           </button>
         )
@@ -257,8 +264,10 @@ function Rail({
           aria-expanded={false}
         >
           {icon}
-          <span className="ed-rail-tab-label">{title}</span>
         </button>
+        <span className="ed-rail-hint" aria-hidden>
+          {side === "left" ? <ChevronRightIcon size={13} /> : <ChevronLeftIcon size={13} />}
+        </span>
       </div>
     )
   }

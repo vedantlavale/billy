@@ -1276,7 +1276,7 @@
     background-color: #ffffff;
   }
   .ed-inspector[data-side="left"] {
-    width: 260px;
+    width: 280px;
   }
   .ed-inspector[data-side="right"] {
     border-right: 0;
@@ -1305,32 +1305,41 @@
 
   /* Collapsed: a slim strip on the same edge, so the way back in stays
      where the rail was rather than moving to the top bar. */
+  /* Collapsed rail: a slim tinted strip with one icon button, sitting on the
+     same edge the rail occupied. No rotated label — a sideways word is hard
+     to read and made the strip feel like a leftover. */
   .ed-rail-strip {
     display: flex;
-    width: 44px;
+    width: 48px;
     flex-shrink: 0;
-    justify-content: center;
-    background-color: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+    background-color: #fafafa;
   }
   .ed-rail-strip[data-side="left"] { border-right: 1px solid var(--ed-line); }
   .ed-rail-strip[data-side="right"] { border-left: 1px solid var(--ed-line); }
   .ed-rail-tab {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 0;
-    color: var(--ed-ink);
+    display: grid;
+    width: 36px;
+    height: 32px;
+    place-items: center;
+    border-radius: 8px;
+    color: rgba(55, 53, 47, 0.75);
     cursor: pointer;
-    flex-direction: column;
+    transition: background-color var(--ed-fast, 120ms) ease, color var(--ed-fast, 120ms) ease;
   }
-  .ed-rail-tab:hover { background-color: var(--ed-muted); }
-  .ed-rail-tab-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    writing-mode: vertical-rl;
+  .ed-rail-tab:hover {
+    background-color: #ffffff;
+    box-shadow: var(--ed-shadow);
+    color: var(--ed-blue);
   }
+  /* A muted chevron under the button, pointing the way the rail will open. */
+  .ed-rail-hint {
+    margin-top: 2px;
+    color: rgba(55, 53, 47, 0.3);
+  }
+  .ed-rail-strip:hover .ed-rail-hint { color: rgba(55, 53, 47, 0.55); }
   .ed-inspector-scroll {
     flex: 1;
     overflow-y: auto;
@@ -1381,7 +1390,7 @@
     border-radius: 8px;
     border: 1px solid var(--ed-line);
     background-color: #ffffff;
-    padding: 8px;
+    padding: 7px;
     text-align: left;
     cursor: pointer;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -1401,6 +1410,33 @@
     overflow: hidden;
     border-radius: 4px;
     border: 1px solid var(--ed-line);
+  }
+  .ed-template-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: var(--ed-blue);
+    color: #ffffff;
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+  .ed-template-pro {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 0 0 1px var(--ed-line);
+    padding: 1px 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 12px;
+    color: var(--ed-ink);
   }
 
   /* Preset + list buttons */
@@ -1615,7 +1651,6 @@
   }
   .ed-palette-item[aria-selected="true"] {
     background-color: var(--ed-blue-wash);
-    box-shadow: inset 2px 0 0 var(--ed-blue);
   }
   .ed-palette-item[aria-selected="true"] .ed-palette-icon { color: var(--ed-blue); }
   .ed-palette-enter {
