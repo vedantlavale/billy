@@ -11,8 +11,8 @@ import { useLayoutEffect, useRef, useState } from "react"
  * nothing in particular. Now:
  *  - the targets (the row being typed and the total) are MEASURED, and a
  *    numbered pin sits on the frame edge exactly level with each one;
- *  - when the side gutters have room, a label + hand-drawn arrow lands on
- *    the pin; otherwise the labels become a numbered legend under the frame.
+ *  - the pins, labels and hand-drawn arrows only show when the side
+ *    gutters have room for the labels; narrower screens get no callouts.
  * Pins and arrows are always tied to real geometry, so they can't mislead.
  */
 
@@ -108,44 +108,31 @@ export function HeroAnnotations({ typing }: { typing: boolean }) {
 
   return (
     <div ref={ref} className="lx-annotations" aria-hidden>
-      {layout && (
+      {/* Callouts only show when the side gutters can hold the labels. */}
+      {layout?.wide && (
         <>
           <Pin n={1} y={layout.rowY} side="left" show={show} pulse={typing} />
           <Pin n={2} y={layout.totalY} side="right" show={show} />
-
-          {layout.wide ? (
-            <>
-              <p className="lx-note" style={{ right: `calc(100% + 40px)`, top: layout.rowY - 76, textAlign: "right" }}>
-                Click a line and type
-              </p>
-              <p className="lx-note" style={{ left: `calc(100% + 40px)`, top: layout.totalY - 80 }}>
-                Totals update themselves
-              </p>
-              <svg className="lx-annotation-svg" width={W} height="1" overflow="visible">
-                {left && (
-                  <>
-                    <motion.path d={left.curve} {...draw(0.9)} />
-                    <motion.path d={left.head} {...draw(1.5)} />
-                  </>
-                )}
-                {right && (
-                  <>
-                    <motion.path d={right.curve} {...draw(1.2)} />
-                    <motion.path d={right.head} {...draw(1.8)} />
-                  </>
-                )}
-              </svg>
-            </>
-          ) : (
-            <div className="lx-legend">
-              <span>
-                <b className="lx-pin lx-pin--inline">1</b> Click a line and type
-              </span>
-              <span>
-                <b className="lx-pin lx-pin--inline">2</b> Totals update themselves
-              </span>
-            </div>
-          )}
+          <p className="lx-note" style={{ right: `calc(100% + 40px)`, top: layout.rowY - 76, textAlign: "right" }}>
+            Click a line and type
+          </p>
+          <p className="lx-note" style={{ left: `calc(100% + 40px)`, top: layout.totalY - 80 }}>
+            Totals update themselves
+          </p>
+          <svg className="lx-annotation-svg" width={W} height="1" overflow="visible">
+            {left && (
+              <>
+                <motion.path d={left.curve} {...draw(0.9)} />
+                <motion.path d={left.head} {...draw(1.5)} />
+              </>
+            )}
+            {right && (
+              <>
+                <motion.path d={right.curve} {...draw(1.2)} />
+                <motion.path d={right.head} {...draw(1.8)} />
+              </>
+            )}
+          </svg>
         </>
       )}
     </div>

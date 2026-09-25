@@ -82,7 +82,7 @@ function Summary() {
         <p className="ed-summary-amount">{formatCurrency(totals.total, state.currency)}</p>
         <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 border-t border-[#E5E7EB] pt-3 text-xs leading-4">
           <dt>Billed to</dt>
-          <dd className="truncate text-right font-semibold">{state.clientName || "—"}</dd>
+          <dd className="truncate text-right font-semibold">{state.clientName || "Not set"}</dd>
           <dt>Due date</dt>
           <dd className="text-right font-semibold">{hydrated ? formatDueDate(state.dueDate) : state.dueDate}</dd>
           <dt>Line items</dt>

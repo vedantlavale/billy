@@ -381,10 +381,6 @@
   margin: 0 auto;
 }
 
-.lx-hero .lx-chip {
-  margin-bottom: 28px;
-}
-
 .lx-hero-display {
   max-width: 16ch;
 }
@@ -513,55 +509,8 @@
   to { transform: scale(1.9); opacity: 0; }
 }
 
-.lx-pin--inline {
-  position: static;
-  display: inline-grid;
-  translate: none;
-  width: 20px;
-  height: 20px;
-  font-size: 11px;
-  box-shadow: none;
-}
-
-.lx-legend {
-  position: absolute;
-  top: calc(100% + 20px);
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px 24px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.lx-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .lx-invoice-wrap {
   position: relative;
-}
-
-/* Room for the under-frame legend when the side labels don't fit. */
-.lx-stage {
-  margin-bottom: 44px;
-}
-
-/* On phones the legend stacks, so it needs two lines of room. */
-@media (max-width: 560px) {
-  .lx-stage {
-    margin-bottom: 84px;
-  }
-
-  .lx-legend {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
 }
 
 .lx-invoice {
@@ -1321,7 +1270,7 @@
 
 .lx-footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 40px;
 }
 
@@ -1338,18 +1287,6 @@
   align-items: flex-start;
   gap: 14px;
   max-width: 36ch;
-}
-
-.lx-footer-privacy {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.lx-footer-privacy svg {
-  flex: none;
-  margin-top: 2px;
-  color: var(--lx-blue);
 }
 
 .lx-footer-col {

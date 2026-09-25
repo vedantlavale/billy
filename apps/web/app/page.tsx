@@ -67,7 +67,7 @@ import {
 } from "@/components/landing/doodles"
 
 export const metadata: Metadata = {
-  title: "Billy — Invoicing that feels like typing a document",
+  title: "Billy | Invoicing that feels like typing a document",
   description:
     "Edit an invoice like a document and export a print-ready PDF. Runs entirely in your browser: no account, no server, nothing uploaded.",
 }
@@ -115,11 +115,11 @@ const USES = [
 const FAQS = [
   {
     q: "Do I need an account?",
-    a: "No. There is no sign-up, no login and no billing. Opening the editor is the whole onboarding — your first invoice is about a minute away.",
+    a: "No. There is no sign-up, no login and no billing. Opening the editor is the whole onboarding, and your first invoice is about a minute away.",
   },
   {
     q: "Where does my invoice data go?",
-    a: "Nowhere. Billy is fully client-side: your invoice, client details and any logo you add live in your browser and are kept as a local draft. There is no backend to upload them to, which is also why nobody — including us — can read them.",
+    a: "Nowhere. Billy is fully client-side: your invoice, client details and any logo you add live in your browser and are kept as a local draft. There is no backend to upload them to, which is also why nobody, including us, can read them.",
   },
   {
     q: "What do I actually get out of it?",
@@ -131,7 +131,7 @@ const FAQS = [
   },
   {
     q: "Is it really free?",
-    a: "Billy is free and open-source, and free during alpha with every feature unlocked. If paid plans arrive later, anything you have already made stays yours and stays local.",
+    a: "Yes. Billy is free, with every feature unlocked. If paid plans arrive later, anything you have already made stays yours and stays local.",
   },
   {
     q: "What happens if I clear my browser data?",
@@ -172,13 +172,6 @@ export default function Home() {
       <section className="lx-hero">
         <div className="lx-hero-copy">
 
-          <Reveal>
-            <span className="lx-chip">
-              <span className="lx-chip-dot" aria-hidden="true" />
-              Free · No account · Nothing uploaded
-            </span>
-          </Reveal>
-
           <Reveal delay={60}>
             <h1 className="lx-display lx-hero-display">
               Invoicing that feels like{" "}
@@ -203,7 +196,7 @@ export default function Home() {
                 See how it works
               </a>
             </div>
-            <p className="lx-hero-note">Runs entirely in your browser. Open source.</p>
+            <p className="lx-hero-note">Runs entirely in your browser.</p>
           </Reveal>
         </div>
 
@@ -260,8 +253,8 @@ export default function Home() {
             title="Unlimited invoices, completely free"
             media={<UnlimitedScene />}
           >
-            No paywall, no watermark and no export limit. Billy is free and open source, and every
-            feature is unlocked during alpha.
+            No paywall, no watermark and no export limit. Billy is free, and every feature is
+            unlocked.
           </BentoCard>
           <BentoCard icon={PencilIcon} title="Just start typing" media={<TypeScene />}>
             No forms and no field labels to hunt for. Click any line on the invoice and write, the
@@ -440,14 +433,6 @@ export default function Home() {
           <p className="lx-lead">It takes about a minute, and you don&apos;t even need an account.</p>
           <div className="lx-hero-actions">
             <Cta label="Create a free invoice" tone="primary" large />
-            <a
-              className="lx-btn lx-btn-ghost lx-btn-lg"
-              href="https://github.com/vedantlavale/billy"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              View the source
-            </a>
           </div>
         </Reveal>
       </section>
@@ -459,11 +444,7 @@ export default function Home() {
             <div className="lx-footer-brand">
               <Brand size="lg" />
               <p className="lx-body">
-                A free, open-source invoice editor that runs entirely in your browser.
-              </p>
-              <p className="lx-small lx-footer-privacy">
-                <LockIcon size={14} />
-                Your drafts stay on this device. There is no server to send them to.
+                A free invoice editor that runs entirely in your browser.
               </p>
             </div>
 
@@ -483,18 +464,6 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="lx-footer-col">
-              <span className="lx-footer-head">Open source</span>
-              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy" target="_blank" rel="noreferrer noopener">
-                GitHub
-              </a>
-              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues/new" target="_blank" rel="noreferrer noopener">
-                Report a bug
-              </a>
-              <a className="lx-footer-link" href="https://github.com/vedantlavale/billy/issues" target="_blank" rel="noreferrer noopener">
-                Issues
-              </a>
-            </div>
           </div>
 
           <div className="lx-footer-bar">
