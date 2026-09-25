@@ -90,6 +90,7 @@ export function LineItemsTable() {
                     value,
                   })
                 }
+                ariaLabel="Quantity"
                 min={0}
                 step={1}
                 decimals={0}
@@ -105,6 +106,7 @@ export function LineItemsTable() {
                     value,
                   })
                 }
+                ariaLabel="Rate"
                 min={0}
                 step={0.01}
                 currency={state.currency}

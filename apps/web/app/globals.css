@@ -214,6 +214,13 @@
   background-color: rgba(0, 112, 215, 0.07);
 }
 
+/* The field the phone edit bar is working on. Colour only, no size change. */
+.invoice-editor .invoice-field.invoice-field--active {
+  border-color: #0070D7;
+  background-color: rgba(0, 112, 215, 0.12);
+  box-shadow: 0 0 0 3px rgba(0, 112, 215, 0.18);
+}
+
 .invoice-editor .invoice-input {
   font-family: inherit;
   outline: none;
@@ -1710,6 +1717,92 @@
     .ed-divider { display: none; }
   }
 
+  /* Hints wrap instead of widening the desk past a phone screen. */
+  .ed-hint { max-width: calc(100vw - 32px); }
+  .ed-hint > span { min-width: 0; }
+
+  /* Undo/redo sit in the floating bar only once the top bar has dropped them. */
+  .ed-floating-history { display: none; align-items: center; gap: 2px; }
+  @media (max-width: 639px) {
+    .ed-floating-history { display: inline-flex; }
+    .ed-floating .ed-btn { height: 36px; }
+    .ed-floating .ed-btn--icon { width: 36px; }
+  }
+
+  /* Keyboard hints mean nothing on a touch screen. */
+  @media (pointer: coarse) {
+    .ed-palette-foot,
+    .ed-palette-item .ed-kbd { display: none; }
+  }
+
+  /* Phone edit bar (field-sheet.tsx): a full-size input over the keyboard. */
+  .ed-sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 45;
+    border-top: 1px solid var(--ed-line);
+    background-color: #ffffff;
+    padding: 8px 12px calc(12px + env(safe-area-inset-bottom));
+    box-shadow: 0 -8px 24px -12px rgba(55, 53, 47, 0.25);
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+  .ed-sheet[data-open="false"] {
+    /* Off-screen but still focusable, so a tap can raise the iOS keyboard. */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(calc(100% + 16px));
+  }
+  .ed-sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 36px;
+  }
+  .ed-sheet-label {
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .ed-sheet-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .ed-sheet-input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--ed-blue);
+    background-color: #ffffff;
+    padding: 0 12px;
+    /* 16px stops iOS zooming the page when the field takes focus. */
+    font-size: 16px;
+    line-height: 22px;
+    color: var(--ed-ink);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 112, 215, 0.14);
+  }
+  .ed-sheet-input--multi {
+    height: auto;
+    min-height: 88px;
+    padding: 10px 12px;
+    resize: none;
+  }
+  .ed-sheet-input[data-active="false"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+  }
+  .ed-sheet-done { height: 44px; gap: 6px; padding: 0 14px; }
+
   /* Payment-term quick picks */
   .ed-terms {
     display: grid;
@@ -1730,6 +1823,7 @@
   .ed-topbar,
   .ed-inspector,
   .ed-floating,
+  .ed-sheet,
   .ed-hint { display: none !important; }
   .ed-root, .ed-desk { background: white !important; overflow: visible !important; }
 }

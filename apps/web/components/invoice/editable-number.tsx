@@ -5,6 +5,7 @@ import * as React from "react"
 import { formatCurrency, formatNumber } from "@billy/invoice-core"
 import { cn } from "@/lib/utils"
 import { useReadOnly } from "@/components/invoice/render-mode"
+import { useFieldSheet } from "@/components/invoice/field-sheet"
 
 export interface EditableNumberProps {
   value: number
@@ -17,6 +18,16 @@ export interface EditableNumberProps {
   className?: string
   inputClassName?: string
   ariaLabel?: string
+}
+
+/**
+ * Phone keypads in comma-decimal locales type "12,50". A lone comma followed
+ * by one or two digits is the decimal point; any other comma is grouping.
+ */
+function normaliseDecimal(text: string) {
+  const trimmed = text.trim()
+  if (!trimmed.includes(".") && /^[^,]*,\d{1,2}$/.test(trimmed)) return trimmed.replace(",", ".")
+  return trimmed.replace(/,/g, "")
 }
 
 export function EditableNumber({
@@ -32,6 +43,9 @@ export function EditableNumber({
   ariaLabel,
 }: EditableNumberProps) {
   const readOnly = useReadOnly()
+  const sheet = useFieldSheet()
+  // Stable identity so the sheet can say which field it is editing.
+  const [owner] = React.useState(() => ({}))
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(String(value))
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -52,6 +66,22 @@ export function EditableNumber({
   }, [isEditing])
 
   const startEditing = () => {
+    if (sheet) {
+      sheet.open(
+        {
+          label: ariaLabel ?? "Number",
+          value: String(value),
+          inputType: "text",
+          inputMode: "decimal",
+          onCommit: (text) => {
+            const parsed = Number.parseFloat(normaliseDecimal(text))
+            if (Number.isFinite(parsed) && parsed !== value) onCommit(parsed)
+          },
+        },
+        owner,
+      )
+      return
+    }
     originalValue.current = value
     setDraft(String(value))
     setIsEditing(true)
@@ -138,6 +168,7 @@ export function EditableNumber({
         }}
         className={cn(
           "invoice-field inline-flex min-w-[3ch] items-baseline justify-end rounded-sm px-1 -mx-1 text-right font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/40",
+          sheet?.activeOwner === owner && "invoice-field--active",
           className
         )}
         aria-label={ariaLabel}

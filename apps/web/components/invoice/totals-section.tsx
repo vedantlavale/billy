@@ -34,6 +34,7 @@ export function TotalsSection() {
                 onCommit={(value) =>
                   dispatch({ type: "UPDATE_FIELD", field: "taxRate", value })
                 }
+                ariaLabel={`${taxLabel} rate (%)`}
                 min={0}
                 step={0.1}
                 decimals={2}
@@ -86,6 +87,7 @@ export function TotalsSection() {
                   value,
                 })
               }
+              ariaLabel="Discount (%)"
               min={0}
               step={0.1}
               decimals={2}

@@ -95,6 +95,28 @@ export function useModKey() {
   )
 }
 
+function useMediaQuery(query: string) {
+  const subscribe = React.useCallback(
+    (onChange: () => void) => {
+      const list = window.matchMedia(query)
+      list.addEventListener("change", onChange)
+      return () => list.removeEventListener("change", onChange)
+    },
+    [query],
+  )
+  return React.useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => false)
+}
+
+/** True on touch-first devices, where keyboard hints mean nothing. */
+export function useCoarsePointer() {
+  return useMediaQuery("(pointer: coarse)")
+}
+
+/** A phone held sideways: wide enough to fit the page, too short to type in it. */
+export function useShortScreen() {
+  return useMediaQuery("(max-height: 500px)")
+}
+
 function readFlag(key: string, fallback: boolean) {
   try {
     const stored = localStorage.getItem(key)

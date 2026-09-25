@@ -24,6 +24,7 @@ export function FooterSection() {
                 dispatch({ type: "UPDATE_FIELD", field: "notes", value })
               }
               placeholder="Add a note or thank you message"
+              ariaLabel="Notes"
               multiline
               rows={3}
               className="footer-value text-sm text-[var(--invoice-muted)]"

@@ -74,8 +74,8 @@ export function Toolbar({
     <header className="ed-topbar ed-chrome toolbar editor-chrome">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <Brand size="sm" />
-        <span className="hidden h-5 w-px bg-[#E5E7EB] sm:block" aria-hidden />
-        <div className="hidden min-w-0 items-center gap-2 sm:flex">
+        <span className="hidden h-5 w-px bg-[#E5E7EB] lg:block" aria-hidden />
+        <div className="hidden min-w-0 items-center gap-2 lg:flex">
           <span className="truncate text-sm font-semibold leading-5">
             {state.invoiceNumber || "Untitled"}
           </span>

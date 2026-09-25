@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { useReadOnly } from "@/components/invoice/render-mode"
+import { useFieldSheet } from "@/components/invoice/field-sheet"
 
 export interface EditableTextProps {
   value: string
@@ -33,6 +34,9 @@ export function EditableText({
   displayValue,
 }: EditableTextProps) {
   const readOnly = useReadOnly()
+  const sheet = useFieldSheet()
+  // Stable identity so the sheet can say which field it is editing.
+  const [owner] = React.useState(() => ({}))
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(value)
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -59,6 +63,20 @@ export function EditableText({
   }, [isEditing, multiline])
 
   const startEditing = () => {
+    if (sheet) {
+      sheet.open(
+        {
+          label: ariaLabel ?? placeholder ?? "Field",
+          value,
+          multiline,
+          inputType,
+          placeholder,
+          onCommit,
+        },
+        owner,
+      )
+      return
+    }
     originalValue.current = value
     setDraft(value)
     setIsEditing(true)
@@ -148,6 +166,7 @@ export function EditableText({
           "invoice-field inline-block min-w-[2ch] rounded-sm px-1 -mx-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070D7]/40",
           multiline && "whitespace-pre-line",
           isEmpty && "text-[var(--invoice-subtle)]",
+          sheet?.activeOwner === owner && "invoice-field--active",
           className
         )}
         aria-label={ariaLabel}

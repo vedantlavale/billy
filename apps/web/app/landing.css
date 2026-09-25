@@ -389,6 +389,14 @@
   max-width: 16ch;
 }
 
+/* "typing a document" never wraps (it carries the underline), so on narrow
+   phones the headline scales with the screen instead of running off it. */
+@media (max-width: 420px) {
+  .lx-hero-display {
+    font-size: clamp(30px, 9.4vw, 40px);
+  }
+}
+
 /* The hand-drawn blue underline under the promise. */
 .lx-underline {
   position: relative;
@@ -541,6 +549,19 @@
 /* Room for the under-frame legend when the side labels don't fit. */
 .lx-stage {
   margin-bottom: 44px;
+}
+
+/* On phones the legend stacks, so it needs two lines of room. */
+@media (max-width: 560px) {
+  .lx-stage {
+    margin-bottom: 84px;
+  }
+
+  .lx-legend {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .lx-invoice {
@@ -1129,6 +1150,16 @@
       "scene"
       "uses"
       "cta";
+  }
+}
+
+@media (max-width: 560px) {
+  .lx-uses-card {
+    padding: 24px 20px;
+  }
+
+  .lx-uses-card .lx-uses {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

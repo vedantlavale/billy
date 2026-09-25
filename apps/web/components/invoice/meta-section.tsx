@@ -27,6 +27,7 @@ export function MetaSection() {
             dispatch({ type: "UPDATE_FIELD", field: "invoiceNumber", value })
           }
           placeholder="INV-0001"
+          ariaLabel="Invoice number"
           className="meta-value text-base font-semibold text-[var(--invoice-ink)]"
         />
       </div>
@@ -40,6 +41,7 @@ export function MetaSection() {
             dispatch({ type: "UPDATE_FIELD", field: "invoiceDate", value })
           }
           inputType="date"
+          ariaLabel="Issue date"
           className="meta-value text-base text-[var(--invoice-ink)]"
           displayValue={state.invoiceDate}
         />
@@ -54,6 +56,7 @@ export function MetaSection() {
             dispatch({ type: "UPDATE_FIELD", field: "dueDate", value })
           }
           inputType="date"
+          ariaLabel="Due date"
           className="meta-value text-base text-[var(--invoice-ink)]"
           displayValue={state.dueDate}
         />
@@ -69,6 +72,7 @@ export function MetaSection() {
               dispatch({ type: "UPDATE_FIELD", field: "poNumber", value })
             }
             placeholder="PO-001"
+            ariaLabel="PO number"
             className="meta-value text-base text-[var(--invoice-ink)]"
           />
         </div>

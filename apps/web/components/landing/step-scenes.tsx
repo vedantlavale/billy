@@ -780,10 +780,10 @@ export function UnlimitedScene() {
   return (
     <Scene svgRef={ref} label="Invoices keep being added to a pile while the counter climbs; there is no limit">
       {Array.from({ length: N }, (_, i) => sheet(i))}
-      <text x="176" y="52" fontSize="11" fontWeight="600" fill={INK}>Invoices this month</text>
+      <text x="160" y="52" fontSize="11" fontWeight="600" fill={INK}>Invoices this month</text>
       <defs>
         <clipPath id="lx-count-clip">
-          <rect x="172" y="58" width="100" height="36" />
+          <rect x="156" y="58" width="100" height="36" />
         </clipPath>
       </defs>
       <g clipPath="url(#lx-count-clip)">
@@ -797,14 +797,14 @@ export function UnlimitedScene() {
           )}
         >
           {counts.map((c, i) => (
-            <text key={c} x="176" y={86 + i * 36} fontSize="30" fontWeight="700" fill={INK}>
+            <text key={c} x="160" y={86 + i * 36} fontSize="30" fontWeight="700" fill={INK}>
               {c}
             </text>
           ))}
         </motion.g>
       </g>
-      <rect x="176" y="100" width="88" height="22" rx="11" fill={BLUE} opacity="0.1" />
-      <text x="220" y="115" fontSize="10" fontWeight="700" fill={BLUE} textAnchor="middle">No limit · Free</text>
+      <rect x="160" y="100" width="88" height="22" rx="11" fill={BLUE} opacity="0.1" />
+      <text x="204" y="115" fontSize="10" fontWeight="700" fill={BLUE} textAnchor="middle">No limit · Free</text>
     </Scene>
   )
 }
