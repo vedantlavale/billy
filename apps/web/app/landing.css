@@ -1682,4 +1682,260 @@
   display: block;
   height: 28px;
   width: auto;
+/* ══ /connect: Billy for AI assistants ══════════════════════════════════════ */
+
+.lx-connect-display {
+  max-width: 18ch;
+  margin-top: 20px;
+}
+
+.lx-connect-section {
+  max-width: 820px;
+  padding-top: clamp(40px, 6vw, 64px);
+}
+
+.lx-connect-card {
+  gap: 20px;
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.lx-connect-card:hover {
+  border-color: var(--lx-line);
+}
+
+.lx .lx-connect-card code,
+.lx .lx-connect-card pre,
+.lx-codeblock pre {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* The address itself: the one thing people must get exactly right. */
+.lx-endpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lx-endpoint-label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.lx-endpoint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 14px;
+  border: 1px solid var(--lx-line-2);
+  border-radius: var(--lx-r-md);
+  background: var(--lx-blue-wash);
+}
+
+.lx-endpoint-row code {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.lx-endpoint-note {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.lx-copy-btn {
+  flex-shrink: 0;
+  min-width: 76px;
+}
+
+.lx-connect-tabs {
+  max-width: 100%;
+}
+
+.lx-connect-body {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.lx-connect-body code {
+  padding: 1px 5px;
+  border-radius: var(--lx-r-sm);
+  background: var(--lx-muted);
+  font-size: 0.9em;
+}
+
+.lx-connect-for {
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.lx-connect-after {
+  margin: 14px 0 8px;
+}
+
+.lx-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: lx-step;
+}
+
+.lx-steps li {
+  position: relative;
+  padding-left: 34px;
+  counter-increment: lx-step;
+}
+
+.lx-steps li::before {
+  content: counter(lx-step);
+  position: absolute;
+  top: 1px;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--lx-blue-wash);
+  color: var(--lx-blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lx-copyline,
+.lx-codeblock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 14px;
+  border: 1px solid var(--lx-line);
+  border-radius: var(--lx-r-md);
+  background: var(--lx-muted);
+}
+
+.lx-connect-body .lx-copyline code,
+.lx-connect-body .lx-codeblock pre {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  background: none;
+  font-size: 13.5px;
+  line-height: 22px;
+  white-space: pre;
+  scrollbar-width: thin;
+}
+
+.lx-codeblock {
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* How it works */
+.lx-connect-head {
+  max-width: 640px;
+}
+
+.lx-connect-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lx-connect-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  border: 1px solid var(--lx-line);
+  border-radius: 10px;
+}
+
+.lx-connect-num {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 8px;
+  border-radius: var(--lx-r-md);
+  background: var(--lx-blue);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Try saying */
+.lx-prompts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.lx-prompt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--lx-line);
+  border-radius: 10px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
+}
+
+.lx-prompt:hover {
+  border-color: var(--lx-blue);
+  background: var(--lx-blue-wash);
+}
+
+.lx-prompt-text {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.lx-prompt-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--lx-blue);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .lx-connect-steps,
+  .lx-prompts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .lx-endpoint-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+  }
+
+  .lx-endpoint-row code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

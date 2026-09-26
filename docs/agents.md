@@ -9,7 +9,9 @@ the link: add them once in the editor and that browser keeps them.
 
 ## Connect an assistant
 
-The endpoint is `https://trybilly.tech/mcp`. No account or key is needed.
+The setup page for people is `/connect` (`apps/web/app/connect/page.tsx`); keep
+it and this table in step. The endpoint is `https://trybilly.tech/mcp`. No
+account or key is needed.
 
 | Client | How |
 | --- | --- |

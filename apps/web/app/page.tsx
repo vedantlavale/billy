@@ -462,6 +462,9 @@ export default function Home() {
               <Link className="lx-footer-link" href="/editor">
                 Open the editor
               </Link>
+              <Link className="lx-footer-link" href="/connect">
+                Use with AI assistants
+              </Link>
               <a className="lx-footer-link" href="#features">
                 Features
               </a>
