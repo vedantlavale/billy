@@ -1,1 +1,1 @@
-export { createBillyServer, type BillyServerOptions } from "./server"
+export { createBillyServer, withDefaults, type BillyServerOptions } from "./server"

@@ -186,8 +186,8 @@ export function parseInvoiceInput(raw: unknown, today?: Date): ParseResult {
 
   const input = parsed.data
   const warnings: string[] = []
-  if (!input.from?.name) warnings.push("No sender name: ask the user for their business name.")
-  if (!input.from?.email) warnings.push("No sender email: the client won't know where to reply.")
+  if (!input.from?.name) warnings.push("No sender name, so the invoice doesn't say who it's from.")
+  if (!input.from?.email) warnings.push("No sender email, so the client won't know where to reply.")
   if (input.dueDate && input.dueInDays !== undefined) warnings.push("Both dueDate and dueInDays were given; used dueDate.")
   if (input.issueDate && input.dueDate && input.dueDate < input.issueDate) {
     warnings.push("The due date is before the issue date.")

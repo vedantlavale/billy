@@ -35,7 +35,8 @@ const createOutput = z.object({
   warnings: z.array(z.string()),
 })
 
-function mergeDefaults(args: InvoiceInput, defaults: BillyServerOptions["defaults"] = {}): InvoiceInput {
+/** `args` with gaps filled from saved defaults. What the caller sent always wins. */
+export function withDefaults(args: InvoiceInput, defaults: BillyServerOptions["defaults"] = {}): InvoiceInput {
   const { from, bank, ...rest } = defaults
   return {
     ...rest,
@@ -63,7 +64,7 @@ export function createBillyServer(options: BillyServerOptions = {}): McpServer {
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
     },
     async (args) => {
-      const result = parseInvoiceInput(mergeDefaults(args, options.defaults))
+      const result = parseInvoiceInput(withDefaults(args, options.defaults))
       if (!result.ok) {
         return {
           isError: true,

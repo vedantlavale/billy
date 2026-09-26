@@ -56,3 +56,6 @@ next-env.d.ts
 
 # wrangler local state and dry-run bundles
 .wrangler/
+
+# bundled CLI
+packages/cli/dist/

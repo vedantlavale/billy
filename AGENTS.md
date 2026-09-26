@@ -8,16 +8,19 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Billy is a free, open-source invoice editor that runs entirely in the browser.
 People edit an invoice like a document and export a PDF that matches the screen
-exactly. There are no accounts, no server and no database. The draft lives in
+exactly. There are no accounts and no database. The draft lives in
 `localStorage`, logos and stamps are embedded as data URLs, and the only
 third-party call is PostHog analytics. It ships as a Next.js static export
 (`apps/web/out/`) deployed on Vercel from `main`; `vercel.json` at the root sets
-the install, build and output. Cloudflare only runs the DNS. It is a Turborepo
-on Bun workspaces: Next.js 16 (App Router),
+the install, build and output. `/mcp` is a Cloudflare Worker (`wrangler.jsonc`,
+code in `apps/mcp`): the only path that runs code, a stateless endpoint that
+lets AI agents build invoices (see below); everything else is a static file.
+It is a Turborepo on Bun workspaces: Next.js 16 (App Router),
 React 19, Tailwind v4 and TypeScript.
 
 ```
 browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-to-image + jsPDF) → localStorage
+agent:   /mcp or `billy` CLI → invoice-core → /editor#i=<invoice in the URL fragment> → editor imports it
 ```
 
 - `apps/web` — the Next.js app: landing page plus editor
@@ -26,7 +29,17 @@ browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-
   holds state and the `localStorage` draft.
 - `apps/web/lib/pdf/client-export.tsx` — client-side PDF export
 - `packages/invoice-core` — `@billy/invoice-core`: pure TS domain (types,
-  totals, templates, theme, currencies, presets). No React.
+  totals, templates, theme, currencies, presets, defaults, the `#i=` link
+  codec). No React. `@billy/invoice-core/agent` holds the zod schema for agent
+  input; keep zod out of the main entry so the web app never bundles it.
+- `packages/mcp` — `@billy/mcp`: the MCP server (tools `create_invoice`,
+  `list_invoice_options`), shared by the Worker and the CLI.
+- `apps/mcp` — the Worker script behind `/mcp` (`run_worker_first` in
+  `wrangler.jsonc`). `bun run dev` in `apps/mcp` runs the whole site plus
+  `/mcp` on wrangler.
+- `packages/cli` — the `trybilly` npm package (`billy` command): `init`,
+  `new`, and `mcp` over stdio. Bundle with `bun run bundle`; it ships with no
+  runtime dependencies.
 - `packages/design` — design tokens. Root `/DESIGN.md` is the spec of record
   and overrides `packages/design/DESIGN.md` where they disagree.
 - `scripts/founders/` — launch-day CLIs for founding-member numbers and unlock
@@ -133,9 +146,14 @@ Run these before opening a PR, and say in the PR body what they printed.
 - **Nothing leaves the browser except anonymous analytics.** The README promises
   that no data leaves the user's machine. Invoice content in a network request,
   PostHog included, breaks that promise.
-- **There is no database and no server.** Nothing needs a shared-DB warning.
-  Adding one is an architecture change for the user to decide, not an
+- **There is no database, and `/mcp` stays stateless.** The endpoint turns an
+  agent's input into a link and forgets it: no storage, no logging of invoice
+  content, no accounts. Nothing needs a shared-DB warning. Adding state or any
+  other server route is an architecture change for the user to decide, not an
   implementation detail.
+- **Invoice links are a public format.** Links already handed out must keep
+  opening. Don't change what `createBlankInvoice()` holds or the `1.` payload
+  layout; add a new version instead.
 - **Returning users have a saved draft.** `billy_invoice_data` in
   `localStorage` is loaded with no validation. A changed data shape without a
   load-time default crashes the editor for existing users. A fresh browser
