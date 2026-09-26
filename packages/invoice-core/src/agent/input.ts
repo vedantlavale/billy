@@ -55,7 +55,12 @@ export const invoiceInputSchema = z.object({
     .max(100)
     .describe("Line items"),
   currency: z
-    .preprocess((v) => (typeof v === "string" ? v.trim().toUpperCase() : v), z.enum(currencyCodes))
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine((code) => currencyCodes.includes(code), {
+      message: `Unsupported currency. Use one of: ${currencyCodes.join(", ")}`,
+    })
     .describe(`ISO currency code. Supported: ${currencyCodes.join(", ")}`),
   taxRate: z.number().min(0).max(100).optional().describe("Tax percent, e.g. 18. Defaults to 0"),
   taxLabel: text("Tax name shown on the invoice, e.g. 'VAT', 'GST', 'Sales tax'").optional(),

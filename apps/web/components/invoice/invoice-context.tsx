@@ -202,10 +202,46 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
   )
 
   const { toast } = useToast()
+  const stateRef = React.useRef(state)
+  React.useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
-  // Load the saved draft once on mount, then an invoice carried in the link
-  // (#i=…) if there is one. The ref keeps Strict Mode's second mount from
-  // loading twice after the hash has been cleared.
+  // Apply an invoice carried in the link (#i=…) on top of `current`, the
+  // draft being replaced. On top of a real draft this is an ordinary edit,
+  // so Undo brings the old draft back.
+  const importFromHash = React.useCallback(
+    (current: InvoiceData | null) => {
+      const linked = readInvoiceFromHash(window.location.hash)
+      if (!linked) return
+      // Drop the hash so a refresh doesn't load the link over later edits.
+      window.history.replaceState(null, "", window.location.pathname + window.location.search)
+
+      if (!linked.ok) {
+        toast(
+          linked.reason === "unsupported"
+            ? "This invoice link is from a newer version of Billy. Refresh and try again."
+            : "This invoice link is damaged. Ask your assistant for a new one.",
+          "error",
+        )
+        return
+      }
+
+      dispatch({
+        type: "LOAD_STATE",
+        payload: withSavedBusiness(linked.data, current),
+        history: current ? undefined : "reset",
+      })
+      toast(
+        current ? "Invoice loaded from your link. Undo brings back your previous draft." : "Invoice loaded from your link.",
+        "info",
+      )
+    },
+    [toast],
+  )
+
+  // Load the saved draft once on mount, then any invoice in the link. The ref
+  // keeps Strict Mode's second mount from loading twice.
   const loadedRef = React.useRef(false)
   React.useEffect(() => {
     if (loadedRef.current) return
@@ -230,33 +266,15 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    const linked = readInvoiceFromHash(window.location.hash)
-    if (!linked) return
-    // Drop the hash so a refresh doesn't load the link over later edits.
-    window.history.replaceState(null, "", window.location.pathname + window.location.search)
+    importFromHash(saved)
+  }, [importFromHash])
 
-    if (!linked.ok) {
-      toast(
-        linked.reason === "unsupported"
-          ? "This invoice link is from a newer version of Billy. Refresh and try again."
-          : "This invoice link is damaged. Ask your assistant for a new one.",
-        "error",
-      )
-      return
-    }
-
-    // On top of an existing draft this is an ordinary edit, so Undo brings
-    // the old draft back.
-    dispatch({
-      type: "LOAD_STATE",
-      payload: withSavedBusiness(linked.data, saved),
-      history: saved ? undefined : "reset",
-    })
-    toast(
-      saved ? "Invoice loaded from your link. Undo brings back your previous draft." : "Invoice loaded from your link.",
-      "info",
-    )
-  }, [toast])
+  // A link opened while the editor is already showing only changes the hash.
+  React.useEffect(() => {
+    const onHashChange = () => importFromHash(stateRef.current)
+    window.addEventListener("hashchange", onHashChange)
+    return () => window.removeEventListener("hashchange", onHashChange)
+  }, [importFromHash])
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {

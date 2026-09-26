@@ -1,7 +1,9 @@
 {
-  // Billy is a static export: `bun run build` writes apps/web/out, and this
-  // Worker only serves those files. There is no `main`, so no Worker code
-  // runs — Cloudflare serves the assets directly.
+  // Billy's site Worker. `bun run build` writes the static export to
+  // apps/web/out and Cloudflare serves those files directly. The one route
+  // with code is /mcp (the agent endpoint in apps/mcp): `run_worker_first`
+  // sends only that path to the Worker script, so every other request never
+  // runs any code.
   //
   // html_handling "auto-trailing-slash" is what makes /editor resolve. Next
   // exports that route as editor.html, not editor/index.html, so without it
@@ -9,9 +11,21 @@
   // same way Pages did.
   "name": "billy",
   "compatibility_date": "2026-09-23",
+  "main": "./apps/mcp/src/worker.ts",
   "assets": {
     "directory": "./apps/web/out",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  }
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/mcp"]
+  },
+  // 120 MCP requests a minute per IP. A tool call is a few requests, so this
+  // only stops abuse. The namespace id is any number unique to this account.
+  "ratelimits": [
+    {
+      "name": "MCP_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 120, "period": 60 }
+    }
+  ]
 }
