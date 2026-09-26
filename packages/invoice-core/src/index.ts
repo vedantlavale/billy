@@ -4,6 +4,7 @@
 export * from "./types"
 export * from "./currencies"
 export * from "./invoice"
+export * from "./numbering"
 export * from "./theme"
 export * from "./templates"
 export * from "./presets"
