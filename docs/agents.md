@@ -13,8 +13,8 @@ The endpoint is `https://trybilly.tech/mcp`. No account or key is needed.
 
 | Client | How |
 | --- | --- |
-| Claude (web, desktop) | Settings → Connectors → Add custom connector, paste the URL |
-| ChatGPT | Settings → Apps & Connectors → Advanced → Developer mode, then Create, paste the URL, no authentication |
+| Claude (web, desktop) | Add a custom connector in Settings and paste the URL |
+| ChatGPT | Turn on developer mode, add a connector with the URL and no authentication |
 | Claude Code | `claude mcp add --transport http billy https://trybilly.tech/mcp` |
 | Cursor, Codex, others | Add a remote (streamable HTTP) MCP server with the URL |
 | Offline or local | `claude mcp add billy -- npx -y trybilly mcp` runs the same tools over stdio |

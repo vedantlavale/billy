@@ -13,6 +13,7 @@ import {
 } from "@billy/invoice-core"
 
 import { useToast } from "@/components/ui/toast"
+import { onInvoiceLink, takeInvoiceLink } from "@/lib/invoice-link-inbox"
 
 type InvoiceAction =
   | { type: "UPDATE_FIELD"; field: keyof InvoiceData; value: InvoiceData[keyof InvoiceData] }
@@ -207,15 +208,15 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
     stateRef.current = state
   }, [state])
 
-  // Apply an invoice carried in the link (#i=…) on top of `current`, the
-  // draft being replaced. On top of a real draft this is an ordinary edit,
-  // so Undo brings the old draft back.
+  // Apply an invoice link (#i=…) on top of `current`, the draft being
+  // replaced. The link was already taken out of the address bar before
+  // analytics started (lib/invoice-link-inbox.ts). On top of a real draft
+  // this is an ordinary edit, so Undo brings the old draft back.
   const importFromHash = React.useCallback(
     (current: InvoiceData | null) => {
-      const linked = readInvoiceFromHash(window.location.hash)
+      const hash = takeInvoiceLink()
+      const linked = hash ? readInvoiceFromHash(hash) : null
       if (!linked) return
-      // Drop the hash so a refresh doesn't load the link over later edits.
-      window.history.replaceState(null, "", window.location.pathname + window.location.search)
 
       if (!linked.ok) {
         toast(
@@ -270,11 +271,7 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
   }, [importFromHash])
 
   // A link opened while the editor is already showing only changes the hash.
-  React.useEffect(() => {
-    const onHashChange = () => importFromHash(stateRef.current)
-    window.addEventListener("hashchange", onHashChange)
-    return () => window.removeEventListener("hashchange", onHashChange)
-  }, [importFromHash])
+  React.useEffect(() => onInvoiceLink(() => importFromHash(stateRef.current)), [importFromHash])
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {
