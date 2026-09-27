@@ -1269,3 +1269,48 @@
     border: none !important;
   }
 }
+
+/* ── Coming soon page ─────────────────────────────────────────────── */
+
+.cs-page {
+  background:
+    radial-gradient(55% 45% at 50% 105%, rgba(0, 112, 215, 0.12), transparent 70%),
+    radial-gradient(35% 35% at 88% 0%, rgba(111, 208, 255, 0.14), transparent 70%),
+    #ffffff;
+}
+
+.cs-rise {
+  opacity: 0;
+  animation: cs-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+}
+
+.cs-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cs-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 1.35s forwards;
+}
+
+.cs-peek {
+  --peek-y: 40%;
+  translate: -50% var(--peek-y);
+  opacity: 0;
+  animation: cs-peek 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+@media (max-width: 640px) {
+  .cs-peek { --peek-y: 18%; }
+}
+
+@keyframes cs-draw { to { stroke-dashoffset: 0; } }
+@keyframes cs-rise {
+  from { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes cs-peek {
+  from { opacity: 0; translate: -50% 100%; }
+  to { opacity: 1; translate: -50% var(--peek-y); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-underline path { animation: none; stroke-dashoffset: 0; }
+  .cs-rise, .cs-peek { animation: none; opacity: 1; }
+}

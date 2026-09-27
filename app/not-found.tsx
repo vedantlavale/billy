@@ -1,45 +1,13 @@
 import Link from "next/link"
 
-import { LandingCta } from "@/components/landing/landing-cta"
-import { WaitlistProvider } from "@/components/waitlist/waitlist-provider"
-
 export default function NotFound() {
   return (
-    <WaitlistProvider>
-      <main className="landing-page flex min-h-dvh flex-col">
-        <nav className="landing-nav mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-          <Link href="/" className="landing-wordmark no-underline">billy</Link>
-          <LandingCta variant="nav-pill" label="Join the waitlist →" />
-        </nav>
-
-        <section className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-
-
-          <h1 className="landing-hero-title" style={{ maxWidth: 700 }}>
-            This page doesn&apos;t
-            <br />
-            <em>exist</em> in our books.
-          </h1>
-
-          <p className="landing-hero-sub">
-            The link you followed might be broken, or the page may have been moved.
-            Either way, you can head back home and start fresh.
-          </p>
-
-          <div className="landing-hero-actions" style={{ marginBottom: 0 }}>
-            <Link href="/" className="landing-cta-primary">
-              Back to home
-            </Link>
-            <LandingCta variant="hero-ghost" label="Join the waitlist →" />
-          </div>
-        </section>
-
-        <footer className="landing-footer">
-          <span className="landing-footer-brand">billy</span>
-          <span className="landing-footer-copy">© 2026 · A lightweight invoice editor</span>
-          <LandingCta variant="footer-link" label="Join the waitlist →" />
-        </footer>
-      </main>
-    </WaitlistProvider>
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-white px-6 text-center text-[#37352f]">
+      <h1 className="text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Nothing here yet.</h1>
+      <p className="text-lg text-[#6b6a65]">A whole new billy is on its way.</p>
+      <Link href="/" className="rounded-[7px] bg-[#0070d7] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#005fb8]">
+        Back home
+      </Link>
+    </main>
   )
 }

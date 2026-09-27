@@ -1,0 +1,12 @@
+{
+  // Coming-soon is a static export, same as launch-alpha: `bun run build`
+  // writes `out/`, and this Worker only serves those files. No `main`, so no
+  // Worker code runs here — Cloudflare serves the assets directly.
+  "name": "billy",
+  "compatibility_date": "2026-09-23",
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

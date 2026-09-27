@@ -1,0 +1,16 @@
+# Old links from before the redesign: send them home instead of 404ing.
+/editor / 302
+/dashboard / 302
+/login / 302
+/signup / 302
+/auth/* / 302
+/api/invoices / 302
+/api/waitlist / 302
+/api/generate-pdf / 302
+
+# PostHog ingestion, proxied through our own domain so ad blockers don't
+# strip analytics calls. Static-assets Workers can proxy via _redirects same
+# as Cloudflare Pages did.
+/api/metrics/static/:splat https://us-assets.i.posthog.com/static/:splat 200
+/api/metrics/array/:splat https://us-assets.i.posthog.com/array/:splat 200
+/api/metrics/:splat https://us.i.posthog.com/:splat 200
