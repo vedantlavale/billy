@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import type { InvoiceData, LineItem } from "@billy/invoice-core"
-import { applyProfessionPreset, professionPresets } from "@billy/invoice-core"
+import { applyProfessionPreset, firstInvoiceNumber, nextInvoiceNumber, professionPresets } from "@billy/invoice-core"
 
 type InvoiceAction =
   | { type: "UPDATE_FIELD"; field: keyof InvoiceData; value: InvoiceData[keyof InvoiceData] }
@@ -37,7 +37,7 @@ function createDefaultInvoice(): InvoiceData {
     clientAddress: "456 Mission Avenue\nSan Francisco, CA 94105",
     clientEmail: "finance@acme.com",
     poNumber: "",
-    invoiceNumber: "INV-1024",
+    invoiceNumber: firstInvoiceNumber(today),
     invoiceDate: today.toISOString().slice(0, 10),
     dueDate: inSevenDays.toISOString().slice(0, 10),
     lineItems: [
@@ -95,19 +95,6 @@ function createLineItem(id: string): LineItem {
     quantity: 1,
     rate: 0,
   }
-}
-
-/**
- * The number that follows `current`, keeping any prefix and zero padding:
- * INV-1024 → INV-1025, 2026/009 → 2026/010. Falls back to the default when
- * there's no trailing number to bump.
- */
-export function nextInvoiceNumber(current: string): string {
-  const match = current.trim().match(/^(.*?)(\d+)$/)
-  if (!match) return createDefaultInvoice().invoiceNumber
-  const [, prefix, digits] = match
-  const next = String(Number(digits) + 1).padStart(digits.length, "0")
-  return `${prefix}${next}`
 }
 
 function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData {
