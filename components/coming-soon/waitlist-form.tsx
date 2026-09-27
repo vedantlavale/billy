@@ -4,15 +4,16 @@ import * as React from "react"
 
 /**
  * The founding-member signup. Posts straight to a Loops form, so there is no
- * server or database here. Set NEXT_PUBLIC_LOOPS_FORM_ID to the form's ID
- * (Loops > Forms > your form > the ID in its endpoint URL).
+ * server or database here. Override with NEXT_PUBLIC_LOOPS_FORM_ID if the
+ * form is ever recreated (Loops > Forms > your form > the ID in its endpoint
+ * URL, app.loops.so/forms/<id>).
  *
  * A name is optional: people who give one are asking to be on the founding
  * members wall (userGroup "founding-wall"); everyone else is "founding".
  * Numbers and unlock links are sent on launch day (scripts/founders on
  * launch-alpha).
  */
-const FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID
+const FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID || "cmujkeahx0k1w0j4adtzmompe"
 
 type Status = "idle" | "sending" | "done" | "error"
 
@@ -32,8 +33,11 @@ export function WaitlistForm() {
     }
     setStatus("sending")
     try {
+      // Loops' own embed names the email field "newsletter-form-input" rather
+      // than "email"; send both so the signup lands whichever one it reads.
       const body = new URLSearchParams({
         email: email.trim(),
+        "newsletter-form-input": email.trim(),
         firstName: name.trim(),
         userGroup: name.trim() ? "founding-wall" : "founding",
         source: "coming-soon",
