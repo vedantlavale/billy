@@ -8,6 +8,8 @@ export interface Template {
   fontFamily: string
   cssFontFamily: string
   colors: ThemeColors
+  /** Unlocked by a founding-member link (see founders.ts); hidden or locked for everyone else. */
+  foundersOnly?: boolean
 }
 
 export const TEMPLATES: Template[] = [
@@ -101,6 +103,16 @@ export const TEMPLATES: Template[] = [
     cssFontFamily: THEME_TOKENS.letterhead.cssFontFamily,
     colors: THEME_TOKENS.letterhead.colors,
   },
+  {
+    id: "founders",
+    name: "Founders",
+    description: "For billy's founding members: billy blue with a hand-drawn underline",
+    pro: false,
+    foundersOnly: true,
+    fontFamily: "'Geist', Arial, sans-serif",
+    cssFontFamily: THEME_TOKENS.founders.cssFontFamily,
+    colors: THEME_TOKENS.founders.colors,
+  }
 ]
 
 export function getTemplate(id: string): Template {

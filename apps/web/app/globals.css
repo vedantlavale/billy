@@ -756,6 +756,82 @@
   font-size: 1.35rem;
 }
 
+/* Template: Founders. For billy's founding members (unlocked by the launch
+   email link): the brand's sky-blue tile gradient as a masthead, white type,
+   and the landing page's hand-drawn underline under the company name. */
+.invoice-canvas[data-template="founders"] {
+  border-radius: 8px;
+  padding: 0 !important;
+}
+.invoice-canvas[data-template="founders"] .invoice-canvas-inner {
+  padding: 0 44px 44px;
+}
+.invoice-canvas[data-template="founders"] .header-section {
+  margin: 0 -44px 22px;
+  padding: 30px 44px 30px;
+  background: linear-gradient(120deg, #2f6bff 0%, #3c8dff 58%, #6fd0ff 100%);
+}
+.invoice-canvas[data-template="founders"] .header-section,
+.invoice-canvas[data-template="founders"] .header-section .invoice-field,
+.invoice-canvas[data-template="founders"] .header-section p,
+.invoice-canvas[data-template="founders"] .header-section span,
+.invoice-canvas[data-template="founders"] .header-section h1 {
+  color: #ffffff !important;
+}
+.invoice-canvas[data-template="founders"] .header-section .invoice-field:hover {
+  border-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.14);
+}
+.invoice-canvas[data-template="founders"] .company-name {
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+/* On the wrapper, not the field: the field turns into an <input> while
+   editing, and inputs can't carry a pseudo-element. */
+.invoice-canvas[data-template="founders"] .header-company > div:first-child {
+  position: relative;
+  padding-bottom: 12px;
+}
+.invoice-canvas[data-template="founders"] .header-company > div:first-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(100%, 180px);
+  height: 9px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 24' preserveAspectRatio='none'%3E%3Cpath d='M5 14 C15 5 25 5 35 14 C45 23 55 23 65 14 C75 5 85 5 95 14 C105 23 115 23 125 14 C135 5 145 5 155 14 C165 23 175 23 185 14 C195 6 205 6 215 12' fill='none' stroke='white' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.invoice-canvas[data-template="founders"] .company-tagline {
+  color: rgba(255, 255, 255, 0.85) !important;
+  letter-spacing: 0.12em;
+}
+.invoice-canvas[data-template="founders"] .header-contact {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.invoice-canvas[data-template="founders"] .client-label,
+.invoice-canvas[data-template="founders"] .meta-label,
+.invoice-canvas[data-template="founders"] .footer-label,
+.invoice-canvas[data-template="founders"] .line-items-header {
+  color: var(--invoice-accent);
+  letter-spacing: 0.08em;
+}
+.invoice-canvas[data-template="founders"] .line-items-header {
+  border-bottom: 2px solid var(--invoice-accent);
+}
+.invoice-canvas[data-template="founders"] .line-item-row {
+  border-bottom: 1px solid var(--invoice-border);
+  border-radius: 0;
+}
+.invoice-canvas[data-template="founders"] .grand-total {
+  border-top: 3px solid var(--invoice-accent);
+  color: var(--invoice-accent);
+  font-size: 1.35rem;
+}
+
 /* Template: Ledger — warm paper, ruled rows, numbered gutter */
 /* The gutter rule is paper, not content: on multi-page invoices the sheets
    are painted by .invoice-sheet-bg, so each sheet gets its own rule. */
@@ -1430,6 +1506,19 @@
     background-color: var(--ed-blue);
     color: #ffffff;
     box-shadow: 0 0 0 2px #ffffff;
+  }
+  .ed-template[data-locked] .ed-template-thumb {
+    filter: saturate(0.55);
+    opacity: 0.7;
+  }
+  .ed-template[data-locked] {
+    cursor: not-allowed;
+  }
+  .ed-template-founders {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #0070d7;
   }
   .ed-template-pro {
     position: absolute;
