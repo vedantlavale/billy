@@ -8,6 +8,7 @@ const clamp = (v: number, a: number, b: number): number => (v < a ? a : v > b ? 
 
 type Reveal = 'rise' | 'wipe' | 'fade' | 'none';
 type Trigger = 'view' | 'mount' | 'hover';
+type Split = 'words' | 'chars';
 
 export interface MaskedHeadingProps {
   text?: string;
@@ -25,6 +26,8 @@ export interface MaskedHeadingProps {
   duration?: number;
   stagger?: number;
   trigger?: Trigger;
+  /** Animate the rise word by word (default) or one letter at a time. */
+  split?: Split;
   align?: 'left' | 'center' | 'right';
   weight?: number;
   tracking?: number;
@@ -51,6 +54,7 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
   duration = 1.1,
   stagger = 0.09,
   trigger = 'view',
+  split = 'words',
   align = 'center',
   weight = 700,
   tracking = -0.03,
@@ -65,6 +69,7 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
   const revealRef = useRef<HTMLSpanElement | null>(null);
   const mediaRef = useRef<HTMLSpanElement | null>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const baseRefs = useRef<(HTMLElement | null)[]>([]);
   const glyphRefs = useRef<(SVGTextElement | null)[]>([]);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
@@ -72,6 +77,21 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
 
   const clipId = `mh-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const words = useMemo(() => String(text).split(/\s+/).filter(Boolean), [text]);
+  // The pieces that animate: whole words, or every letter tagged with its word.
+  const units = useMemo(
+    () =>
+      split === 'chars'
+        ? words.flatMap((word, w) => Array.from(word).map(ch => ({ text: ch, word: w })))
+        : words.map((word, w) => ({ text: word, word: w })),
+    [words, split]
+  );
+  const wordStart = useMemo(() => words.map((_, w) => units.findIndex(u => u.word === w)), [words, units]);
+  const unitsRef = useRef(units);
+  const splitRef = useRef(split);
+  useLayoutEffect(() => {
+    unitsRef.current = units;
+    splitRef.current = split;
+  });
 
   const settingsRef = useRef<{
     fillScale: number;
@@ -111,9 +131,10 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
     root.style.fontSize = `${clamp(root.clientWidth * s.textScale, 20, 200).toFixed(1)}px`;
 
     const cs = window.getComputedStyle(measure);
-    for (let i = 0; i < wordRefs.current.length; i += 1) {
-      const box = wordRefs.current[i];
-      const base = baseRefs.current[i];
+    const pieces = unitsRef.current;
+    for (let i = 0; i < pieces.length; i += 1) {
+      const box = splitRef.current === 'chars' ? charRefs.current[i] : wordRefs.current[pieces[i].word];
+      const base = baseRefs.current[pieces[i].word];
       const glyph = glyphRefs.current[i];
       if (!box || !base || !glyph) continue;
       glyph.setAttribute('x', `${box.offsetLeft}`);
@@ -187,13 +208,13 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
 
   useEffect(() => {
     sync();
-  }, [sync, words, tag, align, weight, tracking, lineHeight, textScale]);
+  }, [sync, units, tag, align, weight, tracking, lineHeight, textScale]);
 
   useEffect(() => {
     const root = rootRef.current;
     const layer = revealRef.current;
     if (!root || !layer) return;
-    const glyphs = glyphRefs.current.filter(Boolean);
+    const glyphs = glyphRefs.current.slice(0, units.length).filter(Boolean);
     if (!glyphs.length) return;
 
     const riseDistance = () => (parseFloat(window.getComputedStyle(root).fontSize) || 48) * 1.15;
@@ -280,7 +301,7 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
 
     play();
     return () => tweenRef.current?.kill();
-  }, [reveal, trigger, duration, stagger, words]);
+  }, [reveal, trigger, duration, stagger, units]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const TagAny = tag as any;
@@ -307,7 +328,22 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
             }}
             className="inline-block whitespace-pre [&:not(:last-child)]:after:content-['_']"
           >
-            {word}
+            {split === 'chars'
+              ? Array.from(word).map((ch, j) => {
+                  const k = wordStart[i] + j;
+                  return (
+                    <span
+                      key={j}
+                      ref={(el: HTMLSpanElement | null) => {
+                        charRefs.current[k] = el;
+                      }}
+                      className="inline-block"
+                    >
+                      {ch}
+                    </span>
+                  );
+                })
+              : word}
             <i
               ref={(el: HTMLElement | null) => {
                 baseRefs.current[i] = el;
@@ -321,14 +357,14 @@ const MaskedHeading: React.FC<MaskedHeadingProps> = ({
       <svg className="absolute w-0 h-0 overflow-hidden" aria-hidden="true" focusable="false">
         <defs>
           <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
-            {words.map((word, i) => (
+            {units.map((unit, i) => (
               <text
-                key={`${word}-${i}`}
+                key={`${unit.text}-${i}`}
                 ref={(el: SVGTextElement | null) => {
                   glyphRefs.current[i] = el;
                 }}
               >
-                {word}
+                {unit.text}
               </text>
             ))}
           </clipPath>
