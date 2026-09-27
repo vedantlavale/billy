@@ -1,6 +1,6 @@
 # billy launch plan — founders + coming soon
 
-Status as of 2026-09-27. This file is the source of truth if context gets lost.
+Status as of 2026-09-27 (env vars added in Cloudflare, retriggering build).
 Update the checkboxes as things happen.
 
 ## Where everything lives
