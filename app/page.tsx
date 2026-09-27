@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react"
 
 import MaskedHeading from "@/components/MaskedHeading"
+import { WaitlistForm } from "@/components/coming-soon/waitlist-form"
 
 const heading = {
   tag: "h1",
@@ -48,7 +49,7 @@ export default function ComingSoon() {
         <span className="text-[26px] font-extrabold tracking-[-0.04em]">billy</span>
       </header>
 
-      <section className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 pb-[30vh] text-center sm:px-6 sm:pb-[36vh]">
+      <section className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 pb-[26vh] text-center sm:px-6 sm:pb-[30vh]">
         <div className="relative w-full max-w-[1280px]">
           <MaskedHeading {...heading} textScale={0.13} className="hidden sm:block" />
           <MaskedHeading {...heading} textScale={0.2} className="sm:hidden" />
@@ -74,6 +75,10 @@ export default function ComingSoon() {
         <p className="cs-rise mt-12 max-w-xl text-lg text-[#6b6a65] sm:text-xl" style={delay(1.5)}>
           A whole new billy is on its way.
         </p>
+
+        <div className="cs-rise mt-8 flex w-full justify-center" style={delay(1.8)}>
+          <WaitlistForm />
+        </div>
       </section>
 
       {/* A blurred look at what's coming: three screens of the new app, fanned out */}
