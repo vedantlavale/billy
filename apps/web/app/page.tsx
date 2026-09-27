@@ -462,6 +462,9 @@ export default function Home() {
               <a className="lx-footer-link" href="#faq">
                 Questions
               </a>
+              <Link className="lx-footer-link" href="/founders">
+                Early birds
+              </Link>
             </div>
 
           </div>

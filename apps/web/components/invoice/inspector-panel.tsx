@@ -15,6 +15,8 @@ import { PAYMENT_TERMS, addDays, currentTermDays } from "@/lib/payment-terms"
 import { OptionsPanel } from "@/components/invoice/OptionsPanel"
 import { ProfessionPreset } from "@/components/invoice/ProfessionPreset"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
+import { useToast } from "@/components/ui/toast"
+import { useFounder } from "@/lib/founder"
 import {
   CURRENCIES,
   TEMPLATES,
@@ -24,6 +26,7 @@ import {
 } from "@billy/invoice-core"
 import {
   CheckIcon,
+  LockIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   LayoutGridIcon,
@@ -96,11 +99,14 @@ function Summary() {
 /** A tiny abstract drawing of the template, coloured with its own palette. */
 function TemplateThumb({ template }: { template: Template }) {
   const c = template.colors
-  const band = ["modern-green", "corporate-blue", "studio", "letterhead"].includes(template.id)
+  const band = ["modern-green", "corporate-blue", "studio", "letterhead", "founders"].includes(template.id)
   return (
     <span className="ed-template-thumb block" style={{ backgroundColor: c.paper }} aria-hidden>
       {band && (
-        <span className="absolute inset-x-0 top-0 h-[26%]" style={{ backgroundColor: c.primary }} />
+        <span
+          className="absolute inset-x-0 top-0 h-[26%]"
+          style={{ background: template.id === "founders" ? "linear-gradient(120deg, #2f6bff, #3c8dff 60%, #6fd0ff)" : c.primary }}
+        />
       )}
       <span className="absolute left-[10%] top-[10%] h-[8%] w-[34%] rounded-[2px]" style={{ backgroundColor: c.ink, opacity: 0.85 }} />
       <span className="absolute right-[10%] top-[11%] h-[4%] w-[22%] rounded-[2px]" style={{ backgroundColor: c.muted, opacity: 0.6 }} />
@@ -120,8 +126,14 @@ function TemplateThumb({ template }: { template: Template }) {
 function TemplateGrid() {
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
+  const founder = useFounder()
+  const { toast } = useToast()
 
   const select = (template: Template) => {
+    if (template.foundersOnly && !founder && state.templateId !== template.id) {
+      toast("The Early Bird template is for billy's early birds.", "info")
+      return
+    }
     posthog.capture("template_selected", { template_id: template.id, is_pro: template.pro })
     dispatch({ type: "UPDATE_FIELD", field: "templateId", value: template.id })
   }
@@ -130,14 +142,17 @@ function TemplateGrid() {
     <div className="grid grid-cols-2 gap-2">
       {TEMPLATES.map((template) => {
         const selected = state.templateId === template.id
+        const locked = Boolean(template.foundersOnly && !founder && !selected)
         return (
           <button
             key={template.id}
             type="button"
             aria-pressed={selected}
-            title={template.description}
+            aria-disabled={locked || undefined}
+            title={locked ? "For billy's early birds" : template.description}
             onClick={() => select(template)}
             className="ed-template"
+            data-locked={locked || undefined}
           >
             <span className="relative block">
               <TemplateThumb template={template} />
@@ -147,6 +162,10 @@ function TemplateGrid() {
               {selected ? (
                 <span className="ed-template-badge" aria-hidden>
                   <CheckIcon size={11} strokeWidth={3} />
+                </span>
+              ) : locked ? (
+                <span className="ed-template-pro ed-template-founders">
+                  <LockIcon size={9} strokeWidth={2.5} /> Early Bird
                 </span>
               ) : (
                 template.pro && <span className="ed-template-pro">Pro</span>

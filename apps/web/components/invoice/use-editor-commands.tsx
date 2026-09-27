@@ -7,6 +7,7 @@ import { CURRENCIES, TEMPLATES, type InvoiceData } from "@billy/invoice-core"
 import type { Command } from "@/components/invoice/command-palette"
 import { useInvoiceDispatch, useInvoiceHistory, useInvoiceState } from "@/components/invoice/invoice-context"
 import type { EditorMode } from "@/components/invoice/toolbar"
+import { useFounder } from "@/lib/founder"
 import { PAYMENT_TERMS, addDays, currentTermDays } from "@/lib/payment-terms"
 import {
   CalendarIcon,
@@ -66,6 +67,7 @@ export function useEditorCommands({
   const state = useInvoiceState()
   const dispatch = useInvoiceDispatch()
   const { canUndo, canRedo } = useInvoiceHistory()
+  const isFounder = Boolean(useFounder())
 
   return React.useMemo(() => {
     const setOptions = (patch: Partial<Options>) =>
@@ -151,7 +153,8 @@ export function useEditorCommands({
         icon: <ReceiptIcon size={15} />,
         run: () => setOptions({ showCGST: t.id === "intra", showSGST: t.id === "intra", showIGST: t.id === "inter" }),
       })),
-      ...TEMPLATES.map((t) => ({
+      // The Founders template only shows up once a founder link has unlocked it.
+      ...TEMPLATES.filter((t) => !t.foundersOnly || isFounder || state.templateId === t.id).map((t) => ({
         id: `template-${t.id}`,
         group: "Template",
         label: t.name,
@@ -191,5 +194,6 @@ export function useEditorCommands({
     onToggleTemplates,
     setupOpen,
     onToggleSetup,
+    isFounder,
   ])
 }

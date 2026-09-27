@@ -16,6 +16,7 @@ import { useEditorCommands } from "@/components/invoice/use-editor-commands"
 import { Toolbar, type EditorMode } from "@/components/invoice/toolbar"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { useToast } from "@/components/ui/toast"
+import { claimFounderFromUrl } from "@/lib/founder"
 import { exportInvoicePdf } from "@/lib/pdf/client-export"
 import { getTemplate } from "@billy/invoice-core"
 
@@ -72,6 +73,23 @@ function EditorWorkspace() {
       exportingRef.current = false
       setExporting(false)
     }
+  }, [toast])
+
+  // A founding member's launch-email link unlocks the Founders template here.
+  React.useEffect(() => {
+    const claim = () =>
+      void claimFounderFromUrl().then((number) => {
+        if (number === undefined) return
+        if (number === null) {
+          toast("That early bird link didn't check out. Open it exactly as it arrived in your email.", "error")
+          return
+        }
+        posthog.capture("founder_unlocked", { founder_number: number })
+        toast(`Welcome, early bird #${number}. The Early Bird template is yours.`)
+      })
+    claim()
+    window.addEventListener("hashchange", claim)
+    return () => window.removeEventListener("hashchange", claim)
   }, [toast])
 
   const handleNew = React.useCallback(() => {
