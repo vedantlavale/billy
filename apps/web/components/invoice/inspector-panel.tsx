@@ -131,7 +131,7 @@ function TemplateGrid() {
 
   const select = (template: Template) => {
     if (template.foundersOnly && !founder && state.templateId !== template.id) {
-      toast("The Founders template is for billy's founding members.", "info")
+      toast("The Early Bird template is for billy's early birds.", "info")
       return
     }
     posthog.capture("template_selected", { template_id: template.id, is_pro: template.pro })
@@ -149,7 +149,7 @@ function TemplateGrid() {
             type="button"
             aria-pressed={selected}
             aria-disabled={locked || undefined}
-            title={locked ? "For billy's founding members" : template.description}
+            title={locked ? "For billy's early birds" : template.description}
             onClick={() => select(template)}
             className="ed-template"
             data-locked={locked || undefined}
@@ -165,7 +165,7 @@ function TemplateGrid() {
                 </span>
               ) : locked ? (
                 <span className="ed-template-pro ed-template-founders">
-                  <LockIcon size={9} strokeWidth={2.5} /> Founders
+                  <LockIcon size={9} strokeWidth={2.5} /> Early Bird
                 </span>
               ) : (
                 template.pro && <span className="ed-template-pro">Pro</span>

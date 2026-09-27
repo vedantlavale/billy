@@ -81,11 +81,11 @@ function EditorWorkspace() {
       void claimFounderFromUrl().then((number) => {
         if (number === undefined) return
         if (number === null) {
-          toast("That founder link didn't check out. Open it exactly as it arrived in your email.", "error")
+          toast("That early bird link didn't check out. Open it exactly as it arrived in your email.", "error")
           return
         }
         posthog.capture("founder_unlocked", { founder_number: number })
-        toast(`Welcome, founding member #${number}. The Founders template is yours.`)
+        toast(`Welcome, early bird #${number}. The Early Bird template is yours.`)
       })
     claim()
     window.addEventListener("hashchange", claim)

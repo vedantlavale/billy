@@ -1,6 +1,6 @@
 /**
- * Launch-day founders run. Turns the Loops waitlist export into founding
- * member numbers, personal unlock links, and the founding members wall.
+ * Launch-day founders run. Turns the Loops waitlist export into early bird
+ * numbers, personal unlock links, and the early bird wall.
  *
  *   LOOPS_API_KEY=... bun scripts/founders/launch.ts --csv ~/Downloads/loops-audience.csv
  *
@@ -8,7 +8,7 @@
  *   --csv <file>     Loops audience export (required)
  *   --dry-run        Print what would happen; write nothing, call nothing
  *   --skip-loops     Don't write founderNumber / founderLink back to Loops
- *   --skip-avatars   Don't look up Gravatars
+ *   --skip-avatars   Don't look up blobatars
  *
  * What it does:
  *   1. Numbers everyone by signup time, earliest first (#1, #2, ...).
@@ -17,8 +17,8 @@
  *   3. Writes founderNumber and founderLink onto each Loops contact, so the
  *      launch email can use {founderNumber} and {founderLink}. Create those two
  *      custom contact properties in Loops first (Number and String).
- *   4. For people who opted into the wall (userGroup "founding-wall" and a
- *      name), fetches their Gravatar if they have one and writes
+ *   4. For people who opted into the wall (userGroup "early-bird-wall" and a
+ *      name), fetches a blobatar (blobatar.dev, deterministic per email) and writes
  *      apps/web/content/founders.json and apps/web/public/founders/<n>.jpg.
  *      Only the name, number and a hosted avatar are published, never emails.
  *   5. Saves a private record (email, number, link) to ~/.billy, not the repo.
@@ -139,26 +139,24 @@ if (!values["skip-loops"]) {
 
 // ---- the wall -------------------------------------------------------------
 
-async function sha256(text: string) {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text))
-  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("")
-}
-
 const wall = []
 if (!dry) await mkdir(AVATAR_DIR, { recursive: true })
 for (const f of founders.filter((f) => f.wall && f.name)) {
   let avatar: string | null = null
   if (!values["skip-avatars"] && !dry) {
-    const res = await fetch(`https://gravatar.com/avatar/${await sha256(f.email)}?s=256&d=404`)
-    if (res.ok && (res.headers.get("content-type") ?? "").startsWith("image/")) {
-      await writeFile(join(AVATAR_DIR, `${f.n}.jpg`), new Uint8Array(await res.arrayBuffer()))
-      avatar = `/founders/${f.n}.jpg`
+    // blobatar.dev: a deterministic generated avatar from the email, no key,
+    // no account. Same seed always renders the same blob, so everyone gets a
+    // consistent, on-brand avatar even without a Gravatar set up.
+    const res = await fetch(`https://blobatar.dev/avatar/${encodeURIComponent(f.email)}?size=256`)
+    if (res.ok && (res.headers.get("content-type") ?? "").includes("svg")) {
+      await writeFile(join(AVATAR_DIR, `${f.n}.svg`), new Uint8Array(await res.arrayBuffer()))
+      avatar = `/founders/${f.n}.svg`
     }
   }
   wall.push({ number: f.n, name: f.name.slice(0, 40), avatar })
 }
 if (!dry) await writeFile(WALL_JSON, JSON.stringify(wall, null, 2) + "\n")
-console.log(`${dry ? "Would put" : "Put"} ${wall.length} founders on the wall (${wall.filter((w) => w.avatar).length} with a Gravatar).`)
+console.log(`${dry ? "Would put" : "Put"} ${wall.length} founders on the wall (${wall.filter((w) => w.avatar).length} with a blobatar).`)
 
 // ---- private record ---------------------------------------------------------
 

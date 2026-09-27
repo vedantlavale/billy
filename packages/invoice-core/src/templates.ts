@@ -105,8 +105,8 @@ export const TEMPLATES: Template[] = [
   },
   {
     id: "founders",
-    name: "Founders",
-    description: "For billy's founding members: billy blue with a hand-drawn underline",
+    name: "Early Bird",
+    description: "For billy's early birds: billy blue with a hand-drawn underline",
     pro: false,
     foundersOnly: true,
     fontFamily: "'Geist', Arial, sans-serif",

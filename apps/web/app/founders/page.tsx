@@ -8,7 +8,7 @@ import { LandingNav } from "@/components/landing/landing-chrome"
 import founders from "@/content/founders.json"
 
 export const metadata: Metadata = {
-  title: "Billy | Founding members",
+  title: "Billy | Early birds",
   description: "The first people to believe in billy, before it launched.",
 }
 
@@ -33,9 +33,9 @@ export default function FoundersPage() {
       <section className="lx-founders">
         <header className="lx-founders-head">
           <h1 className="lx-founders-title">
-            Founding{" "}
+            Early{" "}
             <span className="lx-underline">
-              members
+              birds
               <DoodleUnderlineSquiggle className="lx-draw" />
             </span>
           </h1>

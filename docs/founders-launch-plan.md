@@ -8,7 +8,7 @@ Update the checkboxes as things happen.
 | Thing | Branch / PR | Path |
 |---|---|---|
 | Coming-soon page + waitlist form | `main`, PR [#31](https://github.com/vedantlavale/billy/pull/31) | `apps/web/app/page.tsx`, `apps/web/components/coming-soon/waitlist-form.tsx` |
-| Founders template, unlock, wall, scripts | `launch-alpha`, PR [#32](https://github.com/vedantlavale/billy/pull/32) | see below |
+| Early Bird template, unlock, wall, scripts | `launch-alpha`, PR [#32](https://github.com/vedantlavale/billy/pull/32) | see below |
 | This plan | same as founders PR | `docs/founders-launch-plan.md` |
 
 Founders feature files (all on PR #32):
@@ -17,11 +17,11 @@ Founders feature files (all on PR #32):
 - `scripts/founders/launch.ts` — the launch-day script (full copy below).
 - `apps/web/lib/founder.ts` — reads `#founder=<code>` from the URL, verifies it, remembers it in `localStorage`.
 - `apps/web/components/invoice/invoice-editor.tsx` — calls the above on load, shows the welcome/error toast.
-- `apps/web/components/invoice/inspector-panel.tsx` / `use-editor-commands.tsx` — locks the Founders template in the rail and hides it from ⌘K until unlocked.
-- `apps/web/app/globals.css` — Founders template styling (sky-blue gradient header + hand-drawn underline).
+- `apps/web/components/invoice/inspector-panel.tsx` / `use-editor-commands.tsx` — locks the Early Bird template in the rail and hides it from ⌘K until unlocked.
+- `apps/web/app/globals.css` — Early Bird template styling (sky-blue gradient header + hand-drawn underline).
 - `apps/web/app/founders/page.tsx` + `.lx-founders*` in `landing.css` — the public wall.
 - `apps/web/content/founders.json` — wall data. **Empty `[]` until launch day.**
-- `apps/web/public/founders/*.jpg` — Gravatar avatars, written by the script.
+- `apps/web/public/founders/*.svg` — blobatar avatars (blobatar.dev), written by the script.
 
 ## Secrets and accounts (already done)
 
@@ -57,9 +57,9 @@ Founders feature files (all on PR #32):
    - numbers everyone by signup time (#1 = earliest)
    - signs each person's unlock link: `https://trybilly.tech/editor#founder=v1.<n>.<sig>`
    - writes `founderNumber` + `founderLink` onto every Loops contact
-   - builds `apps/web/content/founders.json` + Gravatar avatars for wall opt-ins
+   - builds `apps/web/content/founders.json` + blobatars for wall opt-ins
    - saves a private backup CSV to `~/.billy/founders-<date>.csv` (never committed)
-5. **Commit and push** the updated `apps/web/content/founders.json` and any new `apps/web/public/founders/*.jpg` files.
+5. **Commit and push** the updated `apps/web/content/founders.json` and any new `apps/web/public/founders/*.svg` files.
 6. **Deploy `launch-alpha` to production** (however the Cloudflare/Vercel swap works for this repo).
 7. **Send the launch campaign** from Loops — merge tags fill in per-person automatically.
 8. **Point `trybilly.tech` at the `launch-alpha` deploy** instead of the coming-soon `main` deploy.
@@ -71,15 +71,15 @@ Founders feature files (all on PR #32):
 
 ## Launch email template (Loops campaign)
 
-Subject: **You're founding member #{{founderNumber}} 🎉**
+Subject: **You're early bird #{{founderNumber}} 🎉**
 
 ```
 Hey,
 
 billy is live: trybilly.tech
 
-You signed up before anyone else, so you're founding member #{{founderNumber}}.
-That comes with one thing money can't buy after today: the Founders
+You signed up before anyone else, so you're early bird #{{founderNumber}}.
+That comes with one thing money can't buy after today: the Early Bird
 template, a billy-blue design that's only for people who believed in
 this before it existed.
 
@@ -95,7 +95,7 @@ Notes on the copy:
 - No em-dashes in the body per house style (the sign-off "— billy" is the one deliberate exception).
 - Keep the subject short, the number is the hook.
 - `{{founderLink}}` opens the editor pre-unlocked, no extra steps for them.
-- If a founding-wall opt-in was given, you can add a line: "You're also on the founding members wall: trybilly.tech/founders" — optional, not in the base template above.
+- If an early-bird-wall opt-in was given, you can add a line: "You're also on the early birds wall: trybilly.tech/founders" — optional, not in the base template above.
 
 ## Full script (for reference — lives at `scripts/founders/launch.ts`)
 

@@ -463,7 +463,7 @@ export default function Home() {
                 Questions
               </a>
               <Link className="lx-footer-link" href="/founders">
-                Founding members
+                Early birds
               </Link>
             </div>
 

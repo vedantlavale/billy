@@ -8,7 +8,7 @@ export function YouAreFounder() {
   if (!founder) return null
   return (
     <p className="lx-founders-you">
-      You&apos;re founding member <b>#{founder.number}</b>. Thank you.
+      You&apos;re early bird <b>#{founder.number}</b>. Thank you.
     </p>
   )
 }
