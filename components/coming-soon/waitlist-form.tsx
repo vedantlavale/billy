@@ -3,13 +3,13 @@
 import * as React from "react"
 
 /**
- * The founding-member signup. Posts straight to a Loops form, so there is no
+ * The early-bird signup. Posts straight to a Loops form, so there is no
  * server or database here. Override with NEXT_PUBLIC_LOOPS_FORM_ID if the
  * form is ever recreated (Loops > Forms > your form > the ID in its endpoint
  * URL, app.loops.so/forms/<id>).
  *
- * A name is optional: people who give one are asking to be on the founding
- * members wall (userGroup "founding-wall"); everyone else is "founding".
+ * A name is optional: people who give one are asking to be on the early bird
+ * wall (userGroup "early-bird-wall"); everyone else is "early-bird".
  * Numbers and unlock links are sent on launch day (scripts/founders on
  * launch-alpha).
  */
@@ -39,7 +39,7 @@ export function WaitlistForm() {
         email: email.trim(),
         "newsletter-form-input": email.trim(),
         firstName: name.trim(),
-        userGroup: name.trim() ? "founding-wall" : "founding",
+        userGroup: name.trim() ? "early-bird-wall" : "early-bird",
         source: "coming-soon",
       })
       const res = await fetch(`https://app.loops.so/api/newsletter-form/${FORM_ID}`, {
@@ -60,7 +60,7 @@ export function WaitlistForm() {
   if (status === "done") {
     return (
       <p className="rounded-full bg-[#eaf3fc] px-5 py-2.5 text-sm font-semibold text-[#0070d7] sm:text-base" role="status">
-        You&apos;re in. Your founding member number arrives on launch day.
+        You&apos;re on the list. Your early bird surprise lands on launch day.
       </p>
     )
   }
@@ -69,7 +69,7 @@ export function WaitlistForm() {
 
   return (
     <form onSubmit={submit} className="flex w-full max-w-md flex-col items-center gap-3">
-      <p className="text-sm font-semibold text-[#37352f] sm:text-base">Get your founding member number</p>
+      <p className="text-sm font-semibold text-[#37352f] sm:text-base">Join the waitlist for a surprise at launch</p>
       <div className="flex w-full gap-2">
         <label className="sr-only" htmlFor="cs-email">
           Email
@@ -95,14 +95,14 @@ export function WaitlistForm() {
       {showName && (
         <div className="w-full">
           <label className="sr-only" htmlFor="cs-name">
-            Name for the founding members wall
+            Name for the early bird wall
           </label>
           <input
             id="cs-name"
             type="text"
             autoComplete="name"
             maxLength={40}
-            placeholder="Name for the founding wall (optional)"
+            placeholder="Name for the early bird wall (optional)"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="h-10 w-full rounded-[8px] border border-[#e5e7eb] bg-white px-3.5 text-sm text-[#37352f] outline-none placeholder:text-[#a3a29d] focus:border-[#0070d7] focus:ring-2 focus:ring-[#0070d7]/20"
