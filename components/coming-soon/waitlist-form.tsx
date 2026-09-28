@@ -1,5 +1,6 @@
 "use client"
 
+import type { CSSProperties } from "react"
 import * as React from "react"
 
 /**
@@ -14,6 +15,30 @@ import * as React from "react"
  * launch-alpha).
  */
 const FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID || "cmujkeahx0k1w0j4adtzmompe"
+
+/** The canonical site, so a share always points at the real thing. */
+const SITE_URL = "https://trybilly.tech"
+
+/**
+ * The post the share button opens. Held here rather than in the href so the
+ * wording stays in one reviewable place. No link in the text: the intent URL's
+ * `url` param attaches the card itself.
+ */
+const SHARE_TEXT =
+  "I just joined the waitlist for billy, a free invoice editor that runs entirely in your browser. Launching soon, with a surprise for the early birds."
+
+const SHARE_HREF = `https://x.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(SITE_URL)}`
+
+const delay = (s: number) => ({ "--delay": `${s}s` }) as CSSProperties
+
+/** The X mark, inline so the button needs no icon dependency. */
+function XMark() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden focusable="false">
+      <path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" />
+    </svg>
+  )
+}
 
 type Status = "idle" | "sending" | "done" | "error"
 
@@ -59,9 +84,23 @@ export function WaitlistForm() {
 
   if (status === "done") {
     return (
-      <p className="rounded-full bg-[#eaf3fc] px-5 py-2.5 text-sm font-semibold text-[#0070d7] sm:text-base" role="status">
-        You&apos;re on the list. Your early bird surprise lands on launch day.
-      </p>
+      <div className="flex flex-col items-center">
+        <p className="rounded-full bg-[#eaf3fc] px-5 py-2.5 text-sm font-semibold text-[#0070d7] sm:text-base" role="status">
+          You&apos;re on the list. Your early bird surprise lands on launch day.
+        </p>
+        <div className="cs-rise mt-4 flex flex-col items-center gap-2" style={delay(0.2)}>
+          <a
+            href={SHARE_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 items-center gap-2 rounded-[8px] border border-[#e5e7eb] bg-white px-5 text-sm font-semibold text-[#37352f] transition-colors hover:border-[#0070d7] hover:text-[#0070d7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070d7]/25"
+          >
+            <XMark />
+            Share on X
+          </a>
+          <p className="text-balance text-xs text-[#6b6a65]">X opens with the post ready to send. Nothing goes out without you.</p>
+        </div>
+      </div>
     )
   }
 
