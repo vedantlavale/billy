@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react"
 
 import MaskedHeading from "@/components/MaskedHeading"
+import { Sponsors } from "@/components/coming-soon/sponsors"
 import { WaitlistForm } from "@/components/coming-soon/waitlist-form"
 
 const heading = {
@@ -78,6 +79,10 @@ export default function ComingSoon() {
 
         <div className="cs-rise mt-8 flex w-full justify-center" style={delay(1.8)}>
           <WaitlistForm />
+        </div>
+
+        <div className="cs-rise mt-6" style={delay(2.1)}>
+          <Sponsors />
         </div>
       </section>
 
