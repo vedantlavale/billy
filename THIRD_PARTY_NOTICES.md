@@ -14,7 +14,6 @@ precedence over `LICENSE` for those files.
 | `skills/before-and-after` | James Clements (vercel-labs), via michaelshimeles | **PolyForm Shield 1.0.0** (file in folder) |
 | `.agents/skills/frontend-design` | [anthropics/skills](https://github.com/anthropics/skills) | Apache-2.0 (file in folder) |
 | `.agents/skills/hallmark` | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT |
-| `.agents/skills/supabase`, `.agents/skills/supabase-postgres-best-practices` | [supabase/agent-skills](https://github.com/supabase/agent-skills) | MIT |
 | `.claude/skills/integration-nextjs-app-router` | PostHog wizard | MIT |
 
 PolyForm Shield is source-available, **not** open source: you may not use
