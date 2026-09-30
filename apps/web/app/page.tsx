@@ -6,7 +6,8 @@ import { Brand } from "@/components/brand"
 import { TEMPLATES, formatCurrency } from "@billy/invoice-core"
 
 import { Cta, LandingNav } from "@/components/landing/landing-chrome"
-import { LiveInvoice } from "@/components/landing/live-invoice"
+import { HeroShot } from "@/components/landing/hero-shot"
+import { GITHUB_URL } from "@/lib/links"
 import {
   ChevronUpIcon,
   CircleUserIcon,
@@ -201,7 +202,7 @@ export default function Home() {
         </div>
 
         <Reveal delay={240} className="lx-stage">
-          <LiveInvoice />
+          <HeroShot />
         </Reveal>
       </section>
 
@@ -444,7 +445,7 @@ export default function Home() {
             <div className="lx-footer-brand">
               <Brand size="lg" />
               <p className="lx-body">
-                A free invoice editor that runs entirely in your browser.
+                A free, open-source invoice editor that runs entirely in your browser.
               </p>
             </div>
 
@@ -465,6 +466,19 @@ export default function Home() {
               <Link className="lx-footer-link" href="/founders">
                 Early birds
               </Link>
+            </div>
+
+            <div className="lx-footer-col">
+              <span className="lx-footer-head">Open source</span>
+              <a className="lx-footer-link" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                Star on GitHub
+              </a>
+              <a className="lx-footer-link" href={`${GITHUB_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noopener noreferrer">
+                Contribute
+              </a>
+              <a className="lx-footer-link" href={`${GITHUB_URL}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer">
+                MIT license
+              </a>
             </div>
 
           </div>
