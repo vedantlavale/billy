@@ -119,7 +119,7 @@ Type assertions that paper over a real mismatch.
 ### B. Project invariants
 
 Billy is a fully client-side invoice editor: a Next.js static export on
-Cloudflare Pages, with no backend, no auth and no database. The invoice lives in
+Cloudflare Workers static assets, with no backend, no auth and no database. The invoice lives in
 the browser's `localStorage` and the PDF is made in the browser. There is no
 tenant boundary to check. What matters is that the export matches the screen,
 and that the user's data stays on their machine.
@@ -163,11 +163,11 @@ Every finding in this group is blocking (P0) unless the bullet says otherwise.
   sent over the network. That means no `fetch`, beacon, upload or third-party
   SDK call carrying it. Consequence: the README's "no data ever leaves your
   machine" becomes false, and users' client and bank details reach a server.
-- PostHog (`apps/web/lib/posthog-client.ts`) may receive event names and
-  anonymous, non-identifying properties only. Passing invoice fields to
-  `trackEvent` or `identifyUser` is a finding, including the existing
-  `total_amount`, `invoice_number` and `email` slots. Consequence: invoice
-  content ends up in a third-party analytics store.
+- PostHog (initialised in `apps/web/instrumentation-client.ts`, called as
+  `posthog.capture`) may receive event names and anonymous, non-identifying
+  properties only. Passing invoice fields to `posthog.capture` or
+  `posthog.identify` is a finding. Consequence: invoice content ends up in a
+  third-party analytics store.
 
 **It stays a static export.**
 
@@ -177,12 +177,11 @@ Every finding in this group is blocking (P0) unless the bullet says otherwise.
   Node runtime at request time, or a dynamic route without
   `generateStaticParams`. Security headers belong in
   `apps/web/public/_headers`. Consequence: `next build` fails, or the code
-  builds and then silently never runs on Cloudflare Pages.
-- `supabase/`, the Supabase variables in `apps/web/.env` and
-  `apps/web/scripts/migrate-images-to-storage.ts` are dead leftovers from an
-  earlier backend. New code must not import, call or depend on them.
-  Consequence: a server dependency comes back and breaks both the static build
-  and the no-data-leaves promise.
+  builds and then silently never runs on Cloudflare.
+- There is no backend. The old Supabase migrations and scripts were removed
+  (#39); new code must not add a database, auth or server SDK. Consequence: a
+  server dependency comes back and breaks both the static build and the
+  no-data-leaves promise.
 
 **Saved drafts must keep loading.**
 

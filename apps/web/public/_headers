@@ -1,4 +1,4 @@
-# Cloudflare Pages security headers (previously set by the removed proxy.ts).
+# Cloudflare security headers, read by the static-assets Worker (wrangler.jsonc).
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   turbopack: { root: monorepoRoot },
 
   // Fully static build (no server). `next build` emits `out/` — deploy to
-  // Cloudflare Pages. There is no backend: no API routes, no auth, no DB.
+  // Cloudflare Workers static assets. There is no backend: no API routes, no auth, no DB.
   output: "export",
 
   // Compile the internal TS workspace package on the fly.
@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 
   // NOTE: rewrites/redirects/headers and middleware do NOT run in a static
-  // export. Security headers live in `public/_headers` (Cloudflare Pages), and
+  // export. Security headers live in `public/_headers` (Cloudflare reads it), and
   // PostHog is pointed straight at its host in `instrumentation-client.ts`.
 };
 
