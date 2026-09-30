@@ -9,7 +9,7 @@ import { useLayoutEffect, useRef, useState } from "react"
  * The old notes were positioned with guessed pixel offsets and hidden below
  * 1320px, so on most laptops they vanished and elsewhere they pointed at
  * nothing in particular. Now:
- *  - the targets (the row being typed and the total) are MEASURED, and a
+ *  - the targets (a line item and the amount due) are MEASURED, and a
  *    numbered pin sits on the frame edge exactly level with each one;
  *  - the pins, labels and hand-drawn arrows only show when the side
  *    gutters have room for the labels; narrower screens get no callouts.
@@ -55,7 +55,7 @@ function arrow(from: [number, number], to: [number, number]) {
   return { curve, head }
 }
 
-function Pin({ n, y, side, show, pulse }: { n: number; y: number; side: "left" | "right"; show: boolean; pulse?: boolean }) {
+function Pin({ n, y, side, show }: { n: number; y: number; side: "left" | "right"; show: boolean }) {
   return (
     <motion.span
       className="lx-pin"
@@ -66,13 +66,12 @@ function Pin({ n, y, side, show, pulse }: { n: number; y: number; side: "left" |
       transition={{ type: "spring", stiffness: 520, damping: 26 }}
       aria-hidden
     >
-      {pulse && <span className="lx-pin-pulse" />}
       {n}
     </motion.span>
   )
 }
 
-export function HeroAnnotations({ typing }: { typing: boolean }) {
+export function HeroAnnotations() {
   const ref = useRef<HTMLDivElement>(null)
   const [layout, setLayout] = useState<Layout | null>(null)
   const inView = useInView(ref, { once: true, amount: 0.3 })
@@ -111,7 +110,7 @@ export function HeroAnnotations({ typing }: { typing: boolean }) {
       {/* Callouts only show when the side gutters can hold the labels. */}
       {layout?.wide && (
         <>
-          <Pin n={1} y={layout.rowY} side="left" show={show} pulse={typing} />
+          <Pin n={1} y={layout.rowY} side="left" show={show} />
           <Pin n={2} y={layout.totalY} side="right" show={show} />
           <p className="lx-note" style={{ right: `calc(100% + 40px)`, top: layout.rowY - 76, textAlign: "right" }}>
             Click a line and type

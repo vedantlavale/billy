@@ -27,7 +27,7 @@ export function useInView<T extends HTMLElement>(rootMargin = "-12% 0px -6% 0px"
 
     // Reduced motion needs no special case here: the stylesheet already forces
     // every .lx-reveal visible in that mode, and the consumers that animate
-    // (Stat, LiveInvoice) each check it themselves before starting.
+    // (Stat) each check it themselves before starting.
     if (typeof IntersectionObserver === "undefined") {
       const t = setTimeout(() => setInView(true), 0)
       return () => clearTimeout(t)
