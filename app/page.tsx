@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react"
 
 import MaskedHeading from "@/components/MaskedHeading"
+import { GitHubStar } from "@/components/coming-soon/github-star"
+import { Sponsors } from "@/components/coming-soon/sponsors"
 import { WaitlistForm } from "@/components/coming-soon/waitlist-form"
 
 const heading = {
@@ -47,6 +49,7 @@ export default function ComingSoon() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/brand/mark.svg" alt="" width={32} height={32} />
         <span className="text-[26px] font-extrabold tracking-[-0.04em]">billy</span>
+        <GitHubStar className="absolute top-[34px] right-4 sm:right-6" />
       </header>
 
       <section className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 pb-[26vh] text-center sm:px-6 sm:pb-[30vh]">
@@ -78,6 +81,10 @@ export default function ComingSoon() {
 
         <div className="cs-rise mt-8 flex w-full justify-center" style={delay(1.8)}>
           <WaitlistForm />
+        </div>
+
+        <div className="cs-rise mt-6" style={delay(2.1)}>
+          <Sponsors />
         </div>
       </section>
 
