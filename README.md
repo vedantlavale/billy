@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# billy
 
-## Getting Started
+**A free, open-source invoice editor that runs entirely in your browser.** Edit an
+invoice like a document and export a pixel-perfect PDF. No accounts, no server,
+nothing leaves your machine.
 
-First, run the development server:
+Live at [trybilly.tech](https://trybilly.tech).
+
+## Branches
+
+| Branch | What it is |
+| --- | --- |
+| `main` | The "Launching soon" waitlist page served at trybilly.tech |
+| `launch-alpha` | The product: the invoice editor and the full landing page (Turborepo, `apps/web`) |
+
+## Run it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun dev          # http://localhost:3000
+bun run build    # static export to out/
+bun run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is a fully static Next.js export (`output: "export"`). `wrangler.jsonc`
+serves `out/` as a Cloudflare Workers static-assets Worker. Waitlist signups go
+to [Loops](https://loops.so); override the form with `NEXT_PUBLIC_LOOPS_FORM_ID`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE). Bundled third-party files keep their own licenses, listed in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
