@@ -12,7 +12,7 @@ import { HeroAnnotations } from "./hero-annotations"
 
 /* Where the pins land, as % of the desktop shot's height: the "Support
    retainer" line item and the inspector's amount due. */
-const PIN_ROW = 85.2
+const PIN_ROW = 85.4
 const PIN_TOTAL = 22.7
 
 export function HeroShot() {
