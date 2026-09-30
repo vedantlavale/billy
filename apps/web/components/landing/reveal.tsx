@@ -2,14 +2,6 @@
 
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react"
 
-/** True when the visitor asked the OS to reduce motion. */
-export function prefersReducedMotion() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
-  )
-}
-
 /**
  * Fires once when the element first enters the viewport.
  *
@@ -26,8 +18,7 @@ export function useInView<T extends HTMLElement>(rootMargin = "-12% 0px -6% 0px"
     if (!el) return
 
     // Reduced motion needs no special case here: the stylesheet already forces
-    // every .lx-reveal visible in that mode, and the consumers that animate
-    // (Stat) each check it themselves before starting.
+    // every .lx-reveal visible in that mode.
     if (typeof IntersectionObserver === "undefined") {
       const t = setTimeout(() => setInView(true), 0)
       return () => clearTimeout(t)

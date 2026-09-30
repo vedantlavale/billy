@@ -29,9 +29,8 @@ browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-
   totals, templates, theme, currencies, presets). No React.
 - `packages/design` — design tokens. Root `/DESIGN.md` is the spec of record
   and overrides `packages/design/DESIGN.md` where they disagree.
-- `supabase/`, the Supabase variables in `apps/web/.env`,
-  `apps/web/scripts/migrate-images-to-storage.ts` — dead leftovers from an
-  earlier backend. Do not build on them.
+- `scripts/founders/` — launch-day CLIs for founding-member numbers and unlock
+  links. Run by hand, not part of the build.
 
 ## SDLC: how a change gets shipped
 
@@ -97,7 +96,7 @@ These match section B of `skills/deep-review/SKILL.md`. Keep the two in step.
 - Anything that breaks the static export: route handlers, server actions,
   middleware, `rewrites`/`redirects`/`headers` in `next.config.ts`, or dynamic
   routes without `generateStaticParams`.
-- New code that uses the dead Supabase leftovers.
+- New code that adds a database, auth or server SDK.
 - A change to the shape of `InvoiceData`, `InvoiceOptions` or `LineItem` with no
   default or migration for drafts already saved under `billy_invoice_data`.
 - A change with a visible surface and no before/after proof.
@@ -108,17 +107,18 @@ These match section B of `skills/deep-review/SKILL.md`. Keep the two in step.
 bun install                                         # from the repo root
 (cd apps/web && bunx tsc --noEmit)                  # typecheck the app (no script for it)
 (cd packages/invoice-core && bunx tsc --noEmit)     # typecheck the domain package
+(cd packages/invoice-core && bun test)              # unit tests for the domain package
 bun run lint                                        # Turbo → eslint in apps/web
 bun run build                                       # static export → apps/web/out
 bun run dev                                         # dev server on http://localhost:3000
 ```
 
-- There is no test runner. Say so in the PR body rather than claiming tests
-  passed.
-- `bun run lint` fails on the default branch as of 2026-09-22 (5 errors, 12
-  warnings, mostly `no-explicit-any` and one "Cannot access refs during
-  render"). Report whether your change added lint errors, not whether lint is
-  clean.
+- Only `packages/invoice-core` has tests (`bun test`). The app has none, so say
+  so in the PR body rather than claiming the app is tested. Its `tsc` reports
+  `bun:test` as missing types; that's known and harmless.
+- `bun run lint` fails on `launch-alpha` as of 2026-09-30 (1 error, a
+  `no-explicit-any` in `apps/web/scripts/download-fonts.ts`). Report whether your change added lint errors, not
+  whether lint is clean.
 - `bun run build` is the real check for the static-export rule. Run it when you
   touch routing, `next.config.ts` or anything under `app/`.
 
