@@ -24,7 +24,6 @@ export function Sponsors() {
         </>
       )}
       <p className="text-sm text-[#6b6a65]">
-        billy will be free and open source.{" "}
         <a
           href={SPONSOR_MAILTO}
           className="font-semibold text-[#0070d7] underline decoration-[#0070d7]/30 underline-offset-4 transition-colors hover:decoration-[#0070d7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070d7]/25"
