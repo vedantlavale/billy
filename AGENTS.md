@@ -26,8 +26,8 @@ database.
 - `public/_redirects`, `public/_headers`: read by the Cloudflare Worker, since
   a static export can't use `redirects()` or `headers()`.
 
-The repo stays private until launch, so nothing here links to GitHub. Say
-billy "will be" open source.
+The repo stays private until launch, so nothing here links to GitHub or
+mentions open source.
 
 ## SDLC: how a change gets shipped
 
