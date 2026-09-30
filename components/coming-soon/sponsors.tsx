@@ -1,4 +1,4 @@
-import { SPONSORS, SPONSOR_MAILTO } from "@/lib/links"
+import { SPONSORS, SPONSOR_MAILTO } from "@/lib/sponsors"
 
 /**
  * Sponsors under the signup. Until the first one signs, it's a single
