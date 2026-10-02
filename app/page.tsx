@@ -2,6 +2,8 @@ import type { CSSProperties } from "react"
 
 import MaskedHeading from "@/components/MaskedHeading"
 import { Sponsors } from "@/components/coming-soon/sponsors"
+import { JsonLd } from "@/components/seo/json-ld"
+import { jsonLd } from "@/lib/seo"
 import { WaitlistForm } from "@/components/coming-soon/waitlist-form"
 
 const heading = {
@@ -43,6 +45,8 @@ function Screen({ src, className = "" }: { src: string; className?: string }) {
 
 export default function ComingSoon() {
   return (
+    <>
+    <JsonLd data={jsonLd} />
     <main className="cs-page relative flex min-h-dvh flex-col overflow-hidden text-[#37352f]">
       <header className="cs-rise relative z-10 flex items-center justify-center gap-2.5 pt-9" style={delay(0)}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -97,5 +101,6 @@ export default function ComingSoon() {
         © {new Date().getFullYear()} billy · trybilly.tech
       </footer>
     </main>
+    </>
   )
 }
