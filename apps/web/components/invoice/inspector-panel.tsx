@@ -178,9 +178,7 @@ function TemplateGrid() {
                 <span className="ed-template-pro ed-template-founders">
                   <LockIcon size={9} strokeWidth={2.5} /> Early Bird
                 </span>
-              ) : (
-                template.pro && <span className="ed-template-pro">Pro</span>
-              )}
+              ) : null}
             </span>
             <span className="block truncate px-0.5 text-[12px] font-semibold leading-4">
               {template.name}
