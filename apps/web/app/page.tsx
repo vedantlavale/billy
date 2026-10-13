@@ -197,7 +197,6 @@ export default function Home() {
                 See how it works
               </a>
             </div>
-            <p className="lx-hero-note">Runs entirely in your browser.</p>
           </Reveal>
         </div>
 
@@ -445,7 +444,7 @@ export default function Home() {
             <div className="lx-footer-brand">
               <Brand size="lg" />
               <p className="lx-body">
-                A free, open-source invoice editor that runs entirely in your browser.
+                A free, open-source invoice editor.
               </p>
             </div>
 
@@ -488,8 +487,9 @@ export default function Home() {
             <span>
               Built by{" "}
               <a className="lx-link" href="https://vedantworks.com" target="_blank" rel="noreferrer noopener">
-                vedantworks
-              </a>
+                Vedant
+              </a>{" "}
+              🫶
             </span>
             <a className="lx-footer-top" href="#top" aria-label="Back to top">
               <ChevronUpIcon size={16} />
