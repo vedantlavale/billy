@@ -51,3 +51,27 @@ export async function verifyFounderCode(code: string, publicKey: string = FOUNDE
     return null
   }
 }
+
+const CODE_SHAPE = /v1\.([1-9]\d{0,6})\.([A-Za-z0-9_-]{86})/
+
+/**
+ * Finds a founder code in whatever someone pastes: the whole emailed link, just
+ * the code, or a link a mail tracker wrapped and percent-encoded. Whitespace is
+ * dropped first because long links pick up line breaks when copied. Only the
+ * shape is checked here; `verifyFounderCode` decides whether it is real.
+ */
+export function extractFounderCode(text: string): string | null {
+  let s = text.replace(/\s+/g, "")
+  for (let pass = 0; pass < 3; pass++) {
+    const match = s.match(CODE_SHAPE)
+    if (match) return match[0]
+    try {
+      const decoded = decodeURIComponent(s)
+      if (decoded === s) break
+      s = decoded
+    } catch {
+      break
+    }
+  }
+  return null
+}

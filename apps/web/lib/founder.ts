@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { verifyFounderCode } from "@billy/invoice-core"
+import { extractFounderCode, verifyFounderCode } from "@billy/invoice-core"
 
 /**
  * Founding-member status for this browser. It arrives once through the link
@@ -58,6 +58,19 @@ export async function claimFounderFromUrl(): Promise<number | null | undefined> 
   const code = decodeURIComponent(match[1])
   const rest = window.location.hash.replace(match[0], "").replace(/^#?&?/, "")
   window.history.replaceState(null, "", window.location.pathname + window.location.search + (rest ? `#${rest}` : ""))
+  return rememberFounder(code)
+}
+
+/**
+ * Unlocks from pasted text: the whole emailed link, or just its code. Resolves
+ * to the founder number, or null when nothing in the text verifies.
+ */
+export async function claimFounderFromText(text: string): Promise<number | null> {
+  const code = extractFounderCode(text)
+  return code ? rememberFounder(code) : null
+}
+
+async function rememberFounder(code: string): Promise<number | null> {
   const number = await verifyFounderCode(code)
   if (number === null) return null
   try {

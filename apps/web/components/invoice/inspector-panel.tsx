@@ -16,6 +16,7 @@ import { OptionsPanel } from "@/components/invoice/OptionsPanel"
 import { ProfessionPreset } from "@/components/invoice/ProfessionPreset"
 import { useInvoiceDispatch, useInvoiceState } from "@/components/invoice/invoice-context"
 import { useToast } from "@/components/ui/toast"
+import { FounderUnlockDialog } from "@/components/founders/unlock-dialog"
 import { useFounder } from "@/lib/founder"
 import {
   CURRENCIES,
@@ -128,14 +129,24 @@ function TemplateGrid() {
   const dispatch = useInvoiceDispatch()
   const founder = useFounder()
   const { toast } = useToast()
+  const [unlockOpen, setUnlockOpen] = React.useState(false)
+  const closeUnlock = React.useCallback(() => setUnlockOpen(false), [])
 
   const select = (template: Template) => {
     if (template.foundersOnly && !founder && state.templateId !== template.id) {
-      toast("The Early Bird template is for billy's early birds.", "info")
+      setUnlockOpen(true)
       return
     }
     posthog.capture("template_selected", { template_id: template.id, is_pro: template.pro })
     dispatch({ type: "UPDATE_FIELD", field: "templateId", value: template.id })
+  }
+
+  // Pasting the emailed link unlocks the template on a device that hasn't opened it yet.
+  const unlocked = (number: number) => {
+    const early = TEMPLATES.find((t) => t.foundersOnly)
+    posthog.capture("founder_unlocked", { founder_number: number, via: "paste" })
+    toast(`Welcome, early bird #${number}. The Early Bird template is yours.`)
+    if (early) dispatch({ type: "UPDATE_FIELD", field: "templateId", value: early.id })
   }
 
   return (
@@ -148,7 +159,7 @@ function TemplateGrid() {
             key={template.id}
             type="button"
             aria-pressed={selected}
-            aria-disabled={locked || undefined}
+            aria-haspopup={locked ? "dialog" : undefined}
             title={locked ? "For billy's early birds" : template.description}
             onClick={() => select(template)}
             className="ed-template"
@@ -177,6 +188,7 @@ function TemplateGrid() {
           </button>
         )
       })}
+      <FounderUnlockDialog open={unlockOpen} onClose={closeUnlock} onUnlocked={unlocked} />
     </div>
   )
 }
