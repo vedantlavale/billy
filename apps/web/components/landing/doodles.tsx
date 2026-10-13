@@ -70,6 +70,16 @@ export function DoodleArcArrow(props: DoodleProps) {
   )
 }
 
+/** A curl that ends in a clear open arrowhead pointing down-left, for pointing back at a label beside it. */
+export function DoodleCurlArrow(props: DoodleProps) {
+  return (
+    <svg viewBox="0 0 100 64" {...doodleDefaults({ strokeWidth: 3, ...props })}>
+      <path d="M94 54 C92 16 52 6 15 39" pathLength={1} data-draw />
+      <path d="M29 36 L14 40 L19.5 25" pathLength={1} data-draw />
+    </svg>
+  )
+}
+
 /* ── Section doodles ── */
 
 export function DoodleStamp(props: DoodleProps) {

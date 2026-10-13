@@ -19,7 +19,7 @@ A [Turborepo](https://turborepo.com) managed with [Bun](https://bun.sh) workspac
 billy/
 ├─ apps/
 │  └─ web/                 # the Next.js app (static export): landing + editor
-│     ├─ app/              #   routes: /, /editor, /founders
+│     ├─ app/              #   routes: /, /editor, /early-birds
 │     ├─ components/       #   invoice/ (editor), landing/, founders/, motion/, ui/, icons/
 │     └─ lib/              #   PDF export, storage, founder numbers
 ├─ packages/

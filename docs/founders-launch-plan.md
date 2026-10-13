@@ -19,9 +19,9 @@ Founders feature files (all on PR #32):
 - `apps/web/components/invoice/invoice-editor.tsx` — calls the above on load, shows the welcome/error toast.
 - `apps/web/components/invoice/inspector-panel.tsx` / `use-editor-commands.tsx` — locks the Early Bird template in the rail and hides it from ⌘K until unlocked.
 - `apps/web/app/globals.css` — Early Bird template styling (sky-blue gradient header + hand-drawn underline).
-- `apps/web/app/founders/page.tsx` + `.lx-founders*` in `landing.css` — the public wall.
+- `apps/web/app/early-birds/page.tsx` + `.lx-founders*` in `landing.css` — the public wall at `/early-birds`.
 - `apps/web/content/founders.json` — wall data. **Empty `[]` until launch day.**
-- `apps/web/public/founders/*.svg` — blobatar avatars (blobatar.dev), written by the script.
+- `apps/web/components/founders/early-bird-face.tsx` — the mascot face drawn from each early bird's number, so there are no avatar files.
 
 ## Secrets and accounts (already done)
 
@@ -57,7 +57,7 @@ Founders feature files (all on PR #32):
    - numbers everyone by signup time (#1 = earliest)
    - signs each person's unlock link: `https://trybilly.tech/editor#founder=v1.<n>.<sig>`
    - writes `founderNumber` + `founderLink` onto every Loops contact
-   - builds `apps/web/content/founders.json` + blobatars for wall opt-ins
+   - builds `apps/web/content/founders.json`: every early bird as a number, plus the name where they gave one
    - saves a private backup CSV to `~/.billy/founders-<date>.csv` (never committed)
 5. **Commit and push** the updated `apps/web/content/founders.json` and any new `apps/web/public/founders/*.svg` files.
 6. **Deploy `launch-alpha` to production** (however the Cloudflare/Vercel swap works for this repo).
@@ -66,8 +66,18 @@ Founders feature files (all on PR #32):
 
 ### If something breaks mid-run
 - The script is safe to re-run: numbering is deterministic (same CSV → same numbers), and Loops contact updates are idempotent (just overwrite the same fields).
-- `--skip-loops` and `--skip-avatars` flags let you redo just the wall or just the Loops write without repeating the other.
+- `--skip-loops` lets you redo just the wall without writing to Loops again.
 - If the signing key is ever lost: no new valid links can be made, and regenerating a new key invalidates every link already sent. There is no recovery — this is why it's backed up.
+
+## Names after launch
+
+An early bird who opens their link sees a "You're early bird #N" card on `/early-birds` with an "Add my name" (or "Change my name") button. It opens an email to `hello@trybilly.tech`, because there is no server to save a name to. Loops forms can't do it either: on an existing contact they only change `userGroup`, never `firstName`. Make sure that mailbox reaches you.
+
+When a name request arrives:
+1. Check the sender's address against `~/.billy/founders-<date>.csv` so the number really is theirs. Names are added by hand, so nothing unmoderated goes on the wall.
+2. In Loops, set that contact's first name and set their user group to `early-bird-wall`.
+3. Export the audience again and re-run `scripts/founders/launch.ts` (add `--skip-loops` to leave the contacts alone). It rewrites `apps/web/content/founders.json`. Don't hand-edit that file; the next run overwrites it.
+4. Commit and deploy.
 
 ## Launch email template (Loops campaign)
 
@@ -95,7 +105,7 @@ Notes on the copy:
 - No em-dashes in the body per house style (the sign-off "— billy" is the one deliberate exception).
 - Keep the subject short, the number is the hook.
 - `{{founderLink}}` opens the editor pre-unlocked, no extra steps for them.
-- If an early-bird-wall opt-in was given, you can add a line: "You're also on the early birds wall: trybilly.tech/founders" — optional, not in the base template above.
+- If an early-bird-wall opt-in was given, you can add a line: "You're also on the early birds wall: trybilly.tech/early-birds" — optional, not in the base template above.
 
 ## Full script (for reference — lives at `scripts/founders/launch.ts`)
 

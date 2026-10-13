@@ -1345,16 +1345,17 @@
   }
 }
 
-/* ── Founding members wall ─────────────────────────────────────────── */
+/* ── Early birds wall ─────────────────────────────────────────────── */
 
 .lx-founders {
+  position: relative;
   max-width: 1040px;
   margin: 0 auto;
-  padding: 56px 24px 96px;
+  padding: 56px 24px 72px;
 }
 .lx-founders-head {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 .lx-founders-title {
   font-size: clamp(40px, 6vw, 64px);
@@ -1364,61 +1365,135 @@
   color: var(--lx-ink, #37352f);
 }
 .lx-founders-lead {
-  margin-top: 30px;
+  margin-top: 28px;
   font-size: 18px;
-  color: #6b6a65;
+  color: var(--lx-ink, #37352f);
+  text-wrap: balance;
 }
-.lx-founders-you {
-  display: inline-block;
+.lx-founders-count {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
   margin-top: 18px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #eaf3fc;
-  color: #0070d7;
-  font-size: 14px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  color: var(--lx-ink, #37352f);
+  font-size: 12px;
   font-weight: 600;
 }
 .lx-founders-empty {
   text-align: center;
-  color: #6b6a65;
+  color: var(--lx-ink, #37352f);
   font-size: 16px;
   padding: 48px 0;
 }
+
+/* "That's you": the card a browser holding a founder link sees above the wall. */
+.lx-you {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 540px;
+  margin: 32px auto 0;
+  padding: 20px;
+  border: 1.5px solid var(--lx-blue);
+  border-radius: 8px;
+  background: var(--lx-blue-wash);
+  text-align: left;
+}
+.lx-you-face {
+  display: block;
+  flex: none;
+  width: 92px;
+  height: 92px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.lx-you-title {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.lx-you-title b {
+  color: var(--lx-blue);
+}
+.lx-you-text {
+  margin-top: 4px;
+  font-size: 14px;
+}
+.lx-you-btn {
+  margin-top: 12px;
+  height: 36px;
+}
+.lx-you-note {
+  margin-top: 8px;
+  font-size: 12px;
+}
+@media (max-width: 520px) {
+  .lx-you {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 .lx-founders-grid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 .lx-founder {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 18px 12px 16px;
+  padding: 22px 12px 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fff;
   text-align: center;
+  transform: rotate(var(--lean, 0deg));
+  transition: transform 220ms var(--lx-out, ease), box-shadow 220ms var(--lx-out, ease);
 }
-.lx-founder-avatar {
+.lx-founder:hover {
+  transform: rotate(0deg) translateY(-3px);
+  box-shadow: 0 12px 24px -16px rgba(55, 53, 47, 0.35);
+}
+.lx-founder:hover .lx-founder-face {
+  animation: lx-wiggle 520ms ease-in-out;
+}
+.lx-founder[data-you] {
+  border-color: var(--lx-blue);
+  box-shadow: 0 0 0 1px var(--lx-blue);
+}
+.lx-founder-you {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: var(--lx-blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.lx-founder-face {
+  display: block;
   width: 56px;
   height: 56px;
-  border-radius: 999px;
-  object-fit: cover;
-  background: #f3f4f6;
+  border-radius: 14px;
+  overflow: hidden;
 }
-.lx-founder-initials {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #2f6bff, #3c8dff 60%, #6fd0ff);
-  color: #fff;
-  font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.01em;
+.lx-founder-face svg,
+.lx-you-face svg {
+  display: block;
 }
 .lx-founder-name {
   max-width: 100%;
@@ -1427,10 +1502,113 @@
   white-space: nowrap;
   font-size: 14px;
   font-weight: 600;
-  color: #37352f;
+  color: var(--lx-ink, #37352f);
 }
 .lx-founder-number {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 12px;
-  color: #0070d7;
+  color: var(--lx-blue);
+}
+@keyframes lx-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-7deg);
+  }
+  60% {
+    transform: rotate(6deg);
+  }
+}
+
+/* Doodles around the title, and in the margins once the screen is wide enough. */
+.lx-fd-sparkles {
+  top: 44px;
+  right: 9%;
+  width: 54px;
+  color: var(--lx-blue);
+}
+.lx-fd-bubble {
+  top: 88px;
+  left: 2%;
+  width: 124px;
+  transform: rotate(-6deg);
+}
+.lx-fd-arrow {
+  top: 191px;
+  left: calc(50% + 50px);
+  width: 92px;
+}
+.lx-fd-plane,
+.lx-fd-stars,
+.lx-fd-flourish {
+  display: none;
+}
+@media (max-width: 899px) {
+  .lx-fd-bubble,
+  .lx-fd-arrow {
+    display: none;
+  }
+  .lx-fd-sparkles {
+    top: 28px;
+    right: 5%;
+    width: 40px;
+  }
+}
+@media (min-width: 1280px) {
+  .lx-fd-plane {
+    display: block;
+    top: 600px;
+    left: -100px;
+    width: 104px;
+  }
+  .lx-fd-stars {
+    display: block;
+    top: 980px;
+    right: -108px;
+    width: 108px;
+    color: var(--lx-blue);
+  }
+  .lx-fd-flourish {
+    display: block;
+    top: 1380px;
+    left: -92px;
+    width: 84px;
+  }
+}
+
+.lx-founders-thanks {
+  padding: 8px 24px 120px;
+  text-align: center;
+}
+.lx-founders-stamp {
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  color: var(--lx-blue);
+}
+.lx-founders-thanks h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--lx-ink, #37352f);
+}
+.lx-founders-thanks p {
+  margin: 12px 0 28px;
+  font-size: 18px;
+  color: var(--lx-ink, #37352f);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-founder,
+  .lx-founder:hover {
+    transform: none;
+    transition: none;
+  }
+  .lx-founder:hover .lx-founder-face {
+    animation: none;
+  }
 }
