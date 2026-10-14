@@ -6,28 +6,31 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Project overview
 
-`main` is the **"Launching soon" waitlist site** served at trybilly.tech until
-launch. The product (the invoice editor and the full landing page) lives on the
-`launch-alpha` branch, a Turborepo with its own `AGENTS.md`; work on the editor
-branches from there, not from here.
+Billy is a free, open-source invoice editor that runs entirely in the browser.
+People edit an invoice like a document and export a PDF that matches the screen
+exactly. There are no accounts, no server and no database. The draft lives in
+`localStorage`, logos and stamps are embedded as data URLs, and the only
+third-party call is PostHog analytics. It ships as a Next.js static export
+(`apps/web/out/`) deployed on Vercel from `main`; `vercel.json` at the root sets
+the install, build and output. Cloudflare only runs the DNS. It is a Turborepo
+on Bun workspaces: Next.js 16 (App Router),
+React 19, Tailwind v4 and TypeScript.
 
-This branch is a single Next.js 16 app (App Router, React 19, Tailwind v4,
-TypeScript) on Bun, built as a static export (`out/`) and served by the
-assets-only Cloudflare Worker in `wrangler.jsonc`. There is no server and no
-database.
+```
+browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-to-image + jsPDF) → localStorage
+```
 
-- `app/page.tsx`: the page. Masked video heading, signup, sponsor invite and
-  the blurred peek of the new app (`public/coming-soon/`).
-- `components/coming-soon/waitlist-form.tsx`: posts straight to a Loops form
-  (`NEXT_PUBLIC_LOOPS_FORM_ID`), then offers a Share on X button.
-- `components/coming-soon/sponsors.tsx` and `lib/sponsors.ts`: the sponsor
-  invite (a mailto to hello@trybilly.tech) and the sponsor list.
-- `components/MaskedHeading.tsx`: the GSAP video-filled heading.
-- `public/_redirects`, `public/_headers`: read by the Cloudflare Worker, since
-  a static export can't use `redirects()` or `headers()`.
-
-The repo stays private until launch, so nothing here links to GitHub or
-mentions open source.
+- `apps/web` — the Next.js app: landing page plus editor
+- `apps/web/components/invoice/` — the editor. `invoice-page.tsx` is the one
+  layout used for the canvas, the preview and the PDF. `invoice-context.tsx`
+  holds state and the `localStorage` draft.
+- `apps/web/lib/pdf/client-export.tsx` — client-side PDF export
+- `packages/invoice-core` — `@billy/invoice-core`: pure TS domain (types,
+  totals, templates, theme, currencies, presets). No React.
+- `packages/design` — design tokens. Root `/DESIGN.md` is the spec of record
+  and overrides `packages/design/DESIGN.md` where they disagree.
+- `scripts/founders/` — launch-day CLIs for founding-member numbers and unlock
+  links. Run by hand, not part of the build.
 
 ## SDLC: how a change gets shipped
 
@@ -101,16 +104,21 @@ These match section B of `skills/deep-review/SKILL.md`. Keep the two in step.
 ### Commands and checks
 
 ```bash
-bun install          # install
-bunx tsc --noEmit    # typecheck (no script for it)
-bun run lint         # eslint
-bun run build        # static export → out/
-bun run dev          # dev server on http://localhost:3000
+bun install                                         # from the repo root
+(cd apps/web && bunx tsc --noEmit)                  # typecheck the app (no script for it)
+(cd packages/invoice-core && bunx tsc --noEmit)     # typecheck the domain package
+(cd packages/invoice-core && bun test)              # unit tests for the domain package
+bun run lint                                        # Turbo → eslint in apps/web
+bun run build                                       # static export → apps/web/out
+bun run dev                                         # dev server on http://localhost:3000
 ```
 
-- There are no tests on this branch. Say so in the PR body rather than
-  claiming tests passed.
-- `bun run lint` is clean (0 errors) as of 2026-09-30. Keep it that way.
+- Only `packages/invoice-core` has tests (`bun test`). The app has none, so say
+  so in the PR body rather than claiming the app is tested. Its `tsc` reports
+  `bun:test` as missing types; that's known and harmless.
+- `bun run lint` fails on `launch-alpha` as of 2026-09-30 (1 error, a
+  `no-explicit-any` in `apps/web/scripts/download-fonts.ts`). Report whether your change added lint errors, not
+  whether lint is clean.
 - `bun run build` is the real check for the static-export rule. Run it when you
   touch routing, `next.config.ts` or anything under `app/`.
 

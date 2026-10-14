@@ -1,0 +1,12 @@
+{
+  "name": "@billy/design",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Billy's design system — the Tally Forms token set (CSS + Tailwind theme), reference docs, and DTCG JSON.",
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./design-tokens.json",
+    "./DESIGN.md": "./DESIGN.md"
+  },
+  "files": ["tokens.css", "design-tokens.json", "DESIGN.md"]
+}
