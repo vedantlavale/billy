@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Source_Sans_3, Montserrat, Outfit, Inter, Instrument_Serif, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/seo";
 
 const sourceSans = Source_Sans_3({
   variable: "--font-sans",
@@ -48,6 +49,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Billy | Lightweight Invoice Editor",
   openGraph: {
     title: "Billy | Invoicing that feels like typing a document",

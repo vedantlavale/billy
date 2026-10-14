@@ -1,0 +1,22 @@
+# billy
+
+> billy is a free, open-source invoice editor. You click any line on the invoice and type, then download a print-ready PDF. There is no account and no server.
+
+## What billy does
+- Click-to-edit invoices with autosave, undo and redo, and a command palette
+- 10 templates and 10 currencies, with tax, discount and payment terms
+- GST support for India: GSTIN, HSN and SAC codes, CGST, SGST and IGST, and reverse charge
+- Print-ready PDF export, generated in the browser
+- Works on a phone
+
+## Privacy
+- Invoices are kept in the browser's local storage and are never uploaded.
+- billy sends anonymous usage events to PostHog and asks GitHub for its star count. It does not send invoice contents anywhere.
+
+## Links
+- [Home](https://www.trybilly.tech)
+- [Editor](https://www.trybilly.tech/editor)
+- [Early birds](https://www.trybilly.tech/early-birds)
+- [Source code (MIT)](https://github.com/vedantlavale/billy)
+- [Sitemap](https://www.trybilly.tech/sitemap.xml)
+- Contact: hello@trybilly.tech

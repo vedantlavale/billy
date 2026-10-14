@@ -44,6 +44,8 @@ import {
 } from "@/components/icons/billy"
 import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
 import { Reveal } from "@/components/landing/reveal"
+import { JsonLd } from "@/components/seo/json-ld"
+import { buildJsonLd } from "@/lib/seo"
 import {
   BlankPageScene,
   CurrencyScene,
@@ -68,6 +70,7 @@ import {
 } from "@/components/landing/doodles"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/" },
   title: "Billy | Invoicing that feels like typing a document",
   description:
     "Edit an invoice like a document and export a print-ready PDF. Runs entirely in your browser: no account, no server, nothing uploaded.",
@@ -167,6 +170,7 @@ const GST_DEMO = {
 export default function Home() {
   return (
     <main className="lx" id="top">
+      <JsonLd data={buildJsonLd(FAQS)} />
       <LandingNav />
 
       {/* ═══ HERO — centered promise above the real product ═══ */}

@@ -20,6 +20,7 @@ import founders from "@/content/founders.json"
 import type { EarlyBird } from "@/lib/early-birds"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/early-birds" },
   title: "Billy | Early birds",
   description: "The first people to believe in billy, before it launched.",
 }
