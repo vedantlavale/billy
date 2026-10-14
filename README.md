@@ -136,22 +136,23 @@ billy/
 ├─ scripts/founders/       # launch-day CLIs for early bird numbers and unlock links
 ├─ docs/                   # notes and the screenshots used above
 ├─ DESIGN.md               # the design spec of record
-└─ wrangler.jsonc          # Cloudflare Worker that serves apps/web/out
+└─ vercel.json              # Vercel build settings and security headers
 ```
 
 ## Deployment
 
-The app is a static export (`output: 'export'` in `apps/web/next.config.ts`). `wrangler.jsonc` at the root is an assets-only Cloudflare Worker that serves `apps/web/out`, built by Cloudflare Workers Builds.
+The app is a static export (`output: 'export'` in `apps/web/next.config.ts`), deployed on [Vercel](https://vercel.com) from `main`. DNS is on Cloudflare.
 
+- **Install command:** `bun install`
 - **Build command:** `bun run build`
 - **Output directory:** `apps/web/out`
 - **Environment:** `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` for analytics. It is read at build time, and analytics stay off without it.
 
-Security headers come from `apps/web/public/_headers`.
+These are set in `vercel.json`, which also adds the security headers.
 
 ## Contributing
 
-Contributions are welcome. billy is small, so the process is light.
+Contributions are welcome. billy is small, so the process is light. The short version is below, and [`CONTRIBUTING.md`](CONTRIBUTING.md) has the rest.
 
 - Open an issue first for anything bigger than a small fix, so we can agree on the approach before you write code. Typos and obvious bugs can go straight to a pull request.
 - Branch from `main` and keep each pull request to one change.
