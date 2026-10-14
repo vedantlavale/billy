@@ -116,6 +116,9 @@ export function LandingNav({ minimal = false }: { minimal?: boolean }) {
             <a className="lx-nav-link" href="#faq">
               FAQ
             </a>
+            <a className="lx-nav-link" href="#sponsors">
+              Sponsor
+            </a>
           </nav>
         )}
 

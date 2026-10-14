@@ -8,6 +8,7 @@ import { TEMPLATES, formatCurrency } from "@billy/invoice-core"
 import { Cta, LandingNav } from "@/components/landing/landing-chrome"
 import { HeroShot } from "@/components/landing/hero-shot"
 import { GITHUB_URL } from "@/lib/links"
+import { SPONSOR_MAILTO } from "@/lib/sponsors"
 import {
   ChevronUpIcon,
   CircleUserIcon,
@@ -44,6 +45,7 @@ import {
 } from "@/components/icons/billy"
 import { Bento, BentoCard, FeatureTiles, SectionHeader, Underlined } from "@/components/landing/bento"
 import { Reveal } from "@/components/landing/reveal"
+import { Sponsors } from "@/components/landing/sponsors"
 import { JsonLd } from "@/components/seo/json-ld"
 import { buildJsonLd } from "@/lib/seo"
 import {
@@ -427,6 +429,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ SPONSORS ═══ */}
+      <Sponsors />
+
       {/* ═══ FINAL CTA ═══ */}
       <section className="lx-final">
         <Reveal className="lx-final-inner">
@@ -481,6 +486,9 @@ export default function Home() {
               </a>
               <a className="lx-footer-link" href={`${GITHUB_URL}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer">
                 MIT license
+              </a>
+              <a className="lx-footer-link" href={SPONSOR_MAILTO}>
+                Sponsor billy
               </a>
             </div>
 
