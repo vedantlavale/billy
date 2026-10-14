@@ -25,26 +25,11 @@
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0070d7"></a>
 </p>
 
-<p align="center">
-  <img src="docs/screenshots/landing.png" alt="The billy landing page: Invoicing that feels like typing a document" width="860">
-</p>
-
 ## Why billy
 
 - **You edit the invoice itself.** There are no forms or dialogs. Click the company name, a line item or the due date and type.
 - **The PDF matches the screen.** The editor, the preview and the export all render the same page, so what you see is what you download.
 - **Nothing to sign up for, nothing uploaded.** There are no accounts, no backend and no database. Your draft is saved in your browser's local storage.
-
-<table>
-  <tr>
-    <td width="50%"><img src="docs/screenshots/editor.png" alt="The editor: an invoice you edit by clicking on it"></td>
-    <td width="50%"><img src="docs/screenshots/templates.png" alt="The template rail with the Studio template selected"></td>
-  </tr>
-  <tr>
-    <td align="center"><sub>Click any text to edit it</sub></td>
-    <td align="center"><sub>Pick a template, set currency and terms</sub></td>
-  </tr>
-</table>
 
 ## Features
 
@@ -69,22 +54,6 @@
 
 **Export**
 - A print-ready PDF generated in the browser
-
-<p align="center">
-  <img src="docs/screenshots/mobile.png" alt="The editor on a phone" width="220">
-  &nbsp;&nbsp;&nbsp;
-  <img src="docs/screenshots/early-birds.png" alt="The early birds wall, with a generated mascot face for every person" width="600">
-</p>
-<p align="center"><sub>On a phone, and the early birds wall (placeholder names)</sub></p>
-
-## Privacy
-
-Your invoice, client details and logo stay on your device. billy makes two kinds of third-party request:
-
-- **PostHog analytics.** Event names and anonymous properties only, never the contents of an invoice. See [`apps/web/instrumentation-client.ts`](apps/web/instrumentation-client.ts).
-- **GitHub.** The landing page asks the GitHub API for the star count.
-
-Nothing else leaves your browser, and there is no server that could store it.
 
 ## How it works
 
@@ -134,7 +103,7 @@ billy/
 │  ├─ design/              # @billy/design: design tokens
 │  └─ typescript-config/   # shared tsconfig base
 ├─ scripts/founders/       # launch-day CLIs for early bird numbers and unlock links
-├─ docs/                   # notes and the screenshots used above
+├─ docs/                   # project documentation
 ├─ DESIGN.md               # the design spec of record
 └─ vercel.json              # Vercel build settings and security headers
 ```
