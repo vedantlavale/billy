@@ -1,9 +1,8 @@
 # Skills
 
 Agent skills for the four-beat SDLC. These files are the source of truth.
-`.claude/skills/<name>` symlinks to each folder here so Claude Code discovers
-them, and `.github/workflows/claude-code-review.yml` reads the review rubric
-straight out of this directory.
+`.claude/skills/<name>` symlinks to each folder here so agent harnesses
+discover them.
 
 The four-beat workflow they implement is described in `AGENTS.md` at the repo
 root.
@@ -64,9 +63,9 @@ the rubric it applies is ours.
 ### ship-pr
 
 `greploop` is a good loop wrapped around a service we do not pay for. We kept the
-loop and pointed it at this kit's reviewer: open the PR with proof, read the verdict,
-go back and build if it is below 5, push, get a fresh verdict. The review fires
-itself on push, so nothing has to be tagged by hand.
+loop and pointed it at this kit's reviewer: open the PR with proof, run the
+review, read the verdict, go back and build if it is below 5, push, get a fresh
+verdict.
 
 ### before-and-after
 

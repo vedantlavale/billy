@@ -4,7 +4,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./agent": "./src/agent/index.ts"
+  },
+  "dependencies": {
+    "lz-string": "^1.5.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@billy/typescript-config": "workspace:*",

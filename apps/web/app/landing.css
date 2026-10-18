@@ -1683,3 +1683,323 @@
   height: 28px;
   width: auto;
 }
+
+/* ══ /connect: Billy for AI assistants ══════════════════════════════════════
+   A setup page, not a second landing page: one narrow column, three numbered
+   steps, and the landing's type, colour and doodles for continuity. */
+
+.lx-connect {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 80px) var(--lx-gutter) 0;
+}
+
+.lx-connect-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.lx-connect-title {
+  margin: 16px 0 0;
+  font-size: clamp(32px, 4.4vw, 44px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lx-connect-title .lx-underline svg {
+  bottom: -0.26em;
+  height: 0.28em;
+}
+
+.lx-connect-lead {
+  max-width: 52ch;
+  margin: 18px 0 0;
+  font-size: 18px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.lx-connect-doodle {
+  position: relative;
+  flex: none;
+  width: 150px;
+  height: 120px;
+}
+
+.lx-connect-doodle svg {
+  position: absolute;
+}
+
+.lx-connect-doodle-face {
+  left: 0;
+  bottom: 0;
+  width: 70px;
+  transform: rotate(-6deg);
+}
+
+.lx-connect-doodle-bubble {
+  top: 0;
+  right: 0;
+  width: 96px;
+  color: var(--lx-blue);
+}
+
+@media (max-width: 720px) {
+  .lx-connect-doodle {
+    display: none;
+  }
+}
+
+/* The three steps, joined by a thin rail */
+.lx-flow {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: lx-flow;
+  border: 1px solid var(--lx-line);
+  border-radius: var(--lx-r-xl);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(55, 53, 47, 0.04);
+}
+
+.lx-flow-step {
+  position: relative;
+  padding: 24px 28px 26px 72px;
+  counter-increment: lx-flow;
+}
+
+.lx-flow-step + .lx-flow-step {
+  border-top: 1px solid var(--lx-line);
+}
+
+.lx-flow-step::before {
+  content: counter(lx-flow);
+  position: absolute;
+  top: 22px;
+  left: 28px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: var(--lx-blue);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lx-flow-title {
+  margin: 2px 0 14px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.lx-flow-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  opacity: 0.8;
+}
+
+.lx .lx-flow code,
+.lx .lx-flow pre {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Step 1: the address */
+.lx-endpoint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 5px 5px 14px;
+  border: 1px solid var(--lx-line-2);
+  border-radius: var(--lx-r-md);
+  background: var(--lx-blue-wash);
+}
+
+.lx-endpoint-row code {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.lx-copy-btn {
+  flex-shrink: 0;
+  min-width: 72px;
+  height: 34px;
+}
+
+/* Step 2: per-client setup */
+.lx-connect-tabs {
+  max-width: 100%;
+}
+
+.lx-connect-body {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.lx-connect-body code {
+  padding: 1px 5px;
+  border-radius: var(--lx-r-sm);
+  background: var(--lx-muted);
+  font-size: 0.9em;
+}
+
+.lx-connect-for {
+  margin: 0 0 10px;
+}
+
+.lx-connect-or {
+  margin-top: 14px;
+}
+
+.lx-substeps {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+  list-style: decimal;
+}
+
+.lx-substeps li::marker {
+  font-weight: 600;
+}
+
+.lx-copyline,
+.lx-codeblock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 5px 5px 14px;
+  border: 1px solid var(--lx-line);
+  border-radius: var(--lx-r-md);
+  background: var(--lx-muted);
+}
+
+.lx-connect-body .lx-copyline code,
+.lx-connect-body .lx-codeblock pre {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  background: none;
+  font-size: 13.5px;
+  line-height: 22px;
+  white-space: pre;
+  scrollbar-width: thin;
+}
+
+.lx-codeblock {
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Step 3: something to say */
+.lx-ask {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 14px 12px 16px;
+  border: 1px solid var(--lx-line);
+  border-radius: 14px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--lx-fast) var(--lx-out), background-color var(--lx-fast) var(--lx-out);
+}
+
+.lx-ask + .lx-ask {
+  margin-top: 8px;
+}
+
+.lx-ask:hover {
+  border-color: var(--lx-blue);
+  background: var(--lx-blue-wash);
+}
+
+.lx-ask-text {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.lx-ask-action {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  color: var(--lx-blue);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lx-flow-more {
+  margin-top: 8px;
+}
+
+.lx-flow-more summary {
+  width: fit-content;
+  margin-bottom: 8px;
+  color: var(--lx-blue);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Good to know */
+.lx-connect-notes {
+  margin-top: 40px;
+}
+
+@media (max-width: 520px) {
+  .lx-flow-step {
+    padding: 64px 18px 22px;
+  }
+
+  .lx-flow-step::before {
+    top: 22px;
+    left: 18px;
+  }
+
+  .lx-flow-title {
+    position: absolute;
+    top: 24px;
+    left: 56px;
+    margin: 0;
+  }
+
+  .lx-ask {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .lx-endpoint-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .lx-endpoint-row code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

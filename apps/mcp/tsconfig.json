@@ -1,0 +1,9 @@
+{
+  "extends": "@billy/typescript-config/base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "lib": ["esnext"],
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": ["src/**/*.ts"]
+}

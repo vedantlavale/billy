@@ -3,7 +3,17 @@
 import * as React from "react"
 
 import type { InvoiceData, LineItem } from "@billy/invoice-core"
-import { applyProfessionPreset, firstInvoiceNumber, nextInvoiceNumber, professionPresets } from "@billy/invoice-core"
+import {
+  applyProfessionPreset,
+  createDefaultInvoice,
+  createLineItem,
+  nextInvoiceNumber,
+  professionPresets,
+  readInvoiceFromHash,
+} from "@billy/invoice-core"
+
+import { useToast } from "@/components/ui/toast"
+import { onInvoiceLink, takeInvoiceLink } from "@/lib/invoice-link-inbox"
 
 type InvoiceAction =
   | { type: "UPDATE_FIELD"; field: keyof InvoiceData; value: InvoiceData[keyof InvoiceData] }
@@ -20,82 +30,10 @@ type InvoiceAction =
 
 const STORAGE_KEY = "billy_invoice_data"
 
-function createDefaultInvoice(): InvoiceData {
-  const today = new Date()
-  const inSevenDays = new Date(today)
-  inSevenDays.setDate(today.getDate() + 7)
-
-  return {
-    businessName: "Your Company",
-    businessTagline: "Design & Product Studio",
-    logoUrl: null,
-    businessAddress: "123 Market Street\nSan Francisco, CA 94103",
-    businessEmail: "hello@yourcompany.com",
-    businessPhone: "+1 (555) 555-5555",
-    gstin: "",
-    clientName: "Acme Corp",
-    clientAddress: "456 Mission Avenue\nSan Francisco, CA 94105",
-    clientEmail: "finance@acme.com",
-    poNumber: "",
-    invoiceNumber: firstInvoiceNumber(today),
-    invoiceDate: today.toISOString().slice(0, 10),
-    dueDate: inSevenDays.toISOString().slice(0, 10),
-    lineItems: [
-      {
-        id: "item-1",
-        description: "Website redesign",
-        hsnCode: "",
-        quantity: 1,
-        rate: 1200,
-      },
-      {
-        id: "item-2",
-        description: "Brand guidelines",
-        hsnCode: "",
-        quantity: 1,
-        rate: 650,
-      },
-    ],
-    taxRate: 8.25,
-    taxLabel: "Tax",
-    discountRate: 0,
-    currency: "INR",
-    templateId: "clean",
-    stampUrl: null,
-    notes: "Thank you for your business. Please reach out if you have any questions.",
-    paymentTerms: "Payment due within 7 days via bank transfer or card.",
-    bankName: "",
-    bankAccount: "",
-    bankIfsc: "",
-    reverseChargeLabel: "Reverse charge applicable",
-    options: {
-      showGSTIN: false,
-      showHSNCode: false,
-      showCGST: false,
-      showSGST: false,
-      showIGST: false,
-      showReverseCharge: false,
-      showPONumber: false,
-      showBankDetails: false,
-      showDigitalStamp: false,
-    },
-  }
-}
-
 const InvoiceStateContext = React.createContext<InvoiceData | null>(null)
 const InvoiceDispatchContext = React.createContext<React.Dispatch<InvoiceAction> | null>(
   null
 )
-
-function createLineItem(id: string): LineItem {
-  return {
-    id,
-    description: "New line item",
-    hsnCode: "",
-    quantity: 1,
-    rate: 0,
-  }
-}
 
 function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData {
   switch (action.type) {
@@ -173,6 +111,38 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
   }
 }
 
+/* ── Invoices from a link ───────────────────────────────────────────────
+   A link carries no images, and an agent may not know the user's business
+   details. Fill those gaps from the draft already saved in this browser, but
+   never with the sample content a fresh editor starts with. */
+
+const BUSINESS_FIELDS = [
+  "businessName",
+  "businessTagline",
+  "businessAddress",
+  "businessEmail",
+  "businessPhone",
+  "gstin",
+  "bankName",
+  "bankAccount",
+  "bankIfsc",
+] as const satisfies readonly (keyof InvoiceData)[]
+
+function withSavedBusiness(linked: InvoiceData, saved: InvoiceData | null): InvoiceData {
+  if (!saved) return linked
+  const sample = createDefaultInvoice()
+  const merged: InvoiceData = {
+    ...linked,
+    logoUrl: linked.logoUrl ?? saved.logoUrl ?? null,
+    stampUrl: linked.stampUrl ?? saved.stampUrl ?? null,
+  }
+  for (const field of BUSINESS_FIELDS) {
+    const kept = saved[field]
+    if (!merged[field] && typeof kept === "string" && kept && kept !== sample[field]) merged[field] = kept
+  }
+  return merged
+}
+
 /* ── Undo / redo ────────────────────────────────────────────────────────
    Every committed edit is one history step: EditableText commits on blur,
    so a whole field edit is undone at once, not per keystroke. The initial
@@ -232,26 +202,76 @@ export function InvoiceProvider({ children }: { children: React.ReactNode }) {
     [history.past.length, history.future.length],
   )
 
-  // Load state from localStorage on initial mount
-  React.useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      if (saved) {
-        const parsed = JSON.parse(saved) as InvoiceData
-        dispatch({ type: "LOAD_STATE", payload: parsed, history: "reset" })
+  const { toast } = useToast()
+  const stateRef = React.useRef(state)
+  React.useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
+
+  // Apply an invoice link (#i=…) on top of `current`, the draft being
+  // replaced. The link was already taken out of the address bar before
+  // analytics started (lib/invoice-link-inbox.ts). On top of a real draft
+  // this is an ordinary edit, so Undo brings the old draft back.
+  const importFromHash = React.useCallback(
+    (current: InvoiceData | null) => {
+      const hash = takeInvoiceLink()
+      const linked = hash ? readInvoiceFromHash(hash) : null
+      if (!linked) return
+
+      if (!linked.ok) {
+        toast(
+          linked.reason === "unsupported"
+            ? "This invoice link is from a newer version of Billy. Refresh and try again."
+            : "This invoice link is damaged. Ask your assistant for a new one.",
+          "error",
+        )
         return
       }
+
+      dispatch({
+        type: "LOAD_STATE",
+        payload: withSavedBusiness(linked.data, current),
+        history: current ? undefined : "reset",
+      })
+      toast(
+        current ? "Invoice loaded from your link. Undo brings back your previous draft." : "Invoice loaded from your link.",
+        "info",
+      )
+    },
+    [toast],
+  )
+
+  // Load the saved draft once on mount, then any invoice in the link. The ref
+  // keeps Strict Mode's second mount from loading twice.
+  const loadedRef = React.useRef(false)
+  React.useEffect(() => {
+    if (loadedRef.current) return
+    loadedRef.current = true
+
+    let saved: InvoiceData | null = null
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) saved = JSON.parse(raw) as InvoiceData
     } catch (error) {
       console.error("Failed to load invoice from localStorage:", error)
     }
 
-    const presetId = localStorage.getItem("billy_profession_preset")
-    if (presetId && presetId in professionPresets) {
-      const updated = applyProfessionPreset(createDefaultInvoice(), presetId as keyof typeof professionPresets)
-      dispatch({ type: "LOAD_STATE", payload: updated, history: "reset" })
-      localStorage.removeItem("billy_profession_preset")
+    if (saved) {
+      dispatch({ type: "LOAD_STATE", payload: saved, history: "reset" })
+    } else {
+      const presetId = localStorage.getItem("billy_profession_preset")
+      if (presetId && presetId in professionPresets) {
+        const updated = applyProfessionPreset(createDefaultInvoice(), presetId as keyof typeof professionPresets)
+        dispatch({ type: "LOAD_STATE", payload: updated, history: "reset" })
+        localStorage.removeItem("billy_profession_preset")
+      }
     }
-  }, [])
+
+    importFromHash(saved)
+  }, [importFromHash])
+
+  // A link opened while the editor is already showing only changes the hash.
+  React.useEffect(() => onInvoiceLink(() => importFromHash(stateRef.current)), [importFromHash])
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {

@@ -1,10 +1,9 @@
 ---
 name: ship-pr
-description: Open a PR with before/after proof, then loop on the bot's review until the verdict is 'Looks good' with no unresolved comments. Use when the work is built and proven and it is time to open or finish a pull request, or when the user says "ship it", "open a PR", or "get this PR clean".
+description: Open a PR with before/after proof, then loop on the review until the verdict is 'Looks good' with no unresolved comments. Use when the work is built and proven and it is time to open or finish a pull request, or when the user says "ship it", "open a PR", or "get this PR clean".
 allowed-tools:
   - Bash(gh pr:*)
   - Bash(gh api:*)
-  - Bash(gh run:*)
   - Bash(git:*)
   - Read
   - Grep
@@ -19,8 +18,9 @@ Open the PR, then keep fixing until the review is clean. This is the shape of
 `greploop`, pointed at the `code-review` skill in this kit rather than a paid
 service, so it works on any repo with no third-party install.
 
-The review runs automatically on `pull_request` open and on every push, from
-`.github/workflows/claude-code-review.yml`. Nobody tags `@claude` by hand.
+The review is run in step 2 below, not fired by CI. If the repo has a reviewer
+of its own, you can wait for that instead; the loop only needs a summary
+comment ending in a verdict.
 
 ## Inputs
 
@@ -64,26 +64,14 @@ no filler.
 
 Never open against anything but the default branch, and never push to it directly.
 
-## 2. Wait for the review
+## 2. Run the review
 
-The workflow triggers itself. Do not post `@claude` to trigger it, that fires the
-other workflow and gives a different, shallower answer.
+Run `deep-review` against the PR and post its summary with `--comment`. It
+reviews the head SHA it was run against; after a push the review is stale, so
+run it again rather than reusing the old verdict.
 
-```bash
-HEAD_SHA=$(gh pr view <N> --json headRefOid -q .headRefOid)
-
-for i in $(seq 1 60); do
-  STATUS=$(gh run list --workflow=claude-code-review.yml --limit 10 \
-    --json headSha,status,conclusion,databaseId \
-    -q "[.[] | select(.headSha==\"$HEAD_SHA\")] | first")
-  [ -n "$STATUS" ] && echo "$STATUS" | grep -q '"status":"completed"' && break
-  sleep 10
-done
-```
-
-If no run appears for the head SHA after ten minutes, check the workflow is
-enabled and that the review workflow's auth secret is set on the repo. Say so rather
-than looping forever.
+If the repo has a reviewer of its own, wait for that instead. The loop only
+needs a summary comment ending in a verdict line.
 
 ## 3. Read the verdict
 
@@ -127,8 +115,8 @@ problem. Do not leave a finding unanswered. Resolve threads you have addressed:
 gh api graphql -f query='mutation($t:ID!){resolveReviewThread(input:{threadId:$t}){thread{isResolved}}}' -f t=<thread-id>
 ```
 
-Push, and the review re-runs on the new SHA. It does not suppress itself on a
-second look, so a push always gets a fresh verdict.
+Push, then run the review again on the new SHA. `deep-review` does not suppress
+itself on a second look, so a push always gets a fresh verdict.
 
 Stop after `--max-iterations` cycles and report where it stands rather than
 looping forever. If the same finding survives two fixes, stop and ask. You are

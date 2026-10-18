@@ -8,19 +8,21 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Billy is a free, open-source invoice editor that runs entirely in the browser.
 People edit an invoice like a document and export a PDF that matches the screen
-exactly. There are no accounts, no server and no database. The draft lives in
+exactly. There are no accounts and no database. The draft lives in
 `localStorage`, logos and stamps are embedded as data URLs, and the only
 third-party call is PostHog analytics. It ships as a Next.js static export
 (`apps/web/out/`) deployed on Cloudflare Workers from `main`; Workers Builds
 builds and deploys it, and `wrangler.jsonc` at the root routes `trybilly.tech`
-and `www.trybilly.tech` to the `billy` Worker (`docs/deploy.md` covers the
-dashboard steps and rollback). Vercel only builds PR previews now; `vercel.json`
-holds those settings. Cloudflare runs the DNS. It is a Turborepo on Bun
-workspaces: Next.js 16 (App Router),
+and `www.trybilly.tech` to the `billy` Worker. `/mcp` is the only path that runs
+code (the agent endpoint in `apps/mcp`, described below); everything else is a
+static file. `docs/deploy.md` has the dashboard steps and rollback; Vercel only
+builds PR previews now, with `vercel.json` holding those settings. Cloudflare
+runs the DNS. It is a Turborepo on Bun workspaces: Next.js 16 (App Router),
 React 19, Tailwind v4 and TypeScript.
 
 ```
 browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-to-image + jsPDF) → localStorage
+agent:   /mcp or `billy` CLI → invoice-core → /editor#i=<invoice in the URL fragment> → editor imports it
 ```
 
 - `apps/web` — the Next.js app: landing page plus editor
@@ -29,7 +31,17 @@ browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-
   holds state and the `localStorage` draft.
 - `apps/web/lib/pdf/client-export.tsx` — client-side PDF export
 - `packages/invoice-core` — `@billy/invoice-core`: pure TS domain (types,
-  totals, templates, theme, currencies, presets). No React.
+  totals, templates, theme, currencies, presets, defaults, the `#i=` link
+  codec). No React. `@billy/invoice-core/agent` holds the zod schema for agent
+  input; keep zod out of the main entry so the web app never bundles it.
+- `packages/mcp` — `@billy/mcp`: the MCP server (tools `create_invoice`,
+  `list_invoice_options`), shared by the Worker and the CLI.
+- `apps/mcp` — the Worker script behind `/mcp` (`run_worker_first` in
+  `wrangler.jsonc`). `bun run dev` in `apps/mcp` runs the whole site plus
+  `/mcp` on wrangler.
+- `packages/cli` — the `trybilly` npm package (`billy` command): `init`,
+  `new`, and `mcp` over stdio. Bundle with `bun run bundle`; it ships with no
+  runtime dependencies.
 - `packages/design` — design tokens. Root `/DESIGN.md` is the spec of record
   and overrides `packages/design/DESIGN.md` where they disagree.
 - `scripts/founders/` — launch-day CLIs for founding-member numbers and unlock
@@ -39,8 +51,7 @@ browser: / (landing) and /editor → InvoicePage (canvas, preview, PDF via html-
 
 Every task moves through four beats, each backed by a skill in `skills/`. The
 skills are the source of truth; `.claude/skills/` symlinks to them so the agent
-harness discovers them, and the review workflow reads them straight out of the
-repo.
+harness discovers them.
 
 1. **Isolate** (`/new-feature`). Understand the issue first and ask the user
    when it is unclear; hand a vague issue to `/triage`, which leaves an agent
@@ -64,15 +75,12 @@ Run `/unslop` over anything a person reads before you post it: commit messages,
 PR title and body, docs, comments. Apply it to text you wrote, not to prose you
 did not touch.
 
-### Code review runs itself
+### Code review
 
-`.github/workflows/claude-code-review.yml` reviews every PR on open and on every
-push. Do not tag the bot by hand.
-
-The review follows `skills/deep-review/SKILL.md`. It posts inline comments plus a
+A review follows `skills/deep-review/SKILL.md`. It posts inline comments plus a
 short summary that opens with a plain-language line and ends in a verdict:
-`Looks good`, `Changes requested` or `Blocking issues`. `/ship-pr` reads that
-verdict and loops.
+`Looks good`, `Changes requested` or `Blocking issues`. `/ship-pr` runs the
+review and loops on that verdict.
 
 The review is deliberately short. Findings are tagged P0 to P3, capped at five,
 and each one says what is wrong, why it matters and what to change. A reviewer
@@ -116,9 +124,11 @@ bun run build                                       # static export → apps/web
 bun run dev                                         # dev server on http://localhost:3000
 ```
 
-- Only `packages/invoice-core` has tests (`bun test`). The app has none, so say
-  so in the PR body rather than claiming the app is tested. Its `tsc` reports
-  `bun:test` as missing types; that's known and harmless.
+- The app (`apps/web`) has no tests, so say so in the PR body rather than
+  claiming the app is tested. `bun test` runs the suites in
+  `packages/invoice-core`, `packages/mcp` and `packages/cli`.
+  `packages/invoice-core`'s `tsc` reports `bun:test` as missing types; that's
+  known and harmless.
 - `bun run lint` fails on `launch-alpha` as of 2026-09-30 (1 error, a
   `no-explicit-any` in `apps/web/scripts/download-fonts.ts`). Report whether your change added lint errors, not
   whether lint is clean.
@@ -136,9 +146,14 @@ Run these before opening a PR, and say in the PR body what they printed.
 - **Nothing leaves the browser except anonymous analytics.** The README promises
   that no data leaves the user's machine. Invoice content in a network request,
   PostHog included, breaks that promise.
-- **There is no database and no server.** Nothing needs a shared-DB warning.
-  Adding one is an architecture change for the user to decide, not an
+- **There is no database, and `/mcp` stays stateless.** The endpoint turns an
+  agent's input into a link and forgets it: no storage, no logging of invoice
+  content, no accounts. Nothing needs a shared-DB warning. Adding state or any
+  other server route is an architecture change for the user to decide, not an
   implementation detail.
+- **Invoice links are a public format.** Links already handed out must keep
+  opening. Don't change what `createBlankInvoice()` holds or the `1.` payload
+  layout; add a new version instead.
 - **Returning users have a saved draft.** `billy_invoice_data` in
   `localStorage` is loaded with no validation. A changed data shape without a
   load-time default crashes the editor for existing users. A fresh browser

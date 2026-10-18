@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Brand } from "@/components/brand"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import { ArrowRightIcon } from "@/components/icons/rune"
@@ -107,6 +108,9 @@ export function LandingNav({ minimal = false }: { minimal?: boolean }) {
 
         {!minimal && (
           <nav className="lx-nav-links" aria-label="Sections">
+            <Link className="lx-nav-link" href="/connect">
+              Connect
+            </Link>
             <a className="lx-nav-link" href="#features">
               Features
             </a>

@@ -173,50 +173,8 @@ Then read section B back to the user as a list and ask one question: **"Would a
 new engineer break any of these without realising?"** If the answer to a bullet
 is no, it is a convention rather than an invariant, and it belongs in group E.
 
-Finally, tell them the two things the kit cannot do for itself.
-
-**1. The Claude GitHub App and the Anthropic credential.** The review needs
-both. The App is GitHub access; `CLAUDE_CODE_OAUTH_TOKEN` is the key that runs
-the model. **Having the App on the organisation is not enough**, and a missing
-secret fails confusingly: everything GitHub-side succeeds first, then it stops
-on `Either ANTHROPIC_API_KEY, CLAUDE_CODE_OAUTH_TOKEN ... is required`.
-
-Check first, and skip this whole step if it is already covered:
-
-```bash
-gh secret list --repo <owner>/<repo>
-gh secret list --org <org>                  # needs admin:org; skip if it errors
-gh api /orgs/<org>/installations --jq '.installations[] | select(.app_slug=="claude") | .repository_selection'
-```
-
-If something is missing, **ask the user which route they want**. Present all
-three, with the recommendation for their situation first:
-
-| Route | Best for | What they do |
-|---|---|---|
-| **A. `/install-github-app`** | One repo, fastest | Type it in Claude Code in this repo. It installs the App, mints and sets the secret, and opens a PR, in one guided flow |
-| **B. Org secret, once** | An org with several repos | Install the App on "All repositories" at github.com/apps/claude, then `claude setup-token` and `gh secret set CLAUDE_CODE_OAUTH_TOKEN --org <org> --visibility all` |
-| **C. Repo secret by hand** | No org admin, or no Claude Code | App from github.com/apps/claude, then `claude setup-token` and `gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo <owner>/<repo>` |
-
-Recommend A for a single repo, B when the user says they will roll this out to
-more repos. B means every future repo needs nothing but the kit.
-
-**If they pick A**, warn them about its PR before they run it. It adds the
-stock `claude-code-review.yml`, the shallow reviewer this kit replaces, at the
-same path as this kit's. Close that PR without merging, or merge it with only
-`claude.yml` kept. The App and the secret stay either way; they are not part of
-the PR.
-
-You cannot run any of these for them. `/install-github-app` is a built-in
-command the user types, and routes B and C need a browser (`gh auth refresh -h
-github.com -s admin:org` for B) and put a token value on the command line. Hand
-over the commands and let them run them in their own terminal, so the token
-never enters the session. Secrets are write-only, so copying one from another
-repo is not possible; mint a fresh one.
-
-**2. Reaching the default branch.** The review workflow refuses to run while its
-file differs from the copy on the default branch, an anti-tampering guard, so
-the PR that adds it will not be reviewed by it. Merge first.
+Finally, tell them one thing: nothing reviews a PR automatically. The review
+runs on demand, via `deep-review` or the `/ship-pr` loop.
 
 ## If the user will not answer
 

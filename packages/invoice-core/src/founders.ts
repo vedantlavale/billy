@@ -41,7 +41,7 @@ export function formatFounderCode(n: number, signature: ArrayBuffer | Uint8Array
  */
 export async function verifyFounderCode(code: string, publicKey: string = FOUNDER_PUBLIC_KEY): Promise<number | null> {
   const match = code.trim().match(/^v1\.([1-9]\d{0,6})\.([A-Za-z0-9_-]{80,90})$/)
-  if (!match || !globalThis.crypto?.subtle) return null
+  if (!match || typeof crypto === "undefined" || !crypto.subtle) return null
   const n = Number(match[1])
   try {
     const key = await crypto.subtle.importKey("raw", fromBase64Url(publicKey), { name: "Ed25519" }, false, ["verify"])

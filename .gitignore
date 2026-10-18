@@ -53,3 +53,9 @@ next-env.d.ts
 # .opencode/
 # .cursor/
 .env.local
+
+# wrangler local state and dry-run bundles
+.wrangler/
+
+# bundled CLI
+packages/cli/dist/
