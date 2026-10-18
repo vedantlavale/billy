@@ -6,6 +6,7 @@
       "name": "billy",
       "devDependencies": {
         "turbo": "^2.5.9",
+        "wrangler": "^4.141.0",
       },
     },
     "apps/mcp": {
