@@ -64,8 +64,8 @@ gh pr view <N> --json number,title,body,headRefOid,baseRefName,author,isDraft,st
 gh pr diff <N>
 ```
 
-The review workflow checks out with full history, so `git log origin/<base>..HEAD`
-and `git diff origin/<base>...HEAD` both work. Read whole files around the diff
+Check out with full history, so `git log origin/<base>..HEAD` and
+`git diff origin/<base>...HEAD` both work. Read whole files around the diff
 when a finding depends on context the hunk does not show. A shallow checkout
 makes those commands fail; if they do, say so rather than reviewing blind.
 
@@ -81,7 +81,7 @@ Find the spec, in this order, and stop at the first hit:
 3. A spec file under `docs/` or `specs/` matching the branch name.
 
 If there is none, group G is skipped and the review says "No linked issue" in
-the Spec section. Do not ask; this runs unattended in CI.
+the Spec section. Do not ask; a review runs unattended.
 
 ## Step 2: review against the rubric
 

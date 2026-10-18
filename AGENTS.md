@@ -49,8 +49,7 @@ agent:   /mcp or `billy` CLI → invoice-core → /editor#i=<invoice in the URL 
 
 Every task moves through four beats, each backed by a skill in `skills/`. The
 skills are the source of truth; `.claude/skills/` symlinks to them so the agent
-harness discovers them, and the review workflow reads them straight out of the
-repo.
+harness discovers them.
 
 1. **Isolate** (`/new-feature`). Understand the issue first and ask the user
    when it is unclear; hand a vague issue to `/triage`, which leaves an agent
@@ -74,15 +73,12 @@ Run `/unslop` over anything a person reads before you post it: commit messages,
 PR title and body, docs, comments. Apply it to text you wrote, not to prose you
 did not touch.
 
-### Code review runs itself
+### Code review
 
-`.github/workflows/claude-code-review.yml` reviews every PR on open and on every
-push. Do not tag the bot by hand.
-
-The review follows `skills/deep-review/SKILL.md`. It posts inline comments plus a
+A review follows `skills/deep-review/SKILL.md`. It posts inline comments plus a
 short summary that opens with a plain-language line and ends in a verdict:
-`Looks good`, `Changes requested` or `Blocking issues`. `/ship-pr` reads that
-verdict and loops.
+`Looks good`, `Changes requested` or `Blocking issues`. `/ship-pr` runs the
+review and loops on that verdict.
 
 The review is deliberately short. Findings are tagged P0 to P3, capped at five,
 and each one says what is wrong, why it matters and what to change. A reviewer
