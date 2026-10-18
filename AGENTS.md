@@ -126,9 +126,11 @@ bun run build                                       # static export → apps/web
 bun run dev                                         # dev server on http://localhost:3000
 ```
 
-- Only `packages/invoice-core` has tests (`bun test`). The app has none, so say
-  so in the PR body rather than claiming the app is tested. Its `tsc` reports
-  `bun:test` as missing types; that's known and harmless.
+- The app (`apps/web`) has no tests, so say so in the PR body rather than
+  claiming the app is tested. `bun test` runs the suites in
+  `packages/invoice-core`, `packages/mcp` and `packages/cli`.
+  `packages/invoice-core`'s `tsc` reports `bun:test` as missing types; that's
+  known and harmless.
 - `bun run lint` fails on `launch-alpha` as of 2026-09-30 (1 error, a
   `no-explicit-any` in `apps/web/scripts/download-fonts.ts`). Report whether your change added lint errors, not
   whether lint is clean.
