@@ -1917,7 +1917,7 @@
   width: 100%;
   padding: 12px 14px 12px 16px;
   border: 1px solid var(--lx-line);
-  border-radius: 14px 14px 14px 4px;
+  border-radius: 14px;
   background: #ffffff;
   color: inherit;
   font: inherit;
