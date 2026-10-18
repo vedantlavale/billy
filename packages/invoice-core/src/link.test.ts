@@ -1,10 +1,21 @@
 import { describe, expect, test } from "bun:test"
+import { compressToEncodedURIComponent } from "lz-string"
 
 import { parseInvoiceInput } from "./agent"
 import { calculateTotals } from "./invoice"
 import { buildInvoiceLink, decodeInvoicePayload, encodeInvoicePayload, readInvoiceFromHash } from "./link"
 
 const today = new Date("2026-09-26T10:00:00Z")
+
+/** FNV-1a, 32-bit, base 36 — mirrors the private checksum in link.ts. */
+function forgeChecksum(text: string): string {
+  let hash = 0x811c9dc5
+  for (let i = 0; i < text.length; i++) {
+    hash ^= text.charCodeAt(i)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(36)
+}
 
 function build(raw: unknown) {
   const result = parseInvoiceInput(raw, today)
@@ -109,6 +120,23 @@ describe("invoice links", () => {
     const { data } = build(designWork)
     const payload = encodeInvoicePayload({ ...data, logoUrl: `data:image/png;base64,${"A".repeat(50_000)}` })
     expect(payload.length).toBeLessThan(1500)
+  })
+
+  test("drop images a hand-edited payload tries to smuggle in", () => {
+    const json = JSON.stringify({
+      clientName: "Acme",
+      currency: "USD",
+      logoUrl: "https://tracker.example/pixel.png",
+      stampUrl: "https://tracker.example/stamp.png",
+      lineItems: [],
+    })
+    const payload = `1.${forgeChecksum(json)}.${compressToEncodedURIComponent(json)}`
+    const decoded = decodeInvoicePayload(payload)
+    expect(decoded.ok).toBe(true)
+    if (!decoded.ok) return
+    expect(decoded.data.clientName).toBe("Acme")
+    expect(decoded.data.logoUrl).toBeNull()
+    expect(decoded.data.stampUrl).toBeNull()
   })
 
   test("stay short for a 30-line invoice", () => {

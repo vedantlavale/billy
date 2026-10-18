@@ -65,7 +65,10 @@ export function encodeInvoicePayload(data: InvoiceData): string {
 
 /** Undo the compaction done by `encodeInvoicePayload`. */
 function expandPayload(compact: Record<string, unknown>): Record<string, unknown> {
-  const { on, lineItems, ...rest } = compact
+  // Images are never part of a link (see `encodeInvoicePayload`), but a
+  // hand-edited payload could sneak ones in, and a remote URL would then be
+  // fetched by the editor and the PDF export. Drop them.
+  const { on, lineItems, logoUrl, stampUrl, ...rest } = compact
   const options = Object.fromEntries((Array.isArray(on) ? on : []).map((key) => [key, true]))
   const rows = (Array.isArray(lineItems) ? lineItems : []).filter(
     (item): item is Record<string, unknown> => typeof item === "object" && item !== null,

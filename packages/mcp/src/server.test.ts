@@ -39,7 +39,7 @@ describe("billy mcp server", () => {
   test("lists its tools with a JSON schema agents can fill", async () => {
     const { tools } = await client()("tools/list")
     expect(tools.map((t: { name: string }) => t.name)).toEqual(["create_invoice", "list_invoice_options"])
-    expect(tools[0].inputSchema.required).toEqual(["to", "items", "currency"])
+    expect(tools[0].inputSchema.required).toEqual(["to", "items"])
   })
 
   test("create_invoice returns a summary and a link that decodes to the same invoice", async () => {
@@ -67,13 +67,31 @@ describe("billy mcp server", () => {
     const call = client({ defaults: { from: { name: "Saved Co", address: "Pune" }, currency: "INR" } })
     const result = await call("tools/call", {
       name: "create_invoice",
-      arguments: { ...acme, from: { email: "new@saved.co" } },
+      arguments: {
+        to: acme.to,
+        items: acme.items,
+        dueInDays: acme.dueInDays,
+        from: { email: "new@saved.co" },
+      },
     })
+    expect(result.isError).toBeUndefined()
     const decoded = readInvoiceFromHash(new URL(result.structuredContent.link).hash)
     if (!decoded?.ok) throw new Error("link did not decode")
     expect(decoded.data.businessName).toBe("Saved Co")
     expect(decoded.data.businessEmail).toBe("new@saved.co")
-    expect(decoded.data.currency).toBe("USD")
+    expect(decoded.data.currency).toBe("INR")
+  })
+
+  test("hide the founders-only template from agents", async () => {
+    const listed = await client()("tools/call", { name: "list_invoice_options" })
+    expect(listed.structuredContent.templates.map((t: { id: string }) => t.id)).not.toContain("founders")
+
+    const result = await client()("tools/call", {
+      name: "create_invoice",
+      arguments: { ...acme, templateId: "founders" },
+    })
+    expect(result.isError).toBe(true)
+    expect(result.content[0].text).toContain("templateId")
   })
 
   test("explains invalid input instead of failing silently", async () => {

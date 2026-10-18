@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises"
 import { createInterface, type Interface } from "node:readline/promises"
 import { parseArgs } from "node:util"
 
-import { CURRENCIES, INVOICE_LINK_BASE, TEMPLATES, buildInvoiceLink, calculateTotals } from "@billy/invoice-core"
+import { CURRENCIES, INVOICE_LINK_BASE, SELECTABLE_TEMPLATES, buildInvoiceLink, calculateTotals } from "@billy/invoice-core"
 import { parseInvoiceInput, summarizeInvoice, type InvoiceInput } from "@billy/invoice-core/agent"
 import { createBillyServer, withDefaults } from "@billy/mcp"
 
@@ -37,7 +37,7 @@ billy new options
   --po <text>                 Client PO number
   --notes <text>              Note to the client
   --terms <text>              Payment terms
-  --template <id>             ${TEMPLATES.map((t) => t.id).join(", ")}
+  --template <id>             ${SELECTABLE_TEMPLATES.map((t) => t.id).join(", ")}
   --from-json <file|->        Start from a JSON invoice (same shape as the MCP tool)
   --json                      Print the result as JSON
   --open                      Open the invoice in your browser
@@ -133,8 +133,8 @@ async function init(argv: string[]) {
   if (profile.currency && !CURRENCIES.some((c) => c.code === profile.currency)) {
     fail(`unsupported currency ${profile.currency}. Use one of: ${CURRENCIES.map((c) => c.code).join(", ")}`)
   }
-  if (profile.templateId && !TEMPLATES.some((t) => t.id === profile.templateId)) {
-    fail(`unknown template ${profile.templateId}. Use one of: ${TEMPLATES.map((t) => t.id).join(", ")}`)
+  if (profile.templateId && !SELECTABLE_TEMPLATES.some((t) => t.id === profile.templateId)) {
+    fail(`unknown template ${profile.templateId}. Use one of: ${SELECTABLE_TEMPLATES.map((t) => t.id).join(", ")}`)
   }
 
   await saveProfile(profile)

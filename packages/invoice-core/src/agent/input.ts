@@ -3,7 +3,7 @@ import { z } from "zod"
 import { CURRENCIES } from "../currencies"
 import { addDays, createDefaultInvoice, toDateString } from "../defaults"
 import { applyProfessionPreset, professionPresets } from "../presets"
-import { TEMPLATES } from "../templates"
+import { SELECTABLE_TEMPLATES } from "../templates"
 import type { InvoiceData } from "../types"
 
 /*
@@ -13,7 +13,7 @@ import type { InvoiceData } from "../types"
  */
 
 const currencyCodes = CURRENCIES.map((c) => c.code) as [string, ...string[]]
-const templateIds = TEMPLATES.map((t) => t.id) as [string, ...string[]]
+const templateIds = SELECTABLE_TEMPLATES.map((t) => t.id) as [string, ...string[]]
 const presetIds = Object.keys(professionPresets) as [
   keyof typeof professionPresets,
   ...(keyof typeof professionPresets)[],

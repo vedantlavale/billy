@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/server"
 import { z } from "zod"
 
-import { CURRENCIES, INVOICE_LINK_BASE, TEMPLATES, buildInvoiceLink, calculateTotals, professionPresets } from "@billy/invoice-core"
+import { CURRENCIES, INVOICE_LINK_BASE, SELECTABLE_TEMPLATES, buildInvoiceLink, calculateTotals, professionPresets } from "@billy/invoice-core"
 import { invoiceInputSchema, parseInvoiceInput, summarizeInvoice, type InvoiceInput } from "@billy/invoice-core/agent"
 
 export interface BillyServerOptions {
@@ -24,7 +24,7 @@ const INSTRUCTIONS = `Billy turns what the user tells you into a finished invoic
 Billy stores nothing: the whole invoice lives in the link. Logos and stamps are added in the editor and remembered in that browser.`
 
 const CREATE_DESCRIPTION = `Create an invoice and get a link that opens it in the Billy editor, ready to review and download as a PDF.
-Nothing is stored; the invoice lives in the link. Required: client name, at least one line item, and the currency.
+Nothing is stored; the invoice lives in the link. Required: client name and at least one line item. The currency comes from the user's saved profile when omitted; ask the user for one when no profile exists.
 Leave out anything the user didn't mention rather than inventing it (tax defaults to 0, due date to 7 days).`
 
 const createOutput = z.object({
@@ -33,6 +33,16 @@ const createOutput = z.object({
   currency: z.string(),
   total: z.number(),
   warnings: z.array(z.string()),
+})
+
+/*
+ * The tool boundary takes a looser shape than the domain does: `withDefaults`
+ * fills gaps from the saved profile (`billy init`) before the invoice is
+ * validated, so the currency may arrive late. `parseInvoiceInput` still
+ * demands one before an invoice is built.
+ */
+const createInputSchema = invoiceInputSchema.extend({
+  currency: invoiceInputSchema.shape.currency.optional(),
 })
 
 /** `args` with gaps filled from saved defaults. What the caller sent always wins. */
@@ -59,12 +69,12 @@ export function createBillyServer(options: BillyServerOptions = {}): McpServer {
     {
       title: "Create invoice",
       description: CREATE_DESCRIPTION,
-      inputSchema: invoiceInputSchema,
+      inputSchema: createInputSchema,
       outputSchema: createOutput,
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
     },
     async (args) => {
-      const result = parseInvoiceInput(withDefaults(args, options.defaults))
+      const result = parseInvoiceInput(withDefaults(args as InvoiceInput, options.defaults))
       if (!result.ok) {
         return {
           isError: true,
@@ -114,7 +124,7 @@ export function createBillyServer(options: BillyServerOptions = {}): McpServer {
     },
     async () => {
       const options = {
-        templates: TEMPLATES.map(({ id, name, description }) => ({ id, name, description })),
+        templates: SELECTABLE_TEMPLATES.map(({ id, name, description }) => ({ id, name, description })),
         currencies: CURRENCIES.map(({ code, name, symbol }) => ({ code, name, symbol })),
         presets: Object.entries(professionPresets).map(([id, preset]) => ({
           id,

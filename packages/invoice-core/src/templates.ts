@@ -115,6 +115,13 @@ export const TEMPLATES: Template[] = [
   }
 ]
 
+/**
+ * Templates an agent surface may offer. The Early Bird design is unlocked by a
+ * founder link in the editor (see founders.ts); agents and the CLI have no
+ * unlock, so they never list or accept it.
+ */
+export const SELECTABLE_TEMPLATES = TEMPLATES.filter((t) => !t.foundersOnly)
+
 export function getTemplate(id: string): Template {
   return TEMPLATES.find((t) => t.id === id) ?? TEMPLATES[0]
 }

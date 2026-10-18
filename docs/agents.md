@@ -38,9 +38,10 @@ prints `{ link, invoiceNumber, currency, total, warnings }` for scripts.
 
 ## Tools
 
-- `create_invoice`: client, line items and currency are required. Everything
-  else is optional: sender details, tax (or the Indian GST split), discount,
-  dates, invoice number, notes, bank details, template, profession preset.
+- `create_invoice`: client and line items are required, and currency unless a
+  saved profile provides one (`billy init`). Everything else is optional:
+  sender details, tax (or the Indian GST split), discount, dates, invoice
+  number, notes, bank details, template, profession preset.
   It returns a summary to check, the link, and warnings such as a missing
   sender email.
 - `list_invoice_options`: templates, currencies and presets.
