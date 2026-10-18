@@ -19,6 +19,14 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/mcp"]
   },
+  // Production hostnames. The routes attach on deploy, so trybilly.tech and
+  // www.trybilly.tech are answered by this Worker instead of the Vercel
+  // origin. The apex-to-www redirect is a dashboard Redirect Rule; see
+  // docs/deploy.md.
+  "routes": [
+    { "pattern": "trybilly.tech/*", "zone_name": "trybilly.tech" },
+    { "pattern": "www.trybilly.tech/*", "zone_name": "trybilly.tech" }
+  ],
   // 120 MCP requests a minute per IP. A tool call is a few requests, so this
   // only stops abuse. The namespace id is any number unique to this account.
   "ratelimits": [

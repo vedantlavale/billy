@@ -11,11 +11,13 @@ People edit an invoice like a document and export a PDF that matches the screen
 exactly. There are no accounts and no database. The draft lives in
 `localStorage`, logos and stamps are embedded as data URLs, and the only
 third-party call is PostHog analytics. It ships as a Next.js static export
-(`apps/web/out/`) deployed on Vercel from `main`; `vercel.json` at the root sets
-the install, build and output. `/mcp` is a Cloudflare Worker (`wrangler.jsonc`,
-code in `apps/mcp`): the only path that runs code, a stateless endpoint that
-lets AI agents build invoices (see below); everything else is a static file.
-It is a Turborepo on Bun workspaces: Next.js 16 (App Router),
+(`apps/web/out/`) deployed on Cloudflare Workers from `main`; Workers Builds
+builds and deploys it, and `wrangler.jsonc` at the root routes `trybilly.tech`
+and `www.trybilly.tech` to the `billy` Worker. `/mcp` is the only path that runs
+code (the agent endpoint in `apps/mcp`, described below); everything else is a
+static file. `docs/deploy.md` has the dashboard steps and rollback; Vercel only
+builds PR previews now, with `vercel.json` holding those settings. Cloudflare
+runs the DNS. It is a Turborepo on Bun workspaces: Next.js 16 (App Router),
 React 19, Tailwind v4 and TypeScript.
 
 ```
