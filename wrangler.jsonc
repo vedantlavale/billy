@@ -13,5 +13,13 @@
     "directory": "./apps/web/out",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
-  }
+  },
+  // Production hostnames. The routes attach on deploy, so trybilly.tech and
+  // www.trybilly.tech are answered by this Worker instead of the Vercel
+  // origin. The apex-to-www redirect is a dashboard Redirect Rule; see
+  // docs/deploy.md.
+  "routes": [
+    { "pattern": "trybilly.tech/*", "zone_name": "trybilly.tech" },
+    { "pattern": "www.trybilly.tech/*", "zone_name": "trybilly.tech" }
+  ]
 }
