@@ -105,19 +105,20 @@ billy/
 ├─ scripts/founders/       # launch-day CLIs for early bird numbers and unlock links
 ├─ docs/                   # project documentation
 ├─ DESIGN.md               # the design spec of record
+├─ wrangler.jsonc          # Cloudflare Worker config: serves the site on trybilly.tech
 └─ vercel.json              # Vercel build settings and security headers
 ```
 
 ## Deployment
 
-The app is a static export (`output: 'export'` in `apps/web/next.config.ts`), deployed on [Vercel](https://vercel.com) from `main`. DNS is on Cloudflare.
+The app is a static export (`output: 'export'` in `apps/web/next.config.ts`), deployed on [Cloudflare Workers](https://workers.cloudflare.com) from `main`. `wrangler.jsonc` routes `trybilly.tech` and `www.trybilly.tech` to the `billy` Worker, which serves `apps/web/out`; Cloudflare Workers Builds builds and deploys every push to `main`. [Vercel](https://vercel.com) still builds preview deployments for pull requests, with `vercel.json` holding those settings. DNS is on Cloudflare.
 
 - **Install command:** `bun install`
 - **Build command:** `bun run build`
 - **Output directory:** `apps/web/out`
 - **Environment:** `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` for analytics. It is read at build time, and analytics stay off without it.
 
-These are set in `vercel.json`, which also adds the security headers.
+Production security headers come from `apps/web/public/_headers`, which Cloudflare reads when serving the export; `vercel.json` keeps the same set on previews. Deploy steps, the apex redirect and rollback live in [`docs/deploy.md`](docs/deploy.md).
 
 ## Contributing
 
