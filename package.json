@@ -12,7 +12,8 @@
     "start": "turbo start"
   },
   "devDependencies": {
-    "turbo": "^2.5.9"
+    "turbo": "^2.5.9",
+    "wrangler": "^4.141.0"
   },
   "trustedDependencies": ["sharp", "unrs-resolver"]
 }
