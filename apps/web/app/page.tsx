@@ -455,6 +455,9 @@ export default function Home() {
               <p className="lx-body">
                 A free, open-source invoice editor.
               </p>
+              <a href="https://www.linkstore.io/apps/billy-2922429547" target="_blank" rel="noopener">
+                <img src="https://www.linkstore.io/badge/billy-2922429547.svg" alt="Listed on Linkstore" height={54} />
+              </a>
             </div>
 
             <div className="lx-footer-col">
