@@ -204,6 +204,21 @@ export default function Home() {
               </a>
             </div>
           </Reveal>
+
+          <Reveal delay={220} className="lx-hero-badge">
+            <a
+              href="https://www.producthunt.com/products/billy-8?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-billy-7571cf3e-6e5d-4c37-82f6-b80c82eb6dc1"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1291486&theme=light&t=1793087375405"
+                alt="Billy - Write invoices Auto calculate totals Export print ready PDFs | Product Hunt"
+                width={250}
+                height={54}
+              />
+            </a>
+          </Reveal>
         </div>
 
         <Reveal delay={240} className="lx-stage">
@@ -457,18 +472,6 @@ export default function Home() {
               </p>
               <a href="https://www.linkstore.io/apps/billy-2922429547" target="_blank" rel="noopener">
                 <img src="https://www.linkstore.io/badge/billy-2922429547.svg" alt="Listed on Linkstore" height={54} />
-              </a>
-              <a
-                href="https://www.producthunt.com/products/billy-8?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-billy-7571cf3e-6e5d-4c37-82f6-b80c82eb6dc1"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1291486&theme=light&t=1793087375405"
-                  alt="Billy - Write invoices Auto calculate totals Export print ready PDFs | Product Hunt"
-                  width={250}
-                  height={54}
-                />
               </a>
             </div>
 
