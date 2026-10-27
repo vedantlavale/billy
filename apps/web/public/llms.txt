@@ -16,6 +16,7 @@
 ## Links
 - [Home](https://www.trybilly.tech)
 - [Editor](https://www.trybilly.tech/editor)
+- [Use with AI assistants (MCP)](https://www.trybilly.tech/connect)
 - [Early birds](https://www.trybilly.tech/early-birds)
 - [Source code (MIT)](https://github.com/vedantlavale/billy)
 - [Sitemap](https://www.trybilly.tech/sitemap.xml)
