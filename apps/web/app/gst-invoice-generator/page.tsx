@@ -61,7 +61,7 @@ const FIELDS = [
 const FAQS = [
   {
     q: "What is a GST invoice?",
-    a: "A tax invoice for supplies under GST. It carries your GSTIN, a description of what you billed, an HSN or SAC code for each line, the amount taxed and the tax split. Billy has a switchable field for each of them.",
+    a: "A tax invoice for supplies under GST. It carries your GSTIN, a description of what you billed, an HSN or SAC code for each line, the amount taxed and the tax split. Billy has a field for each of them.",
   },
   {
     q: "Do I charge CGST and SGST, or IGST?",
@@ -142,7 +142,7 @@ export default function GstInvoiceGeneratorPage() {
       <section className="lx-section" id="included">
         <SectionHeader
           title={<>Everything a GST invoice <Underlined>carries</Underlined></>}
-          subtitle="All of it built in and switchable per invoice, none of it behind a paywall."
+          subtitle="All of it built in, none of it behind a paywall."
           art={<DoodleReceipt className="lx-art-receipt" />}
         />
         <FeatureTiles items={FIELDS} />
@@ -153,7 +153,11 @@ export default function GstInvoiceGeneratorPage() {
         <SectionHeader
           title={<>The tax lines <Underlined>work themselves out</Underlined></>}
           subtitle="Choose CGST + SGST for the same state or IGST for another. The total never moves."
-          art={<DoodlePencilCheck className="lx-art-pencil" />}
+          art={
+            <div className="lx-art">
+              <DoodlePencilCheck className="lx-art-pencil" />
+            </div>
+          }
         />
         <Bento>
           <BentoCard
