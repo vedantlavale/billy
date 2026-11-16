@@ -1895,7 +1895,7 @@
   /* Payment-term quick picks */
   .ed-terms {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, auto);
     gap: 6px;
   }
   .ed-terms .ed-option {
