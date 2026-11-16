@@ -462,6 +462,12 @@
   margin-top: 36px;
 }
 
+.lx-hero-badge {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
 .lx-hero-note {
   margin-top: 16px;
   font-size: 14px;
